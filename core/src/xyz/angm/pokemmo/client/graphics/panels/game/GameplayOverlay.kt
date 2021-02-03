@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/3/21, 2:07 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -75,11 +75,6 @@ class GameplayOverlay(private val screen: GameScreen) : Panel(screen) {
         """
         FPS: ${Gdx.graphics.framesPerSecond}
         Time since last frame: ${(Gdx.graphics.deltaTime * 1000).format(1)}ms
-        ${
-            if (screen.bench.time.count == 0) "Profiling disabled in this build"
-            else "Average time in render(): ${(screen.bench.time.average * 1000).format(1)}ms\n" +
-                    "        Mean time in render(): ${(screen.bench.time.mean.mean * 1000).format(1)}ms"
-        }
 
         Heap Size: ${Runtime.getRuntime().totalMemory()}
         Heap Free: ${Runtime.getRuntime().freeMemory()}

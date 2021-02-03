@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/3/21, 9:19 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -24,7 +24,7 @@ import xyz.angm.pokemmo.common.networking.FSTEncoder
 /** A socket for online communication, using Netty. */
 internal class NettyServerSocket(private val server: Server) {
 
-    val connections = Array<Connection>()
+    private val connections = Array<Connection>()
     private var connectionIndex = 0
 
     private val bossGroup = NioEventLoopGroup()

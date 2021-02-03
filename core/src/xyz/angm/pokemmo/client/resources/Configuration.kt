@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/3/21, 6:27 PM.
+ * This file was last modified at 2/3/21, 9:20 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -20,7 +20,6 @@ import xyz.angm.pokemmo.client.actions.PlayerAction
 import xyz.angm.pokemmo.client.actions.PlayerActions
 import xyz.angm.pokemmo.common.yaml
 import kotlin.collections.set
-import kotlin.math.pow
 
 val configuration = {
     val file = file("configuration.yaml")
@@ -109,16 +108,5 @@ class Configuration {
             binds.remove(key)
             bindings.remove(Input.Keys.toString(key))
         }
-    }
-
-    /** Video options controllable by the user.
-     * @property blend If blending on blocks should be enabled.
-     * @property shadowQuality Shadow resolution multiplier.
-     * @property shadowFBO Size of the shadow framebuffer, not player-configured. */
-    @Serializable
-    class VideoOptions {
-        var blend = true
-        var shadowQuality = 2
-        val shadowFBO get() = (2f.pow(shadowQuality).toInt() * 2048)
     }
 }

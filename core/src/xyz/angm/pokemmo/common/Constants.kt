@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/3/21, 9:19 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -28,5 +28,5 @@ const val MAX_NETTY_FRAME_SIZE = 128_000 // 128 KB
 /** Size of the receive buffer. */
 const val NETTY_BUFFER_SIZE = 8192
 
-/** Size of the legnth field of sent packets. */
+/** Size of the length field of sent packets. */
 const val LENGTH_SIZE = 4

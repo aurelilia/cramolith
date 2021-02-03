@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/3/21, 9:18 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -35,10 +35,6 @@ object ResourceManager {
             assets.update()
         return assets.progress
     }
-
-    /** Will load all game assets and return. This function can block for multiple seconds!
-     * Used for quick launch debugging. */
-    fun finishLoading() = assets.finishLoading()
 
     private fun loadGameAssets() {
         load<Texture>("sprites/player.png")

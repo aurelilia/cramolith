@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/3/21, 9:19 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -53,19 +53,6 @@ class Client {
         listeners.add(listener)
     }
 
-    /** Add a listener for received packets, ensuring it gets called first */
-    fun addListenerPriority(listener: (Any) -> Unit) {
-        listeners.insert(0, listener)
-    }
-
-    /** Removes given listener. */
-    fun removeListener(listener: (Any) -> Unit) {
-        listeners.removeValue(listener, true)
-    }
-
-    /** Remove all currently registered listeners. */
-    fun clearListeners() = listeners.clear()
-
     /** Send the specified packet to server. */
     fun send(packet: Any) {
         socket.send(packet)
@@ -112,7 +99,6 @@ class Client {
 
     /** Dispose of the client. Object is unusable after this. */
     fun close() {
-        clearListeners()
         socket.close()
         scope.cancel()
     }

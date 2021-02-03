@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/3/21, 2:04 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -36,10 +36,10 @@ object PlayerActions {
 
         fun add(name: String, down: (GameScreen) -> Unit) = add(name, down, {})
 
-        add("walkForward", { it.player[velocity].x++ }, { it.player[velocity].x-- })
-        add("walkBackward", { it.player[velocity].x-- }, { it.player[velocity].x++ })
-        add("walkRight", { it.player[velocity].y++ }, { it.player[velocity].y-- })
-        add("walkLeft", { it.player[velocity].y-- }, { it.player[velocity].y++ })
+        add("walkForward", { it.player[velocity].y++ }, { it.player[velocity].y-- })
+        add("walkBackward", { it.player[velocity].y-- }, { it.player[velocity].y++ })
+        add("walkRight", { it.player[velocity].x++ }, { it.player[velocity].x-- })
+        add("walkLeft", { it.player[velocity].x-- }, { it.player[velocity].x++ })
         add("debugInfo") { it.gameplayPanel.toggleDebugInfo() }
         add("pauseMenu") { it.pushPanel(PausePanel(it)) }
         add("onlinePlayers", { it.gameplayPanel.toggleOnlinePlayers() }, { it.gameplayPanel.toggleOnlinePlayers() })

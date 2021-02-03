@@ -1,13 +1,12 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/3/21, 3:55 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
 
 package xyz.angm.rox
 
-import com.badlogic.gdx.utils.ObjectIntMap
 import kotlin.reflect.KClass
 
 /** A component mapper is used for accessing components inside an entity.
@@ -21,8 +20,8 @@ class ComponentMapper<C : Component>(cls: KClass<C>, val index: Int) {
 
     companion object {
         var index = 0
-        val mappers = ObjectIntMap<KClass<out Component>>(30)
-        fun getMapper(component: KClass<out Component>) = mappers[component, -42]
+        val mappers = HashMap<KClass<out Component>, Int>(30)
+        fun getMapper(component: KClass<out Component>) = mappers[component] ?: -42
     }
 }
 

@@ -1,20 +1,19 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/3/21, 3:53 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
 
 package xyz.angm.rox
 
-import com.badlogic.gdx.utils.Bits
-import com.badlogic.gdx.utils.IntSet
 import org.nustaq.serialization.FSTBasicObjectSerializer
 import org.nustaq.serialization.FSTClazzInfo
 import org.nustaq.serialization.FSTObjectInput
 import org.nustaq.serialization.FSTObjectOutput
 import xyz.angm.rox.ComponentMapper.Companion.getMapper
 import xyz.angm.rox.util.Bag
+import xyz.angm.rox.util.Bits
 import xyz.angm.rox.util.RoxArray
 import java.io.Serializable
 
@@ -69,13 +68,13 @@ class Entity private constructor() : Serializable {
         engine.updateFamilies(this)
     }
 
-    private fun addInternal(component: Component): Boolean {
+    private fun addInternal(component: Component) {
         val index = getMapper(component::class)
         components[index] = component
-        return componentBits.getAndSet(index)
+        componentBits.set(index)
     }
 
-    /** Remove the given component fron the entity if present.
+    /** Remove the given component from the entity if present.
      * @param engine The engine responsible for this entity */
     fun remove(engine: Engine, mapper: ComponentMapper<out Component>) {
         components[mapper.index] = null
@@ -106,7 +105,7 @@ class Entity private constructor() : Serializable {
 /** A simple entity serializer for the FST framework.
  * @property ignore Component types that should not be serialized.
  * Use [ComponentMapper.index] for the values. */
-class FSTEntitySerializer(private val ignore: IntSet) : FSTBasicObjectSerializer() {
+class FSTEntitySerializer(private val ignore: Bits) : FSTBasicObjectSerializer() {
 
     override fun writeObject(
         output: FSTObjectOutput,
@@ -118,7 +117,7 @@ class FSTEntitySerializer(private val ignore: IntSet) : FSTBasicObjectSerializer
         entity as Entity
 
         for (i in 0 until entity.components.size) {
-            if (ignore.contains(i) || entity.components[i] == null) continue
+            if (ignore[i] || entity.components[i] == null) continue
             else {
                 output.writeInt(i)
                 output.writeObject(entity.components[i])

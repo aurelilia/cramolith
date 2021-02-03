@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/3/21, 3:53 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -13,14 +13,14 @@ import kotlin.math.max
 /** A collection of elements very similar to a dynamically growing array.
  * Main difference to a regular array is that out-of-bounds operations
  * like get or set cause the bag to resize to fit instead of being
- * an illegal operation. Used by [Entity].
+ * an illegal operation. Used by [xyz.angm.rox.Entity].
  *
  * @property data Backing array of components
  * @property capacity Current capacity of this bag
  * @property size Size of this bag, or the index of the highest set. */
 class Bag internal constructor(internal var data: Array<Component?>) {
 
-    val capacity get() = data.size
+    private val capacity get() = data.size
     var size = data.size
         private set
 

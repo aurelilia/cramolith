@@ -1,14 +1,14 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/3/21, 3:52 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
 
 package xyz.angm.rox
 
-import com.badlogic.gdx.utils.Bits
 import xyz.angm.rox.ComponentMapper.Companion.getMapper
+import xyz.angm.rox.util.Bits
 import xyz.angm.rox.util.RoxArray
 import kotlin.reflect.KClass
 
@@ -59,8 +59,8 @@ class Family private constructor() {
         } // else: no change.
     }
 
-    internal infix fun matches(entity: Entity) =
-        entity.componentBits.containsAll(include) && (exclude == -1 || !entity.componentBits.get(exclude))
+    private infix fun matches(entity: Entity) =
+        entity.componentBits.containsAll(include) && (exclude == -1 || !entity.componentBits[exclude])
 
     companion object {
         /** Creates a new family that requires entities to contain all given components. */

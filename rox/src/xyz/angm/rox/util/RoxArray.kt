@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/3/21, 3:53 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -17,7 +17,7 @@ import kotlin.reflect.KClass
 class RoxArray<T : Any>(private val ordered: Boolean, initial: Int) : Iterable<T> {
 
     private var data = Array<Any?>(initial) { null } as Array<T?>
-    val capacity get() = data.size
+    private val capacity get() = data.size
     var size = 0
         private set
     private val iterator = RoxIterator(this)

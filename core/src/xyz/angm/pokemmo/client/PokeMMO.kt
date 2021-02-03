@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/3/21, 6:27 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -15,6 +15,7 @@ import xyz.angm.pokemmo.client.graphics.screens.GameScreen
 import xyz.angm.pokemmo.client.graphics.screens.MenuScreen
 import xyz.angm.pokemmo.client.networking.Client
 import xyz.angm.pokemmo.client.resources.configuration
+import xyz.angm.pokemmo.common.ecs.playerM
 import xyz.angm.pokemmo.common.networking.InitPacket
 import xyz.angm.pokemmo.common.networking.JoinPacket
 import kotlin.system.exitProcess
@@ -36,8 +37,11 @@ class PokeMMO : Game() {
         client.send(JoinPacket(configuration.playerName, configuration.clientUUID))
     }
 
-    private fun startGame(client: Client, data: InitPacket) =
-        setScreen(GameScreen(this, client, data.player!!, data.entities))
+    private fun startGame(client: Client, data: InitPacket) {
+        configuration.clientUUID = data.player!![playerM].clientUUID
+        configuration.save()
+        setScreen(GameScreen(this, client, data.player, data.entities))
+    }
 
     override fun dispose() = exitProcess(0)
 

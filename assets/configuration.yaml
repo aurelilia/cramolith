@@ -2,12 +2,12 @@ keybinds:
   bindings:
     "0": "debugInfo"
     "Escape": "pauseMenu"
-    "Enter": "chat"
     "A": "walkLeft"
     "S": "walkBackward"
     "D": "walkRight"
     "Tab": "onlinePlayers"
     "W": "walkForward"
-clientUUID: 123234
-playerName: "anellie"
+    "Enter": "chat"
+clientUUID: 7
+playerName: "sam"
 language: "English"

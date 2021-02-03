@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/3/21, 2:04 PM.
+ * This file was last modified at 2/3/21, 4:45 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -9,9 +9,11 @@ package xyz.angm.pokemmo.client.actions
 
 import com.badlogic.gdx.utils.ObjectMap
 import ktx.collections.*
-import xyz.angm.pokemmo.client.graphics.panels.game.ChatPanel
 import xyz.angm.pokemmo.client.graphics.panels.game.PausePanel
 import xyz.angm.pokemmo.client.graphics.screens.GameScreen
+import xyz.angm.pokemmo.client.graphics.windows.ChatWindow
+import xyz.angm.pokemmo.client.graphics.windows.DebugWindow
+import xyz.angm.pokemmo.client.graphics.windows.OnlinePlayersWindow
 import xyz.angm.pokemmo.common.ecs.velocity
 
 /** An action represents a function to be executed when the player presses a key.
@@ -40,10 +42,10 @@ object PlayerActions {
         add("walkBackward", { it.player[velocity].y-- }, { it.player[velocity].y++ })
         add("walkRight", { it.player[velocity].x++ }, { it.player[velocity].x-- })
         add("walkLeft", { it.player[velocity].x-- }, { it.player[velocity].x++ })
-        add("debugInfo") { it.gameplayPanel.toggleDebugInfo() }
         add("pauseMenu") { it.pushPanel(PausePanel(it)) }
-        add("onlinePlayers", { it.gameplayPanel.toggleOnlinePlayers() }, { it.gameplayPanel.toggleOnlinePlayers() })
-        add("chat") { it.pushPanel(ChatPanel(it)) }
+        add("onlinePlayers") { it.toggleWindow("onlinePlayers") { OnlinePlayersWindow(it) } }
+        add("chat") { it.toggleWindow("chat") { ChatWindow(it) } }
+        add("debugInfo") { it.toggleWindow("debug") { DebugWindow(it) } }
     }
 
     /** Get an action. */

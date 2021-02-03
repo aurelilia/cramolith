@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:48 PM.
+ * This file was last modified at 2/3/21, 9:11 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -14,7 +14,6 @@ import xyz.angm.pokemmo.client.PokeMMO
 import xyz.angm.pokemmo.client.ecs.components.RenderableComponent
 import xyz.angm.pokemmo.client.graphics.screens.GameScreen
 import xyz.angm.pokemmo.client.resources.ResourceManager
-import xyz.angm.pokemmo.common.ecs.components.PositionComponent
 import xyz.angm.pokemmo.common.ecs.playerM
 import xyz.angm.pokemmo.common.ecs.position
 import xyz.angm.pokemmo.common.ecs.renderable
@@ -25,7 +24,7 @@ import xyz.angm.rox.systems.IteratingSystem
 
 /** A system that automatically updates the positions of all renderable components that need it.
  * Also an entity listener for adding the rendering component to new entities. */
-class RenderSystem(private val screen: GameScreen) : IteratingSystem(allOf(RenderableComponent::class, PositionComponent::class)), EntityListener {
+class RenderSystem(private val screen: GameScreen) : IteratingSystem(allOf(renderable, position)), EntityListener {
 
     override val family = allOf()
 

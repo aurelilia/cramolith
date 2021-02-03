@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 6:22 PM.
+ * This file was last modified at 2/3/21, 9:11 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -11,18 +11,17 @@ import com.badlogic.gdx.utils.IntMap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
-import ktx.collections.*
 import xyz.angm.pokemmo.common.*
-import xyz.angm.pokemmo.common.ecs.components.NetworkSyncComponent
 import xyz.angm.pokemmo.common.ecs.components.RemoveFlag
-import xyz.angm.pokemmo.common.ecs.components.specific.PlayerComponent
 import xyz.angm.pokemmo.common.ecs.network
 import xyz.angm.pokemmo.common.ecs.systems.NetworkSystem
 import xyz.angm.pokemmo.common.ecs.systems.RemoveSystem
 import xyz.angm.pokemmo.common.networking.ChatMessagePacket
-import xyz.angm.pokemmo.common.networking.InitPacket
 import xyz.angm.pokemmo.common.networking.JoinPacket
 import xyz.angm.pokemmo.common.networking.Packet
+import xyz.angm.pokemmo.server.handlers.handleChatMessage
+import xyz.angm.pokemmo.server.handlers.handleEntity
+import xyz.angm.pokemmo.server.handlers.handleJoinPacket
 import xyz.angm.rox.Engine
 import xyz.angm.rox.Entity
 import xyz.angm.rox.EntityListener
@@ -36,10 +35,10 @@ class Server {
     private val serverSocket = NettyServerSocket(this)
     private val coScope = CoroutineScope(Dispatchers.Default)
 
-    val engine = SyncChannel(Engine(), coScope)
-    private val netSystem = NetworkSystem(::sendToAll)
-    private val players = IntMap<Entity>() // Key is the connection id
-    private val networkedFamily = allOf(NetworkSyncComponent::class)
+    val engine = SyncChannel(Engine())
+    internal val netSystem = NetworkSystem(::sendToAll)
+    internal val players = IntMap<OnlinePlayer>() // Key is the player UUID
+    internal val networkedFamily = allOf(network)
 
     init {
         schedule(2000, 1000 / TICK_RATE, coScope, ::tick)
@@ -53,15 +52,15 @@ class Server {
         Runtime.getRuntime().addShutdownHook(Thread { close() })
     }
 
-    private fun send(connection: Connection, packet: Packet) {
+    internal fun send(connection: Connection, packet: Packet) {
         serverSocket.send(packet, connection)
-        log.debug { "[SERVER] Sent packet of class ${packet.javaClass.name} to ${connection.ip}" }
+        log.trace { "[SERVER] Sent packet of class ${packet.javaClass.name} to ${connection.ip}" }
     }
 
     /** Send a packet to all connected clients. */
-    fun sendToAll(packet: Any) {
+    internal fun sendToAll(packet: Any) {
         serverSocket.sendAll(packet)
-        log.debug { "[SERVER] Sent packet of class ${packet.javaClass.name} to all" }
+        log.trace { "[SERVER] Sent packet of class ${packet.javaClass.name} to all" }
     }
 
     internal fun received(connection: Connection, packet: Any) {
@@ -71,16 +70,11 @@ class Server {
     }
 
     private fun receivedInternal(connection: Connection, packet: Any) {
-        log.debug { "[SERVER] Received object of class ${packet.javaClass.name}" }
+        log.trace { "[SERVER] Received object of class ${packet.javaClass.name}" }
         when (packet) {
-            is ChatMessagePacket -> sendToAll(packet)
-            is JoinPacket -> registerPlayer(connection, packet)
-            is Entity -> {
-                engine {
-                    packet.c(network)?.needsSync = true // Ensure it syncs to all players
-                    netSystem.receive(packet)
-                }
-            }
+            is ChatMessagePacket -> handleChatMessage(packet)
+            is JoinPacket -> handleJoinPacket(connection, packet)
+            is Entity -> handleEntity(packet)
         }
     }
 
@@ -88,20 +82,9 @@ class Server {
         log.info { "[SERVER] Player connected. IP: ${connection.ip}." }
     }
 
-    private fun registerPlayer(connection: Connection, packet: JoinPacket) {
-        engine {
-            val entities = this[networkedFamily].toArray(Entity::class)
-            val playerEntity = PlayerComponent.create(this, packet.name, packet.uuid)
-            players[connection.id] = playerEntity
-
-            send(connection, InitPacket(playerEntity, entities))
-            playerEntity[network].needsSync = true // Ensure player gets synced
-        }
-    }
-
     internal fun onDisconnected(connection: Connection) {
-        val player = players[connection.id] ?: return
-        engine { RemoveFlag.flag(this, player) }
+        val player = players.find { it.value.conn.id == connection.id } ?: return
+        engine { RemoveFlag.flag(this, player.value.entity) }
         log.info { "[SERVER] Disconnected from connection id ${connection.id}." }
     }
 
@@ -109,9 +92,11 @@ class Server {
     private fun tick() = engine { update(1f / TICK_RATE) }
 
     /** Close the server. Will save world and close all connections, making the object unusable. */
-    fun close() {
+    private fun close() {
         log.info { "[SERVER] Shutting down..." }
         serverSocket.close()
         coScope.cancel()
     }
+
+    internal data class OnlinePlayer(val conn: Connection, val entity: Entity)
 }

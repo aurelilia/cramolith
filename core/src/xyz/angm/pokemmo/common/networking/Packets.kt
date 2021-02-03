@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/3/21, 4:03 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -28,6 +28,12 @@ class InitPacket(
 ) : Packet
 
 
-/** Contains a chat message. Client sends it to server; server sends it to all clients.
- * @param message The message to send */
-class ChatMessagePacket(val message: String = "") : Packet
+/** Contains a chat message. Client sends it to server; server sends it to appropriate clients.
+ * @param message The message to send
+ * @param sender The UUID of the sender
+ * @param receiver The UUID of the receiver; 0 is a special id for global chat. */
+class ChatMessagePacket(
+    val message: String = "",
+    val sender: Int = 0,
+    val receiver: Int = 0
+) : Packet

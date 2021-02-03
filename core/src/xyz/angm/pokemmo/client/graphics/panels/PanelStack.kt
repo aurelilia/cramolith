@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/3/21, 2:02 PM.
+ * This file was last modified at 2/3/21, 4:39 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -12,8 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
-import xyz.angm.pokemmo.client.graphics.screens.worldHeight
-import xyz.angm.pokemmo.client.graphics.screens.worldWidth
 
 private const val TRANSITION_DURATION = 0.2f
 private val TRANSITION = Interpolation.pow3
@@ -30,7 +28,7 @@ class PanelStack : Actor(), Disposable {
         val panel = if (panels.isEmpty) return else panels.pop()
         panel?.addAction(
             Actions.sequence(
-                Actions.moveTo(worldWidth * direction, 0f, TRANSITION_DURATION, TRANSITION),
+                Actions.moveTo(stage.width * direction, 0f, TRANSITION_DURATION, TRANSITION),
                 Actions.visible(false),
                 Actions.run { panel.dispose() },
                 Actions.removeActor()
@@ -44,13 +42,13 @@ class PanelStack : Actor(), Disposable {
     fun pushPanel(panel: Panel) {
         if (!panels.isEmpty) transitionOut(panels.peek())
         panels.add(panel)
-        panel.setSize(worldWidth, worldHeight)
+        panel.setSize(stage.width, stage.height)
         stage.addActor(panel)
         transitionIn(panel)
     }
 
     private fun transitionIn(panel: Panel, direction: Int = 1) {
-        panel.x = worldWidth * direction
+        panel.x = stage.width * direction
         panel.addAction(
             Actions.sequence(
                 Actions.visible(true),
@@ -63,7 +61,7 @@ class PanelStack : Actor(), Disposable {
     private fun transitionOut(panel: Panel) {
         panel.addAction(
             Actions.sequence(
-                Actions.moveTo(-worldWidth, 0f, TRANSITION_DURATION, TRANSITION),
+                Actions.moveTo(-stage.width, 0f, TRANSITION_DURATION, TRANSITION),
                 Actions.visible(false)
             )
         )

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/3/21, 9:11 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -10,9 +10,14 @@ package xyz.angm.pokemmo.client.graphics
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
+import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.Window
 import com.kotcrab.vis.ui.VisUI
+import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisTextField
+import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane
 import ktx.assets.disposeSafely
 import ktx.assets.file
 import ktx.scene2d.Scene2DSkin
@@ -31,39 +36,30 @@ object Skin {
         Pair("white", Color.WHITE),
         Pair("light-grey", Color.LIGHT_GRAY),
         Pair("black-transparent", Color(0f, 0f, 0f, 0.5f)),
-        Pair("red-transparent", Color(0.3f, 0f, 0f, 0.5f)),
         Pair("black", Color.BLACK),
         Pair("dark-grey", Color.DARK_GRAY),
         Pair("transparent", Color(0f, 0f, 0f, 0f)),
         Pair("dark-green", Color(0.3f, 0.4f, 0.3f, 1f))
     )
-    private val colors32 = mapOf(
-        Pair("item-selector", Color(1f, 1f, 1f, 0.5f)),
-        Pair("red", Color.RED),
-        Pair("green", Color.GREEN)
-    )
 
     /** Reload the skin. Only needs to be called on init or when the resource pack changes. */
     fun reload() {
+        val notoGen = FreeTypeFontGenerator(file("font/noto.ttf"))
         val monospaceGen = FreeTypeFontGenerator(file("font/monospace.ttf"))
         val parameter = FreeTypeFontGenerator.FreeTypeFontParameter()
-        parameter.shadowColor = Color(0.4f, 0.4f, 0.4f, 0.8f)
+        parameter.magFilter = Texture.TextureFilter.Linear
 
         VisUI.getSkin().disposeSafely()
         VisUI.dispose(false)
         VisUI.load()
         val it = VisUI.getSkin()
         Scene2DSkin.defaultSkin = VisUI.getSkin().apply {
+            add("default", notoGen.generateFont(parameter))
+            val noto = get<BitmapFont>()
             add("monospace", monospaceGen.generateFont(parameter))
 
             colors5.forEach { color ->
                 val pixmap = Pixmap(5, 5, Pixmap.Format.RGBA8888)
-                pixmap.setColor(color.value)
-                pixmap.fill()
-                add(color.key, Texture(pixmap))
-            }
-            colors32.forEach { color ->
-                val pixmap = Pixmap(32, 32, Pixmap.Format.RGBA8888)
                 pixmap.setColor(color.value)
                 pixmap.fill()
                 add(color.key, Texture(pixmap))
@@ -95,6 +91,12 @@ object Skin {
             }
 
             scrollPane {}
+
+            get<VisTextButton.VisTextButtonStyle>().font = noto
+            get<VisTextField.VisTextFieldStyle>().font = noto
+            get<Label.LabelStyle>().font = noto
+            get<Window.WindowStyle>().titleFont = noto
+            get<TabbedPane.TabbedPaneStyle>().buttonStyle.font = noto
         }
 
         monospaceGen.dispose()

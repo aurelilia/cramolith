@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/3/21, 9:11 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -8,7 +8,6 @@
 package xyz.angm.pokemmo.common.ecs.systems
 
 import com.badlogic.gdx.utils.IntMap
-import xyz.angm.pokemmo.common.ecs.components.NetworkSyncComponent
 import xyz.angm.pokemmo.common.ecs.ignoreSync
 import xyz.angm.pokemmo.common.ecs.network
 import xyz.angm.pokemmo.common.ecs.remove
@@ -25,7 +24,7 @@ import xyz.angm.rox.systems.EntitySystem
  * REGISTER AS SECOND LAST!. */
 class NetworkSystem(private val send: (Entity) -> Unit) : EntitySystem(Int.MAX_VALUE - 1), EntityListener {
 
-    override val family = Family.allOf(NetworkSyncComponent::class)
+    override val family = Family.allOf(network)
     private val entities = IntMap<Entity>()
 
     /** Send any entities that require updating. */

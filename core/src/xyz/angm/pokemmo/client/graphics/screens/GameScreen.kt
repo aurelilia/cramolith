@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/3/21, 2:07 PM.
+ * This file was last modified at 2/3/21, 9:11 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -11,18 +11,18 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.kotcrab.vis.ui.widget.VisWindow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import xyz.angm.pokemmo.client.PokeMMO
 import xyz.angm.pokemmo.client.actions.PlayerInputHandler
 import xyz.angm.pokemmo.client.ecs.systems.RenderSystem
-import xyz.angm.pokemmo.client.graphics.panels.game.GameplayOverlay
 import xyz.angm.pokemmo.client.graphics.panels.menu.MessagePanel
 import xyz.angm.pokemmo.client.networking.Client
 import xyz.angm.pokemmo.client.resources.I18N
 import xyz.angm.pokemmo.common.ecs.components.IgnoreSyncFlag
-import xyz.angm.pokemmo.common.ecs.components.specific.PlayerComponent
 import xyz.angm.pokemmo.common.ecs.playerM
 import xyz.angm.pokemmo.common.ecs.systems.NetworkSystem
 import xyz.angm.pokemmo.common.ecs.systems.RemoveSystem
@@ -36,7 +36,7 @@ import xyz.angm.rox.EntityListener
 import xyz.angm.rox.Family.Companion.allOf
 import xyz.angm.rox.systems.EntitySystem
 
-/** The game screen. Active during gameplay. Uses 2 panels; 1 for hotbar and the usual stack in Screen.
+/** The game screen. Active during gameplay.
  *
  * This screen is mainly a bag of other objects that make up game state;
  * and should not have any other responsibility other than initializing them and
@@ -62,15 +62,15 @@ class GameScreen(
     // Entities
     val engine = Engine()
     private val inputHandler = PlayerInputHandler(this)
-    private val players = allOf(PlayerComponent::class)
+    private val players = allOf(playerM)
 
     // 2D Graphics
-    val stage = Stage(viewport)
-    val gameplayPanel = GameplayOverlay(this)
+    val stage = Stage(ScreenViewport())
+    private val activeWindows = HashMap<String, VisWindow>()
 
     val entitiesLoaded get() = engine.entities.size
     val systemsActive get() = engine.systems.size
-    val onlinePlayers get() = engine[players].map { it[playerM].name }
+    val onlinePlayers get() = engine[players]
 
     init {
         initSystems()
@@ -95,6 +95,20 @@ class GameScreen(
         Gdx.gl.glClearColor(0.05f, 0.05f, 0.05f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
         stage.draw()
+    }
+
+    /** Toggles a window.
+     * @param name The name of the window to uniquely identify its type
+     * @param create A closure to create the window if it isn't active yet and will be added */
+    fun toggleWindow(name: String, create: (GameScreen) -> VisWindow) {
+        val prev = activeWindows.remove(name)
+        if (prev != null) {
+            prev.remove()
+        } else {
+            val new = create(this)
+            stage.addActor(new)
+            activeWindows[name] = new
+        }
     }
 
     /** Called when the game can no longer continue (disconnect; player quit; etc.)
@@ -134,8 +148,8 @@ class GameScreen(
 
         // Input
         val multiplex = InputMultiplexer()
-        multiplex.addProcessor(inputHandler)
         multiplex.addProcessor(stage)
+        multiplex.addProcessor(inputHandler)
         Gdx.input.inputProcessor = multiplex
     }
 
@@ -146,13 +160,11 @@ class GameScreen(
 
     // Initialize all rendering components
     private fun initRender() {
-        stage.addActor(gameplayPanel)
         stage.addActor(panels)
     }
 
     override fun resize(width: Int, height: Int) {
         stage.viewport.update(width, height, true)
-        gameplayPanel.resize()
     }
 
     /** hide is called when the screen is no longer active, at which point this type of screen becomes dereferenced and needs to be disposed. */
@@ -161,7 +173,6 @@ class GameScreen(
     override fun dispose() {
         client.close()
         coScope.cancel()
-        gameplayPanel.dispose()
         panels.dispose()
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/3/21, 3:52 PM.
+ * This file was last modified at 2/3/21, 9:06 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -64,10 +64,10 @@ class Family private constructor() {
 
     companion object {
         /** Creates a new family that requires entities to contain all given components. */
-        fun allOf(vararg components: KClass<out Component>): Family {
+        fun allOf(vararg components: ComponentMapper<out Component>): Family {
             val family = Family()
             for (component in components) {
-                family.include.set(getMapper(component))
+                family.include.set(component.index)
             }
             return family
         }

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 6:04 PM.
+ * This file was last modified at 2/3/21, 2:05 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -8,7 +8,7 @@
 package xyz.angm.pokemmo.client.graphics.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.ScreenAdapter
+import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.PerformanceCounter
@@ -18,8 +18,6 @@ import kotlinx.coroutines.cancel
 import xyz.angm.pokemmo.client.PokeMMO
 import xyz.angm.pokemmo.client.actions.PlayerInputHandler
 import xyz.angm.pokemmo.client.ecs.systems.RenderSystem
-import xyz.angm.pokemmo.client.graphics.panels.Panel
-import xyz.angm.pokemmo.client.graphics.panels.PanelStack
 import xyz.angm.pokemmo.client.graphics.panels.game.GameplayOverlay
 import xyz.angm.pokemmo.client.graphics.panels.menu.MessagePanel
 import xyz.angm.pokemmo.client.networking.Client
@@ -39,7 +37,7 @@ import xyz.angm.rox.EntityListener
 import xyz.angm.rox.Family.Companion.allOf
 import xyz.angm.rox.systems.EntitySystem
 
-/** The game screen. Active during gameplay. Uses 2 panels; 1 for hotbar and a stack for the other panels required by the Screen interface.
+/** The game screen. Active during gameplay. Uses 2 panels; 1 for hotbar and the usual stack in Screen.
  *
  * This screen is mainly a bag of other objects that make up game state;
  * and should not have any other responsibility other than initializing them and
@@ -58,7 +56,7 @@ class GameScreen(
     val client: Client,
     val player: Entity,
     entities: Array<Entity>
-) : ScreenAdapter(), Screen {
+) : Screen() {
 
     private val coScope = CoroutineScope(Dispatchers.Default)
     val bench = PerformanceCounter("render")
@@ -70,7 +68,6 @@ class GameScreen(
 
     // 2D Graphics
     val stage = Stage(viewport)
-    private val uiPanels = PanelStack()
     val gameplayPanel = GameplayOverlay(this)
 
     val entitiesLoaded get() = engine.entities.size
@@ -91,9 +88,6 @@ class GameScreen(
     }
 
     private fun renderInternal(delta: Float) {
-        // Uncomment this and the stop call at the end to enable performance profiling.
-        // startBench(delta)
-
         client.lock()
         PokeMMO.execRunnables()
         engine.update(delta)
@@ -103,33 +97,6 @@ class GameScreen(
         Gdx.gl.glClearColor(0.05f, 0.05f, 0.05f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
         stage.draw()
-
-        // bench.stop()
-    }
-
-    @Suppress("unused")
-    private fun startBench(delta: Float) {
-        bench.tick(delta)
-        bench.start()
-    }
-
-    override fun pushPanel(panel: Panel) {
-        if (uiPanels.panelsInStack == 0) { // First UI panel, switch gameplay > ui for input
-            inputHandler.beforeUnregister()
-            Gdx.input.inputProcessor = stage
-            Gdx.input.isCursorCatched = false
-            Gdx.input.setCursorPosition(stage.viewport.screenWidth / 2, (stage.viewport.screenY + stage.viewport.screenHeight) / 2)
-        }
-        uiPanels.pushPanel(panel)
-    }
-
-    override fun popPanel() {
-        if (uiPanels.panelsInStack == 1) { // About to pop last panel, return to gameplay
-            inputHandler.beforeRegister()
-            Gdx.input.inputProcessor = inputHandler
-            Gdx.input.isCursorCatched = true
-        }
-        uiPanels.popPanel()
     }
 
     /** Called when the game can no longer continue (disconnect; player quit; etc.)
@@ -168,8 +135,10 @@ class GameScreen(
         client.send(ChatMessagePacket("[CYAN]${player[playerM].name}[LIGHT_GRAY] ${I18N["joined-game"]}"))
 
         // Input
-        Gdx.input.inputProcessor = inputHandler
-        Gdx.input.isCursorCatched = true
+        val multiplex = InputMultiplexer()
+        multiplex.addProcessor(inputHandler)
+        multiplex.addProcessor(stage)
+        Gdx.input.inputProcessor = multiplex
     }
 
     // Adds local components to the player entity.
@@ -180,7 +149,7 @@ class GameScreen(
     // Initialize all rendering components
     private fun initRender() {
         stage.addActor(gameplayPanel)
-        stage.addActor(uiPanels)
+        stage.addActor(panels)
     }
 
     override fun resize(width: Int, height: Int) {
@@ -195,6 +164,6 @@ class GameScreen(
         client.close()
         coScope.cancel()
         gameplayPanel.dispose()
-        uiPanels.dispose()
+        panels.dispose()
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/3/21, 2:02 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -19,18 +19,15 @@ private const val TRANSITION_DURATION = 0.2f
 private val TRANSITION = Interpolation.pow3
 
 /** A stack of panels. Always displays the panel at the top of the stack,
- * while also using nice animations for transitioning between panels.
- * @property panelsInStack The amount of panels currently in the stack. */
+ * while also using nice animations for transitioning between panels. */
 class PanelStack : Actor(), Disposable {
 
     private val panels = Array<Panel>(true, 5)
     val current get() = panels.last()!!
-    val panelsInStack: Int
-        get() = panels.size
 
     /** Pops the top panel off the stack. Will automatically display the next panel. */
     fun popPanel(direction: Int = 1) {
-        val panel = if (panels.isEmpty) null else panels.pop()
+        val panel = if (panels.isEmpty) return else panels.pop()
         panel?.addAction(
             Actions.sequence(
                 Actions.moveTo(worldWidth * direction, 0f, TRANSITION_DURATION, TRANSITION),

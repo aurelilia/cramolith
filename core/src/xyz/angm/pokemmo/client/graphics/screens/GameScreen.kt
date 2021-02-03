@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/1/21, 6:04 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import xyz.angm.pokemmo.client.PokeMMO
 import xyz.angm.pokemmo.client.actions.PlayerInputHandler
+import xyz.angm.pokemmo.client.ecs.systems.RenderSystem
 import xyz.angm.pokemmo.client.graphics.panels.Panel
 import xyz.angm.pokemmo.client.graphics.panels.PanelStack
 import xyz.angm.pokemmo.client.graphics.panels.game.GameplayOverlay
@@ -28,6 +29,7 @@ import xyz.angm.pokemmo.common.ecs.components.specific.PlayerComponent
 import xyz.angm.pokemmo.common.ecs.playerM
 import xyz.angm.pokemmo.common.ecs.systems.NetworkSystem
 import xyz.angm.pokemmo.common.ecs.systems.RemoveSystem
+import xyz.angm.pokemmo.common.ecs.systems.VelocitySystem
 import xyz.angm.pokemmo.common.networking.ChatMessagePacket
 import xyz.angm.pokemmo.common.networking.InitPacket
 import xyz.angm.pokemmo.common.runLogE
@@ -67,7 +69,7 @@ class GameScreen(
     private val players = allOf(PlayerComponent::class)
 
     // 2D Graphics
-    private val stage = Stage(viewport)
+    val stage = Stage(viewport)
     private val uiPanels = PanelStack()
     val gameplayPanel = GameplayOverlay(this)
 
@@ -150,6 +152,12 @@ class GameScreen(
         client.addListener { if (it is Entity) netSystem.receive(it) }
         add(netSystem as EntitySystem)
         add(netSystem as EntityListener)
+
+        val renderSystem = RenderSystem(this@GameScreen)
+        add(renderSystem as EntitySystem)
+        add(renderSystem as EntityListener)
+
+        add(VelocitySystem())
         add(RemoveSystem())
     }
 

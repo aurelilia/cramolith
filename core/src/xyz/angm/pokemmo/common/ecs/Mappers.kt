@@ -1,13 +1,12 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/1/21, 5:46 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
 
 package xyz.angm.pokemmo.common.ecs
 
-import xyz.angm.pokemmo.client.ecs.components.PlayerActorComponent
 import xyz.angm.pokemmo.client.ecs.components.RenderableComponent
 import xyz.angm.pokemmo.common.ecs.components.*
 import xyz.angm.pokemmo.common.ecs.components.specific.PlayerComponent

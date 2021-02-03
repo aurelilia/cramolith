@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/1/21, 6:22 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -34,7 +34,7 @@ import xyz.angm.rox.systems.EntitySystem
 class Server {
 
     private val serverSocket = NettyServerSocket(this)
-    internal val coScope = CoroutineScope(Dispatchers.Default)
+    private val coScope = CoroutineScope(Dispatchers.Default)
 
     val engine = SyncChannel(Engine(), coScope)
     private val netSystem = NetworkSystem(::sendToAll)

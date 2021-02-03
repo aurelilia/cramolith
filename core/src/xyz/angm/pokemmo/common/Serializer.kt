@@ -1,6 +1,6 @@
 /*
  * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
+ * This file was last modified at 2/1/21, 5:32 PM.
  * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -14,6 +14,7 @@ import org.nustaq.serialization.FSTConfiguration
 import xyz.angm.pokemmo.common.ecs.components.*
 import xyz.angm.pokemmo.common.ecs.components.specific.PlayerComponent
 import xyz.angm.pokemmo.common.ecs.ignoreSync
+import xyz.angm.pokemmo.common.ecs.renderable
 import xyz.angm.pokemmo.common.networking.ChatMessagePacket
 import xyz.angm.pokemmo.common.networking.InitPacket
 import xyz.angm.pokemmo.common.networking.JoinPacket
@@ -45,6 +46,7 @@ private fun createFST(vararg classes: KClass<out Any>): FSTConfiguration {
 
     val ignore = IntSet()
     ignore.add(ignoreSync.index)
+    ignore.add(renderable.index)
     fst.registerSerializer(Entity::class.java, FSTEntitySerializer(ignore), true)
 
     return fst

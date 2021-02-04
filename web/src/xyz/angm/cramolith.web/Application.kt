@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 9:39 PM.
+ * This file was last modified at 2/4/21, 11:17 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -40,10 +40,14 @@ fun Application.module() {
         }
 
         get("/") {
-            call.respond(FreeMarkerContent("index.ftl", mapOf("error" to "")))
+            call.respond(FreeMarkerContent("index.ftl", mapOf("message" to "")))
         }
 
-        post("/submit") {
+        get("/register") {
+            call.respond(FreeMarkerContent("register.ftl", mapOf("error" to "")))
+        }
+
+        post("/register/submit") {
             val input = call.receiveParameters()
             val username = input["username"] ?: return@post call.respond(HttpStatusCode.BadRequest)
             val pw = input["pw"] ?: return@post call.respond(HttpStatusCode.BadRequest)
@@ -63,9 +67,9 @@ fun Application.module() {
                         password = pw
                     }
                 }
-                call.respond(FreeMarkerContent("login_completed.ftl", mapOf<String, String>()))
+                call.respond(FreeMarkerContent("index.ftl", mapOf("message" to "Successfully registered. Welcome, $username!")))
             } else {
-                call.respond(FreeMarkerContent("index.ftl", mapOf("error" to error)))
+                call.respond(FreeMarkerContent("register.ftl", mapOf("error" to error)))
             }
         }
     }

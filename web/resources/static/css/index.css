@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 9:48 PM.
+ * This file was last modified at 2/4/21, 11:24 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -9,30 +9,34 @@
     --light-blue: #CFDAF0;
 }
 
-.overlay {
-    width: 80%;
-    min-width: 30%;
-    margin: 3% auto;
-    display: block;
-    padding: 2%;
-    height: 90vh;
-    border-radius: 40px;
-    text-align: center;
-}
-
-header {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 300;
-}
-
 body {
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
     background-color: var(--light-blue);
 }
 
-.registration {
-    font-size: large;
+header {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    text-align: center;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.register-form > input {
+    margin: 3px 0;
 }
 
 #pw-confirm {

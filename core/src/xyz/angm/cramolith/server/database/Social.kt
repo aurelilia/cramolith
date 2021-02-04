@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/4/21, 2:16 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -15,7 +15,6 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 object Friends : IntIdTable() {
     val player1 = reference("player1", Players)
     val player2 = reference("player2", Players)
-    override val primaryKey = PrimaryKey(id, player1, player2)
 }
 
 class Friend(id: EntityID<Int>) : IntEntity(id) {

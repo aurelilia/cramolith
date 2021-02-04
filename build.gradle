@@ -1,7 +1,7 @@
 /*
- * Developed as part of the PokeMMO project.
- * This file was last modified at 2/3/21, 3:54 PM.
- * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
+ * Developed as part of the Cramolith project.
+ * This file was last modified at 2/4/21, 12:43 PM.
+ * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
 
@@ -36,14 +36,16 @@ allprojects {
     [compileJava, compileTestJava]*.options*.encoding = "UTF-8"
 
     sourceSets.main.java.srcDirs = [ "src/" ]
+    sourceSets.main.resources.srcDirs = [ "resources/" ]
 
     version = new SimpleDateFormat("yyyyMMdd").format(new Date())
     ext {
-        appName = "pokemmo"
-        gdxVersion = "1.9.13"
+        appName = "cramolith"
+        gdxVersion = "1.9.14"
         ashleyVersion = "1.7.3"
         aiVersion = "1.8.2"
         ktxVersion = "1.9.13-b1"
+        ktor_version = "1.5.1"
         assetsDir = new File("../assets")
     }
 
@@ -100,6 +102,16 @@ project(":server") {
         implementation project(":core")
         implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    }
+}
+
+project(":web") {
+    dependencies {
+        implementation project(":core")
+        implementation "io.ktor:ktor-server-core:$ktor_version"
+        implementation "io.ktor:ktor-server-netty:$ktor_version"
+        implementation "io.ktor:ktor-html-builder:$ktor_version"
+        implementation "io.ktor:ktor-freemarker:$ktor_version"
     }
 }
 

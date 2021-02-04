@@ -8,6 +8,6 @@ keybinds:
     "Tab": "onlinePlayers"
     "W": "walkForward"
     "Enter": "chat"
-clientUUID: 7
+clientUUID: 1
 playerName: "sam"
 language: "English"

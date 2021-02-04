@@ -1,11 +1,11 @@
 /*
- * Developed as part of the PokeMMO project.
- * This file was last modified at 2/1/21, 5:10 PM.
- * Copyright 2020, see git repository at git.angm.xyz for authors and other info.
+ * Developed as part of the Cramolith project.
+ * This file was last modified at 2/4/21, 12:43 PM.
+ * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
 
-project.ext.mainClassName = "xyz.angm.pokemmo.desktop.DesktopLauncherKt"
+project.ext.mainClassName = "xyz.angm.cramolith.desktop.DesktopLauncherKt"
 
 task run(dependsOn: classes, type: JavaExec) {
     main = project.mainClassName
@@ -30,7 +30,7 @@ task dist(type: Jar) {
     from files(sourceSets.main.output.resourcesDir)
     from {configurations.runtimeClasspath.collect {zipTree(it)}}
     from files(project.assetsDir)
-    archiveBaseName = "pokemmo-client"
+    archiveBaseName = "cramolith-client"
     // Exclude Linux ARM targets
     exclude('linux/arm32/**', 'linux/arm64/**')
 

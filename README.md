@@ -1,4 +1,4 @@
-# PokeMMO
+# Cramolith
 
 A pokemon-like battle MMO.
 

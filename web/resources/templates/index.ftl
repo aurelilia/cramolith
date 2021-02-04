@@ -19,24 +19,26 @@
     </head>
 
     <body>
-        <section class="overlay">
-                <header>
-                    <h1>Cramolith</h1>
-                </header>
-                <main>
-                    <label for="username"></label>
-                    <input id="username" name="username" type="text" placeholder="Username" required pattern="{,20}">
-                    <br>
-                    <br>
-                    <label for="pw"></label>
-                    <input id="pw" name="pw" type="password" placeholder="Password" required pattern="{,50}">
-                    <br>
-                    <br>
-                    <label for="pw-confirm"></label>
-                    <input id="pw-confirm" name="pw-confirm" type="password" placeholder="Confirm Password" pattern="{,50}">
-                    <br>
-                    <input type="submit" value="Submit">
-                    <p>${error}</p>
+    <section class="overlay">
+        <header>
+            <h1>Cramolith</h1>
+        </header>
+        <main>
+            <form action="/submit" method="post">
+                <label for="username"></label>
+                <input id="username" name="username" type="text" placeholder="Username" required pattern="{,20}">
+                <br>
+                <br>
+                <label for="pw"></label>
+                <input id="pw" name="pw" type="password" placeholder="Password" required pattern="{,50}">
+                <br>
+                <br>
+                <label for="pw-confirm"></label>
+                <input id="pw-confirm" name="pw-confirm" type="password" placeholder="Confirm Password" pattern="{,50}">
+                <br>
+                <input type="submit" value="Submit">
+            </form>
+            <p>${error}</p>
                 </main>
             </section>
     </body>

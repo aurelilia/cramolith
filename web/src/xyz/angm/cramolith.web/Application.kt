@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/4/21, 9:39 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -14,16 +14,17 @@ import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.freemarker.FreeMarker
 import io.ktor.freemarker.FreeMarkerContent
-import io.ktor.http.*
+import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.resources
 import io.ktor.http.content.static
-import io.ktor.request.*
+import io.ktor.request.receiveParameters
 import io.ktor.response.respond
-import io.ktor.routing.*
+import io.ktor.routing.get
+import io.ktor.routing.post
+import io.ktor.routing.routing
 import xyz.angm.cramolith.server.database.DB
 import xyz.angm.cramolith.server.database.Player
 import xyz.angm.cramolith.server.database.Players
-import java.time.LocalDateTime
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -39,27 +40,32 @@ fun Application.module() {
         }
 
         get("/") {
-            call.respond(FreeMarkerContent("index.ftl", mapOf<String, String>()))
+            call.respond(FreeMarkerContent("index.ftl", mapOf("error" to "")))
         }
-        post("/submit"){
+
+        post("/submit") {
             val input = call.receiveParameters()
-            if (input["pw"] == input["pw-confirm"]){
-                call.respond(FreeMarkerContent("index.ftl", mapOf<String, String>()))
-            }else{
-                call.respond(FreeMarkerContent("index.ftl", mapOf("error" to "Passwords are not the same")))
+            val username = input["username"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+            val pw = input["pw"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+            val pwConfirm = input["pw-confirm"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+            val playerExists = DB.transaction { !Player.find { Players.name eq username }.empty() }
+
+            val error = when {
+                pw != pwConfirm -> "Passwords are not the same"
+                playerExists -> "Username already exists"
+                else -> null
             }
-            if(Player.find { Players.name eq "hmm." }.empty()){
-                val username = input["username"] ?: return@post call.respond(HttpStatusCode.BadRequest)
-                val pw = input["pw"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+
+            return@post if (error == null) {
                 DB.transaction {
-                    Player.new{
+                    Player.new {
                         name = username
                         password = pw
                     }
                 }
-                call.respond(FreeMarkerContent("index.ftl", mapOf<String, String>()))
-            }else{
-                call.respond(FreeMarkerContent("index.ftl", mapOf("error" to "Username already exists")))
+                call.respond(FreeMarkerContent("login_completed.ftl", mapOf<String, String>()))
+            } else {
+                call.respond(FreeMarkerContent("index.ftl", mapOf("error" to error)))
             }
         }
     }

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/4/21, 4:47 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -28,13 +28,16 @@ import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.client.resources.I18N
 import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.networking.ChatMessagePacket
+import xyz.angm.cramolith.common.networking.PrivateMessageRequest
+import xyz.angm.cramolith.common.networking.PrivateMessageResponse
 
 
-class ChatWindow(private val screen: GameScreen) : VisWindow(I18N["chat"]) {
+class ChatWindow(private val screen: GameScreen, initMsgs: Array<String>) : VisWindow(I18N["chat"]) {
 
     private val pane = TabbedPane()
     private val container = VisTable()
     private val chats = HashMap<String, Chat>()
+    private val playerId get() = screen.player[playerM].clientUUID
 
     init {
         addCloseButton()
@@ -42,7 +45,10 @@ class ChatWindow(private val screen: GameScreen) : VisWindow(I18N["chat"]) {
         isResizable = true
 
         screen.client.addListener { packet ->
-            if (packet is ChatMessagePacket) addMessage(packet)
+            when (packet) {
+                is ChatMessagePacket -> addMessage(packet)
+                is PrivateMessageResponse -> addMessages(packet)
+            }
         }
 
         pane.addListener(object : TabbedPaneAdapter() {
@@ -70,7 +76,10 @@ class ChatWindow(private val screen: GameScreen) : VisWindow(I18N["chat"]) {
         val firstTab = ChatTab(I18N["new-chat"], firstTabTable, false)
         pane.add(firstTab)
 
-        createTab("Global", 0)
+        val global = createTab("Global", 0)
+        for (msg in initMsgs) {
+            (global.msgTable.actor as VisTable).add(VisLabel(msg)).left().expandX().row()
+        }
     }
 
     private fun createTab(name: String, id: Int): Chat {
@@ -88,13 +97,15 @@ class ChatWindow(private val screen: GameScreen) : VisWindow(I18N["chat"]) {
                 it.expandX().fillX()
                 onKeyDown {
                     if (it == Input.Keys.ENTER && text.isNotBlank()) {
+                        val message = formatMessage(text)
                         screen.client.send(
                             ChatMessagePacket(
-                                message = formatMessage(text),
-                                sender = screen.player[playerM].clientUUID,
+                                message,
+                                sender = playerId,
                                 receiver = id
                             )
                         )
+                        if (id != 0) (msgTable.actor as VisTable).add(VisLabel(message)).left().expandX().row()
                         text = ""
                     }
                 }
@@ -105,14 +116,30 @@ class ChatWindow(private val screen: GameScreen) : VisWindow(I18N["chat"]) {
         val chat = Chat(tab, msgTable, ArrayList(), id)
         chats[name] = chat
         pane.add(tab)
+
+        if (id != 0) {
+            screen.client.send(PrivateMessageRequest(requested = id, requestedBy = playerId))
+        }
+
         return chat
     }
 
     private fun addMessage(msg: ChatMessagePacket) {
-        val sender = screen.onlinePlayers.find { it[playerM].clientUUID == msg.sender }!![playerM]
-        val name = if (msg.receiver == 0) "Global" else sender.name
-        val chat = chats[name] ?: createTab(sender.name, sender.clientUUID)
+        val chat = getChat(msg.sender, msg.receiver)
         (chat.msgTable.actor as VisTable).add(VisLabel(msg.message)).left().expandX().row()
+    }
+
+    private fun addMessages(packet: PrivateMessageResponse) {
+        val chat = getChat(packet.other, -1)
+        for (msg in packet.messages) {
+            (chat.msgTable.actor as VisTable).add(VisLabel(msg)).left().expandX().row()
+        }
+    }
+
+    private fun getChat(sender: Int, receiver: Int): Chat {
+        val sender = screen.onlinePlayers.find { it[playerM].clientUUID == sender }?.get(playerM)
+        val name = if (receiver == 0 || sender == null) "Global" else sender.name
+        return chats[name] ?: createTab(sender!!.name, sender.clientUUID)
     }
 
     private fun formatMessage(message: String) = "<[CYAN]${screen.player[playerM].name}[WHITE]> $message"

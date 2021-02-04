@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/4/21, 4:47 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -19,9 +19,11 @@ import xyz.angm.cramolith.common.ecs.systems.RemoveSystem
 import xyz.angm.cramolith.common.networking.ChatMessagePacket
 import xyz.angm.cramolith.common.networking.JoinPacket
 import xyz.angm.cramolith.common.networking.Packet
+import xyz.angm.cramolith.common.networking.PrivateMessageRequest
 import xyz.angm.cramolith.server.handlers.handleChatMessage
 import xyz.angm.cramolith.server.handlers.handleEntity
 import xyz.angm.cramolith.server.handlers.handleJoinPacket
+import xyz.angm.cramolith.server.handlers.handlePMRequest
 import xyz.angm.rox.Engine
 import xyz.angm.rox.Entity
 import xyz.angm.rox.EntityListener
@@ -73,6 +75,7 @@ class Server {
         log.trace { "[SERVER] Received object of class ${packet.javaClass.name}" }
         when (packet) {
             is ChatMessagePacket -> handleChatMessage(packet)
+            is PrivateMessageRequest -> handlePMRequest(connection, packet)
             is JoinPacket -> handleJoinPacket(connection, packet)
             is Entity -> handleEntity(packet)
         }

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/4/21, 4:47 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -13,7 +13,7 @@ import io.netty.handler.codec.ByteToMessageDecoder
 import io.netty.handler.codec.MessageToByteEncoder
 import xyz.angm.cramolith.common.MAX_NETTY_FRAME_SIZE
 import xyz.angm.cramolith.common.fst
-import xyz.angm.cramolith.common.runLogE
+import xyz.angm.cramolith.common.log
 
 /** An encoder for the Netty pipeline that turns any object sent into a byte array using FST. */
 class FSTEncoder : MessageToByteEncoder<Any>() {
@@ -30,13 +30,16 @@ class FSTEncoder : MessageToByteEncoder<Any>() {
 /** An encoder for the Netty pipeline that turns any bytes received into an object using FST. */
 class FSTDecoder : ByteToMessageDecoder() {
 
-    private val buf = ByteArray(MAX_NETTY_FRAME_SIZE)
+    private var buf = ByteArray(MAX_NETTY_FRAME_SIZE)
 
     /** Decodes using FST. */
     override fun decode(ctx: ChannelHandlerContext?, input: ByteBuf, out: MutableList<Any>) {
-        runLogE("FST", "decoding packet") {
+        try {
             input.readBytes(buf, 0, input.readableBytes())
             out.add(fst.asObject(buf))
+        } catch (e: Exception) {
+            log.warn { "FST encountered error. Trying to recover..." }
+            buf = ByteArray(MAX_NETTY_FRAME_SIZE)
         }
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/4/21, 1:27 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.ObjectMap
 import ktx.collections.*
 import xyz.angm.cramolith.client.graphics.panels.game.PausePanel
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
-import xyz.angm.cramolith.client.graphics.windows.ChatWindow
 import xyz.angm.cramolith.client.graphics.windows.DebugWindow
 import xyz.angm.cramolith.client.graphics.windows.OnlinePlayersWindow
 import xyz.angm.cramolith.common.ecs.velocity
@@ -44,7 +43,7 @@ object PlayerActions {
         add("walkLeft", { it.player[velocity].x-- }, { it.player[velocity].x++ })
         add("pauseMenu") { it.pushPanel(PausePanel(it)) }
         add("onlinePlayers") { it.toggleWindow("onlinePlayers") { OnlinePlayersWindow(it) } }
-        add("chat") { it.toggleWindow("chat") { ChatWindow(it) } }
+        add("chat") { it.toggleWindow("chat") { throw UnsupportedOperationException() } }
         add("debugInfo") { it.toggleWindow("debug") { DebugWindow(it) } }
     }
 

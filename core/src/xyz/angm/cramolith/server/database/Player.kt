@@ -14,12 +14,14 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 
 object Players : IntIdTable() {
     val name = varchar("name", 20)
+    val password = varchar("password",50)
 }
 
 class Player(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Player>(Players)
 
     var name by Players.name
+    var password by Players.password
     val pokemon by Pokemon referrersOn Pokemons.owner
 }
 

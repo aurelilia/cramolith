@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/4/21, 1:26 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -9,6 +9,8 @@ package xyz.angm.cramolith.server.handlers
 
 import com.badlogic.gdx.math.Vector2
 import ktx.collections.*
+import org.jetbrains.exposed.sql.SortOrder
+import org.jetbrains.exposed.sql.selectAll
 import xyz.angm.cramolith.common.ecs.components.NetworkSyncComponent
 import xyz.angm.cramolith.common.ecs.components.PositionComponent
 import xyz.angm.cramolith.common.ecs.components.VelocityComponent
@@ -20,11 +22,17 @@ import xyz.angm.cramolith.server.Connection
 import xyz.angm.cramolith.server.Server
 import xyz.angm.cramolith.server.database.DB
 import xyz.angm.cramolith.server.database.Player
+import xyz.angm.cramolith.server.database.Posts
 import xyz.angm.rox.Engine
 import xyz.angm.rox.Entity
 
 internal fun Server.handleJoinPacket(connection: Connection, packet: JoinPacket) {
+    var globalMessages = emptyArray<String>()
     val dbEntry = DB.transaction {
+        val list = Posts.selectAll().orderBy(Posts.id, SortOrder.DESC).limit(25).toMutableList()
+        list.reverse()
+        globalMessages = list.stream().map { it[Posts.text] }.toArray { arrayOfNulls(it) }
+
         Player.findById(packet.uuid) ?: Player.new {
             name = packet.name
         }
@@ -35,7 +43,7 @@ internal fun Server.handleJoinPacket(connection: Connection, packet: JoinPacket)
         val playerEntity = createPlayerEntity(this, dbEntry)
         players[packet.uuid] = Server.OnlinePlayer(connection, playerEntity)
 
-        send(connection, InitPacket(playerEntity, entities))
+        send(connection, InitPacket(playerEntity, entities, globalMessages))
         playerEntity[network].needsSync = true // Ensure player gets synced
     }
 }

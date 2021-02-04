@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/4/21, 1:26 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -30,7 +30,7 @@ import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.networking.ChatMessagePacket
 
 
-class ChatWindow(private val screen: GameScreen) : VisWindow(I18N["chat"]) {
+class ChatWindow(private val screen: GameScreen, initMsgs: Array<String>) : VisWindow(I18N["chat"]) {
 
     private val pane = TabbedPane()
     private val container = VisTable()
@@ -70,7 +70,10 @@ class ChatWindow(private val screen: GameScreen) : VisWindow(I18N["chat"]) {
         val firstTab = ChatTab(I18N["new-chat"], firstTabTable, false)
         pane.add(firstTab)
 
-        createTab("Global", 0)
+        val global = createTab("Global", 0)
+        for (msg in initMsgs) {
+            (global.msgTable.actor as VisTable).add(VisLabel(msg)).left().expandX().row()
+        }
     }
 
     private fun createTab(name: String, id: Int): Chat {

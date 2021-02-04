@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/4/21, 1:26 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -20,6 +20,7 @@ import xyz.angm.cramolith.client.Cramolith
 import xyz.angm.cramolith.client.actions.PlayerInputHandler
 import xyz.angm.cramolith.client.ecs.systems.RenderSystem
 import xyz.angm.cramolith.client.graphics.panels.menu.MessagePanel
+import xyz.angm.cramolith.client.graphics.windows.ChatWindow
 import xyz.angm.cramolith.client.networking.Client
 import xyz.angm.cramolith.client.resources.I18N
 import xyz.angm.cramolith.common.ecs.components.IgnoreSyncFlag
@@ -54,7 +55,8 @@ class GameScreen(
     private val game: Cramolith,
     val client: Client,
     val player: Entity,
-    entities: Array<Entity>
+    entities: Array<Entity>,
+    messages: Array<String>
 ) : Screen() {
 
     private val coScope = CoroutineScope(Dispatchers.Default)
@@ -77,7 +79,7 @@ class GameScreen(
         engine.add(player)
         entities.forEach { engine.add(it) }
 
-        initState()
+        initState(messages)
         initRender()
     }
 
@@ -101,13 +103,15 @@ class GameScreen(
      * @param name The name of the window to uniquely identify its type
      * @param create A closure to create the window if it isn't active yet and will be added */
     fun toggleWindow(name: String, create: (GameScreen) -> VisWindow) {
-        val prev = activeWindows.remove(name)
-        if (prev != null) {
-            prev.remove()
-        } else {
-            val new = create(this)
-            stage.addActor(new)
-            activeWindows[name] = new
+        val window = activeWindows[name]
+        when {
+            window == null -> {
+                val new = create(this)
+                stage.addActor(new.fadeIn())
+                activeWindows[name] = new
+            }
+            window.stage == stage -> window.fadeOut()
+            else -> stage.addActor(window.fadeIn())
         }
     }
 
@@ -141,7 +145,11 @@ class GameScreen(
     }
 
     // Initialize everything not render-related
-    private fun initState() {
+    private fun initState(messages: Array<String>) {
+        // Chat
+        val chat = ChatWindow(this, messages)
+        activeWindows["chat"] = chat
+
         // Network
         client.disconnectListener = { Cramolith.postRunnable { returnToMenu(I18N["disconnected-from-server"]) } }
         client.send(ChatMessagePacket("[CYAN]${player[playerM].name}[LIGHT_GRAY] ${I18N["joined-game"]}"))

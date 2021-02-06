@@ -42,9 +42,14 @@ fun Application.module() {
         get("/") {
             call.respond(FreeMarkerContent("index.ftl", mapOf("message" to "")))
         }
-
         get("/register") {
             call.respond(FreeMarkerContent("register.ftl", mapOf("error" to "")))
+        }
+        get("/changelog") {
+            call.respond(FreeMarkerContent("changelog.ftl", mapOf("" to "")))
+        }
+        get("/about_us") {
+            call.respond(FreeMarkerContent("about_us.ftl", mapOf("" to "")))
         }
 
         post("/register/submit") {

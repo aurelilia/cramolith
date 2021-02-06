@@ -13,9 +13,10 @@ body {
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
     background-color: var(--light-blue);
+    margin: 0;
 }
 
-header {
+header{
     font-family: 'Montserrat', sans-serif;
     font-weight: 300;
     text-align: center;
@@ -42,3 +43,26 @@ main {
 #pw-confirm {
     margin-bottom: 10px;
 }
+
+.navtop{
+    background-color: #333;
+    width: 100%;
+}
+
+.navtop a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+/*not working*/
+.navtop:hover{
+    color: red;
+}
+/*not working*/
+.navtop a .active{
+    color: gold;
+}
+

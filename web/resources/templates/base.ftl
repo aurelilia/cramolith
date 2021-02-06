@@ -18,7 +18,7 @@
 
     <body>
     <header>
-        <h1>Cramolith</h1>
+        <h1 class="logo">Cramolith</h1>
     </header>
     <main>
         <#nested>

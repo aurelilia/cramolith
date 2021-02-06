@@ -4,22 +4,17 @@
   ~ This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
   -->
 
-<#-- @ftlvariable name="message" type="java.lang.String" -->
-<#import "base.ftl" as base>
 
-<@base.document title="Cramolith - Home">          <!-- change name to home.ftl-->
+<#import "base.ftl" as base>
+<@base.document title="Cramolith - Changelog">
     <section class="navtop">
         <#--noinspection HtmlUnknownTarget-->
-        <a class="active" href="/">Home</a>
+        <a href="/">Home</a>
         <#--noinspection HtmlUnknownTarget-->
         <a href="/register">Register</a>
         <#--noinspection HtmlUnknownTarget-->
-        <a href="/changelog">Changelog</a>
+        <a class="active" href="/changelog">Changelog</a>
         <#--noinspection HtmlUnknownTarget-->
         <a href="/about_us">About us</a>
     </section>
-        <h2>Welcome to Cramolith</h2>
-        <h4>The game that doesn't really exist yet.</h4>
-        <#--noinspection HtmlUnknownTarget-->
-        <#if message != ""><p>${message}</p></#if>
 </@base.document>

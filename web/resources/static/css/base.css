@@ -1,0 +1,48 @@
+/*
+ * Developed as part of the Cramolith project.
+ * This file was last modified at 2/6/21, 6:05 PM.
+ * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
+ * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
+ */
+
+:root {
+    --light-blue: #CFDAF0;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    background-color: var(--light-blue);
+    margin: 0;
+}
+
+header {
+    font-weight: 300;
+    text-align: center;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+nav {
+    background-color: #333;
+    width: 100%;
+    overflow: auto;
+    text-align: center;
+    font-size: 17px;
+}
+
+a {
+    float: left;
+    text-decoration: none;
+    padding: 14px 16px;
+    color: #f2f2f2;
+}
+
+a:hover {
+    color: red;
+}

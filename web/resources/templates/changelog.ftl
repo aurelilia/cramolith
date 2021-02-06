@@ -6,8 +6,9 @@
 
 
 <#import "base.ftl" as base>
-<@base.document title="Cramolith - Changelog">
+<@base.document title="Cramolith - Changelog" css="changelog">
     <ul>
-        <li><span class="date">02/06/2021</span><p>No game so nothing changed</p></li>
+        <li><span class="date">02/06/2021</span>
+            <p>No game so nothing changed</p></li>
     </ul>
 </@base.document>

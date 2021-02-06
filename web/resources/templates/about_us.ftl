@@ -5,9 +5,11 @@
   -->
 
 <#import "base.ftl" as base>
-<@base.document title="Cramolith - About us">
+<@base.document title="Cramolith - About us" css="about_us">
     <ul>
-        <li class="ellie"><span class="name"><a class="link" href="https://angm.xyz/" target="_blank">Ellie</a></span><p>kinda sus</p></li>
-        <li class="sam"><span class="name">Sam</span><p>kinda not sus</p></li>
+        <li class="ellie"><span class="name"><a class="link" href="https://angm.xyz/" target="_blank">Ellie</a></span>
+            <p>kinda sus</p></li>
+        <li class="sam"><span class="name">Sam</span>
+            <p>kinda not sus</p></li>
     </ul>
 </@base.document>

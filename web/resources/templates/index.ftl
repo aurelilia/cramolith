@@ -7,7 +7,7 @@
 <#-- @ftlvariable name="message" type="java.lang.String" -->
 <#import "base.ftl" as base>
 
-<@base.document title="Cramolith - Home">
+<@base.document title="Cramolith - Home" css="index">
     <h2>Welcome to Cramolith</h2>
     <h4>The game that doesn't really exist yet.</h4>
 <#--noinspection HtmlUnknownTarget-->

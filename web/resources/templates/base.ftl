@@ -4,14 +4,15 @@
   ~ This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
   -->
 
-<#macro document title>
+<#macro document title css>
     <!DOCTYPE html>
     <html lang="en">
 
     <head>
         <title>${title}</title>
         <meta charset="UTF-8">
-        <link href="/static/css/index.css" type="text/css" rel="stylesheet">
+        <link href="/static/css/base.css" type="text/css" rel="stylesheet">
+        <link href="/static/css/${css}.css" type="text/css" rel="stylesheet">
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
     </head>

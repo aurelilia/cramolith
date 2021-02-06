@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 5:48 PM.
+ * This file was last modified at 2/6/21, 2:11 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -17,12 +17,16 @@ import xyz.angm.cramolith.client.resources.I18N
 import xyz.angm.cramolith.common.yaml
 
 class Species(
-    var ident: String,
-    var type: Type,
-    var moves: IntMap<Move>
+    val ident: String,
+    val type: Type,
+    val moves: IntMap<Move>,
+    val hp: Int,
+    val attack: Int,
+    val defense: Int,
+    val speed: Int
 ) {
 
-    var name = I18N.tryGet(ident) ?: ident.capitalize()
+    val name = I18N.tryGet(ident) ?: ident.capitalize()
 
     companion object {
 
@@ -36,13 +40,20 @@ class Species(
         }
 
         @Serializable
-        private class Serialized(val type: Type, val moves: HashMap<Int, String>) {
+        private class Serialized(
+            val type: Type,
+            val moves: HashMap<Int, String>,
+            val hp: Int,
+            val attack: Int,
+            val defense: Int,
+            val speed: Int
+        ) {
             fun into(ident: String): Species {
                 val moves = IntMap<Move>(moves.size)
                 for (move in this.moves) {
                     moves.put(move.key, Move.of(move.value))
                 }
-                return Species(ident, type, moves)
+                return Species(ident, type, moves, hp, attack, defense, speed)
             }
         }
     }

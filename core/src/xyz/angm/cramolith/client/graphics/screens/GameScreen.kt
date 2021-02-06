@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 1:26 PM.
+ * This file was last modified at 2/6/21, 6:19 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -21,6 +21,7 @@ import xyz.angm.cramolith.client.actions.PlayerInputHandler
 import xyz.angm.cramolith.client.ecs.systems.RenderSystem
 import xyz.angm.cramolith.client.graphics.panels.menu.MessagePanel
 import xyz.angm.cramolith.client.graphics.windows.ChatWindow
+import xyz.angm.cramolith.client.graphics.windows.MenuWindow
 import xyz.angm.cramolith.client.networking.Client
 import xyz.angm.cramolith.client.resources.I18N
 import xyz.angm.cramolith.common.ecs.components.IgnoreSyncFlag
@@ -146,9 +147,9 @@ class GameScreen(
 
     // Initialize everything not render-related
     private fun initState(messages: Array<String>) {
-        // Chat
-        val chat = ChatWindow(this, messages)
-        activeWindows["chat"] = chat
+        // Windows
+        toggleWindow("menu") { MenuWindow(it) }
+        activeWindows["chat"] = ChatWindow(this, messages)
 
         // Network
         client.disconnectListener = { Cramolith.postRunnable { returnToMenu(I18N["disconnected-from-server"]) } }

@@ -1,6 +1,6 @@
 keybinds:
   bindings:
-    "0": "debugInfo"
+    "0": "debug"
     "Escape": "pauseMenu"
     "A": "walkLeft"
     "S": "walkBackward"

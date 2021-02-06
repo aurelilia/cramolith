@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/6/21, 11:53 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -9,11 +9,10 @@ package xyz.angm.cramolith.client.graphics.windows
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.kotcrab.vis.ui.widget.VisWindow
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.common.ecs.position
 
-class DebugWindow(private val screen: GameScreen) : VisWindow("Debug") {
+class DebugWindow(private val screen: GameScreen) : Window("debug") {
 
     private val text = Label("", skin)
 

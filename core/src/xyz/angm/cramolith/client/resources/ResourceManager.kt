@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/6/21, 11:08 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -10,6 +10,7 @@ package xyz.angm.cramolith.client.resources
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
 import xyz.angm.cramolith.client.graphics.Skin
+import xyz.angm.cramolith.common.pokemon.Species
 
 /** Object for retrieving resources. */
 object ResourceManager {
@@ -38,6 +39,10 @@ object ResourceManager {
 
     private fun loadGameAssets() {
         load<Texture>("sprites/player.png")
+        for (mon in Species.all()) {
+            load<Texture>("sprites/pokemon/${mon.ident}.png")
+            load<Texture>("sprites/pokemon/icon/${mon.ident}.png")
+        }
     }
 
     private fun loadMenuAssets() {

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/6/21, 6:21 PM.
+ * This file was last modified at 2/6/21, 10:25 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -13,6 +13,8 @@ import xyz.angm.cramolith.client.graphics.panels.game.PausePanel
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.client.graphics.windows.DebugWindow
 import xyz.angm.cramolith.client.graphics.windows.OnlinePlayersWindow
+import xyz.angm.cramolith.client.graphics.windows.PartyWindow
+import xyz.angm.cramolith.client.graphics.windows.Window
 import xyz.angm.cramolith.common.ecs.velocity
 
 /** An action represents a function to be executed when the player presses a key.
@@ -37,13 +39,17 @@ object PlayerActions {
 
         fun add(name: String, down: (GameScreen) -> Unit) = add(name, down, {})
 
+        fun window(ident: String, init: (GameScreen) -> Window) = add(ident) { it.toggleWindow(ident, init) }
+
         add("walkForward", { it.player[velocity].y++ }, { it.player[velocity].y-- })
         add("walkBackward", { it.player[velocity].y-- }, { it.player[velocity].y++ })
         add("walkRight", { it.player[velocity].x++ }, { it.player[velocity].x-- })
         add("walkLeft", { it.player[velocity].x-- }, { it.player[velocity].x++ })
-        add("onlinePlayers") { it.toggleWindow("onlinePlayers") { OnlinePlayersWindow(it) } }
-        add("chat") { it.toggleWindow("chat") { throw UnsupportedOperationException() } }
-        add("debugInfo") { it.toggleWindow("debug") { DebugWindow(it) } }
+
+        window("onlinePlayers") { OnlinePlayersWindow(it) }
+        window("chat") { throw UnsupportedOperationException() }
+        window("debug") { DebugWindow(it) }
+        window("party") { PartyWindow(it) }
 
         add("pauseMenu") {
             if (it.panels.isEmpty) it.pushPanel(PausePanel(it))

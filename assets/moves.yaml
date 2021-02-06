@@ -1,0 +1,9 @@
+quickattack:
+  damage: 40
+  accuracy: 100
+  type: Normal
+
+thundershock:
+  damage: 40
+  accuracy: 40
+  type: Electric

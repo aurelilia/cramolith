@@ -47,22 +47,22 @@ main {
 .navtop{
     background-color: #333;
     width: 100%;
-}
-
-.navtop a {
-    float: left;
-    color: #f2f2f2;
     text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
     font-size: 17px;
 }
+
+a {
+    float: left;
+    text-decoration: none;
+    padding: 14px 16px;
+    color: #f2f2f2;
+}
 /*not working*/
-.navtop:hover{
+a:hover{
     color: red;
 }
 /*not working*/
-.navtop a .active{
+.active{
     color: gold;
 }
 

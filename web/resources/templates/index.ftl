@@ -20,6 +20,6 @@
     </section>
         <h2>Welcome to Cramolith</h2>
         <h4>The game that doesn't really exist yet.</h4>
-        <#--noinspection HtmlUnknownTarget-->
+<#--noinspection HtmlUnknownTarget-->
         <#if message != ""><p>${message}</p></#if>
 </@base.document>

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/6/21, 8:09 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -9,13 +9,10 @@ package xyz.angm.cramolith.client.graphics.panels.menu.options
 
 import ktx.actors.onChange
 import ktx.actors.onClick
-import ktx.actors.onKey
 import ktx.actors.plusAssign
 import ktx.scene2d.scene2d
-import ktx.scene2d.vis.visLabel
 import ktx.scene2d.vis.visSelectBoxOf
 import ktx.scene2d.vis.visTable
-import ktx.scene2d.vis.visTextField
 import xyz.angm.cramolith.client.graphics.Skin
 import xyz.angm.cramolith.client.graphics.panels.Panel
 import xyz.angm.cramolith.client.graphics.panels.menu.MainMenuPanel
@@ -51,15 +48,6 @@ class OptionsPanel(screen: Screen, parent: MainMenuPanel? = null) : Panel(screen
             visTextButton(I18N["options.controls"]) {
                 it.height(Skin.textButtonHeight).width(Skin.textButtonWidth).pad(20f).colspan(2).row()
                 onClick { screen.pushPanel(ControlsPanel(screen)) }
-            }
-
-            visLabel(I18N["options.playername"]) {
-                it.pad(10f)
-            }
-
-            visTextField(configuration.playerName) {
-                it.width(400f).pad(20f).row()
-                onKey { configuration.playerName = text }
             }
 
             visTextButton(I18N["back"]) {

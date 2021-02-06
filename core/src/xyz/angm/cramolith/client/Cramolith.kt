@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 1:26 PM.
+ * This file was last modified at 2/5/21, 10:16 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -11,6 +11,7 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.kotcrab.vis.ui.VisUI
 import ktx.collections.*
+import xyz.angm.cramolith.client.graphics.panels.menu.MessagePanel
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.client.graphics.screens.MenuScreen
 import xyz.angm.cramolith.client.networking.Client
@@ -18,6 +19,7 @@ import xyz.angm.cramolith.client.resources.configuration
 import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.networking.InitPacket
 import xyz.angm.cramolith.common.networking.JoinPacket
+import xyz.angm.cramolith.common.networking.LoginRejectedPacket
 import kotlin.system.exitProcess
 
 /** The game itself. Only sets the screen, everything else is handled per-screen. */
@@ -29,12 +31,21 @@ class Cramolith : Game() {
         setScreen(MenuScreen(this))
     }
 
-    fun connectToServer() {
+    fun connectToServer(user: String, password: String) {
         val client = Client()
-        client.addListener {
-            Gdx.app.postRunnable { startGame(client, it as? InitPacket ?: return@postRunnable) }
+        client.addListener { packet ->
+            when (packet) {
+                is InitPacket -> Gdx.app.postRunnable { startGame(client, packet) }
+                is LoginRejectedPacket -> {
+                    client.close()
+                    val screen = (screen as MenuScreen)
+                    screen.popPanel()
+                    screen.pushPanel(MessagePanel(screen, packet.reason) { screen.popPanel() })
+                }
+            }
         }
-        client.send(JoinPacket(configuration.playerName, configuration.clientUUID))
+        configuration.playerName = user
+        client.send(JoinPacket(user, password))
     }
 
     private fun startGame(client: Client, data: InitPacket) {

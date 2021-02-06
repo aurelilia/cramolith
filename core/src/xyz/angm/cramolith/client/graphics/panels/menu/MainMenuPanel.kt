@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/5/21, 11:35 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -32,7 +32,7 @@ class MainMenuPanel(screen: MenuScreen) : Panel(screen) {
 
             visTextButton(I18N["main.start"]) {
                 it.height(Skin.textButtonHeight).width(Skin.textButtonWidth).pad(20f).row()
-                onClick { screen.connectToServer() }
+                onClick { screen.pushPanel(LoginPanel(screen)) }
             }
             visTextButton(I18N["main.options"]) {
                 it.height(Skin.textButtonHeight).width(Skin.textButtonWidth).pad(20f).row()

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 4:10 PM.
+ * This file was last modified at 2/5/21, 10:30 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -15,9 +15,9 @@ import java.io.Serializable
 interface Packet : Serializable
 
 /** Sent when the client joins the server.
- * @property uuid The UUID of the client connecting.
- * @property name The name of the client. Only used if the client is connecting for the first time. */
-class JoinPacket(val name: String = "Player", val uuid: Int = 0) : Packet
+ * @property user The user name.
+ * @property password Password of the user. */
+class JoinPacket(val user: String = "", val password: String = "") : Packet
 
 
 /** A packet sent on first connect as a response to [JoinPacket].
@@ -27,6 +27,12 @@ class InitPacket(
     val entities: Array<Entity> = emptyArray(),
     val globalChatMessages: Array<String> = emptyArray()
 ) : Packet
+
+
+/** Packet sent as response to am invalid login request.
+ * Reason can be invalid user or wrong password.
+ * @property reason Rejection reason as an I18N identifier. */
+class LoginRejectedPacket(val reason: String = "") : Packet
 
 
 /** Contains a chat message. Client sends it to server; server sends it to appropriate clients.

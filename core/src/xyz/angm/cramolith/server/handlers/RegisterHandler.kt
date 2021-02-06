@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 1:26 PM.
+ * This file was last modified at 2/5/21, 11:34 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -18,10 +18,12 @@ import xyz.angm.cramolith.common.ecs.components.specific.PlayerComponent
 import xyz.angm.cramolith.common.ecs.network
 import xyz.angm.cramolith.common.networking.InitPacket
 import xyz.angm.cramolith.common.networking.JoinPacket
+import xyz.angm.cramolith.common.networking.LoginRejectedPacket
 import xyz.angm.cramolith.server.Connection
 import xyz.angm.cramolith.server.Server
 import xyz.angm.cramolith.server.database.DB
 import xyz.angm.cramolith.server.database.Player
+import xyz.angm.cramolith.server.database.Players
 import xyz.angm.cramolith.server.database.Posts
 import xyz.angm.rox.Engine
 import xyz.angm.rox.Entity
@@ -29,22 +31,30 @@ import xyz.angm.rox.Entity
 internal fun Server.handleJoinPacket(connection: Connection, packet: JoinPacket) {
     var globalMessages = emptyArray<String>()
     val dbEntry = DB.transaction {
+        val player = Player.find { Players.name eq packet.user }.firstOrNull()
+
         val list = Posts.selectAll().orderBy(Posts.id, SortOrder.DESC).limit(25).toMutableList()
         list.reverse()
         globalMessages = list.stream().map { it[Posts.text] }.toArray { arrayOfNulls(it) }
 
-        Player.findById(packet.uuid) ?: Player.new {
-            name = packet.name
-        }
+        player
     }
 
-    engine {
+    val error = when {
+        dbEntry == null -> "login.unknown-user"
+        packet.password != dbEntry.password -> "login.wrong-password"
+        else -> null
+    }
+    if (error == null) engine {
         val entities = this[networkedFamily].toArray(Entity::class)
-        val playerEntity = createPlayerEntity(this, dbEntry)
-        players[packet.uuid] = Server.OnlinePlayer(connection, playerEntity)
+        val playerEntity = createPlayerEntity(this, dbEntry!!)
+        players[dbEntry.id.value] = Server.OnlinePlayer(connection, playerEntity)
 
         send(connection, InitPacket(playerEntity, entities, globalMessages))
         playerEntity[network].needsSync = true // Ensure player gets synced
+    } else {
+        send(connection, LoginRejectedPacket(error))
+        connection.channel.close()
     }
 }
 

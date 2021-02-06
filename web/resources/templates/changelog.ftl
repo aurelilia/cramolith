@@ -17,4 +17,7 @@
         <#--noinspection HtmlUnknownTarget-->
         <a href="/about_us">About us</a>
     </section>
+    <ul>
+        <li><span class="date">02/06/2021</span><p>No game so nothing changed</p></li>
+    </ul>
 </@base.document>

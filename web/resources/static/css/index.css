@@ -66,3 +66,20 @@ a:hover{
     color: gold;
 }
 
+ul{
+    width: 100%;
+    text-align: left;
+    float: left;
+}
+
+span.name{
+    font-weight: bold;
+}
+
+span.date{
+    font-weight: bold;
+}
+a.link{
+    padding: 0;
+    color: black;
+}

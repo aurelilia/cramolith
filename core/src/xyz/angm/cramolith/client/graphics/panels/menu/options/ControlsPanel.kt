@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/6/21, 8:10 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -33,11 +33,6 @@ class ControlsPanel(private var screen: Screen) : Panel(screen) {
 
     init {
         this += scene2d.visTable {
-            visTextButton(I18N["back"]) {
-                it.height(Skin.textButtonHeight).width(Skin.textButtonWidth).pad(20f).colspan(2)
-                onClick { screen.popPanel() }
-            }
-
             focusedActor = scrollPane {
                 table = visTable {}
 
@@ -55,9 +50,10 @@ class ControlsPanel(private var screen: Screen) : Panel(screen) {
                     }
                 }
 
-                it.colspan(4).pad(50f, 0f, 50f, 0f).expand().row()
+                it.pad(50f, 0f, 50f, 0f).expand().row()
             }
 
+            backButton(screen)
             setFillParent(true)
         }
         clearListeners()

@@ -7,16 +7,6 @@
 
 <#import "base.ftl" as base>
 <@base.document title="Cramolith - Changelog">
-    <section class="navtop">
-        <#--noinspection HtmlUnknownTarget-->
-        <a href="/">Home</a>
-        <#--noinspection HtmlUnknownTarget-->
-        <a href="/register">Register</a>
-        <#--noinspection HtmlUnknownTarget-->
-        <a class="active" href="/changelog">Changelog</a>
-        <#--noinspection HtmlUnknownTarget-->
-        <a href="/about_us">About us</a>
-    </section>
     <ul>
         <li><span class="date">02/06/2021</span><p>No game so nothing changed</p></li>
     </ul>

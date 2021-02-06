@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 11:24 PM.
+ * This file was last modified at 2/6/21, 6:03 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -16,8 +16,7 @@ body {
     margin: 0;
 }
 
-header{
-    font-family: 'Montserrat', sans-serif;
+header {
     font-weight: 300;
     text-align: center;
 }
@@ -44,9 +43,10 @@ main {
     margin-bottom: 10px;
 }
 
-.navtop{
+nav {
     background-color: #333;
     width: 100%;
+    overflow: auto;
     text-align: center;
     font-size: 17px;
 }
@@ -57,29 +57,26 @@ a {
     padding: 14px 16px;
     color: #f2f2f2;
 }
-/*not working*/
-a:hover{
+
+a:hover {
     color: red;
 }
-/*not working*/
-.active{
-    color: gold;
-}
 
-ul{
+ul {
     width: 100%;
     text-align: left;
     float: left;
 }
 
-span.name{
+span.name {
     font-weight: bold;
 }
 
-span.date{
+span.date {
     font-weight: bold;
 }
-a.link{
+
+a.link {
     padding: 0;
     color: black;
 }

@@ -18,7 +18,17 @@
 
     <body>
     <header>
-        <h1 class="logo">Cramolith</h1>
+        <h1 class="logo">${title}</h1>
+        <nav>
+            <#--noinspection HtmlUnknownTarget-->
+            <a href="/">Home</a>
+            <#--noinspection HtmlUnknownTarget-->
+            <a href="/register">Register</a>
+            <#--noinspection HtmlUnknownTarget-->
+            <a href="/changelog">Changelog</a>
+            <#--noinspection HtmlUnknownTarget-->
+            <a href="/about_us">About us</a>
+        </nav>
     </header>
     <main>
         <#nested>

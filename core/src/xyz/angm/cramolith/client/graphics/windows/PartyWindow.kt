@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/6/21, 11:51 PM.
+ * This file was last modified at 2/7/21, 1:08 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -9,6 +9,7 @@ package xyz.angm.cramolith.client.graphics.windows
 
 import com.badlogic.gdx.utils.Scaling
 import com.kotcrab.vis.ui.widget.VisTable
+import ktx.actors.onClick
 import ktx.scene2d.button
 import ktx.scene2d.scene2d
 import ktx.scene2d.scrollPane
@@ -25,6 +26,7 @@ class PartyWindow(private val screen: GameScreen) : Window("party") {
     private lateinit var table: VisTable
 
     init {
+        addCloseButton()
         reload()
         add(scene2d.scrollPane { actor = table })
         pack()
@@ -33,7 +35,6 @@ class PartyWindow(private val screen: GameScreen) : Window("party") {
     private fun reload() {
         table = scene2d.visTable {
             for (pokemon in screen.player[playerM].pokemon) {
-                println(pokemon)
                 val button = scene2d.button("list") {
                     isDisabled = true
                     left().pad(5f).click()
@@ -45,6 +46,8 @@ class PartyWindow(private val screen: GameScreen) : Window("party") {
                     visLabel(pokemon.displayName) { it.expandX().fillX().padRight(30f) }
                     visLabel("${I18N["party.level"]} ${pokemon.level}")
                     pack()
+
+                    onClick { stage.addActor(PokemonSummaryWindow(screen, pokemon)) }
                 }
                 add(button).expandX().fillX().row()
             }

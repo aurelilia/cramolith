@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/6/21, 11:53 PM.
+ * This file was last modified at 2/7/21, 1:01 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -22,15 +22,15 @@ class MenuWindow(screen: GameScreen) : Window("menu") {
 
     init {
         fun addButton(name: String, action: String) {
-            val btn = VisTextButton(name.substring(0, 1).toUpperCase())
-            btn.onClick { PlayerActions[action]?.keyDown?.invoke(screen) }
+            val btn = VisTextButton(action.substring(0, 1).toUpperCase())
+            btn.onClick { PlayerActions[action]!!.keyDown(screen) }
             btn.visTooltip(scene2d.visLabel(I18N["window.$name"]))
             add(btn).left().pad(5f)
         }
 
         addButton("chat", "chat")
         addButton("players-online", "onlinePlayers")
-        addButton("debug", "debugInfo")
+        addButton("debug", "debug")
         addButton("party", "party")
         addButton("pause", "pauseMenu")
         pack()

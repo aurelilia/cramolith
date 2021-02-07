@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/7/21, 9:32 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -17,6 +17,7 @@ import xyz.angm.cramolith.common.ecs.renderable
 import xyz.angm.cramolith.common.networking.ChatMessagePacket
 import xyz.angm.cramolith.common.networking.InitPacket
 import xyz.angm.cramolith.common.networking.JoinPacket
+import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.rox.Component
 import xyz.angm.rox.Entity
 import xyz.angm.rox.FSTEntitySerializer
@@ -37,7 +38,7 @@ val fst = createFST(
     RemoveFlag::class, NetworkSyncComponent::class,
 
     // Various
-    Vector2::class, Entity::class
+    Vector2::class, Entity::class, ArrayList::class, Pokemon::class,
 )
 
 private fun createFST(vararg classes: KClass<out Any>): FSTConfiguration {

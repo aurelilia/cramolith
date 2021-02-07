@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 3:47 AM.
+ * This file was last modified at 2/7/21, 9:20 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -68,8 +68,8 @@ fun createPlayerEntity(engine: Engine, dbEntry: Player) =
         with<PlayerComponent> {
             name = dbEntry.name
             clientUUID = dbEntry.id.value
-            pokemon.add(Pokemon("pikachu", "Test Subject", 20, 64))
-            pokemon.add(Pokemon("pikachu", "pika!", 10, 30))
+            pokemon.add(Pokemon("pikachu", "Test Subject", 20, 64, arrayListOf("thundershock")))
+            pokemon.add(Pokemon("pikachu", "pika!", 10, 30, arrayListOf("quickattack", "thundershock")))
         }
         with<PositionComponent> { set(defaultSpawnLocation) }
         with<VelocityComponent>()

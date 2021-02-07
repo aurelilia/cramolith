@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 3:52 AM.
+ * This file was last modified at 2/7/21, 9:49 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -40,16 +40,19 @@ class PokemonSummaryWindow(pokemon: Pokemon) : Window("summary") {
             visLabel("${I18N["pokemon.attack"]}: ${pokemon.attack}") { it.expandX().fillX().row() }
             visLabel("${I18N["pokemon.defense"]}: ${pokemon.defense}") { it.expandX().fillX().row() }
             visLabel("${I18N["pokemon.speed"]}: ${pokemon.speed}") { it.expandX().fillX().row() }
+
+            visLabel(I18N["pokemon.moves"]) { it.expandX().fillX().padTop(10f).row() }
             for (move in pokemon.moveIdents) {
                 val move = Move.of(move)
                 visLabel(move.name) {
+                    color = move.type.color
                     visTooltip(scene2d.visTable {
-                        visLabel("type.${pokemon.species.type}") {
-                            color = pokemon.species.type.color
-                            it.row()
+                        visLabel(I18N["type.${pokemon.species.type}"]) {
+                            color = move.type.color
+                            it.expandX().fillX().row()
                         }
-                        visLabel(move.damage.toString())
-                        visLabel(move.accuracy.toString())
+                        visLabel("${I18N["pokemon.move.damage"]}: ${move.damage}") { it.expandX().fillX().row() }
+                        visLabel("${I18N["pokemon.move.accuracy"]}: ${move.accuracy}") { it.expandX().fillX().row() }
                     })
                     it.expandX().fillX().row()
                 }

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/6/21, 11:53 PM.
+ * This file was last modified at 2/7/21, 9:23 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -28,7 +28,7 @@ class Species(
     val speed: Int
 ) {
 
-    val name = I18N.tryGet(ident) ?: ident.capitalize()
+    val name = I18N.tryGet("species.$ident") ?: ident.capitalize()
     val sprite get() = ResourceManager.get<Texture>("sprites/pokemon/$ident.png")
     val icon get() = ResourceManager.get<Texture>("sprites/pokemon/icon/$ident.png")
 

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 2:23 AM.
+ * This file was last modified at 2/7/21, 3:09 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -108,8 +108,8 @@ class GameScreen(
         when {
             window == null -> {
                 val new = create(this)
-                stage.addActor(new.fadeIn())
                 new.centerWindow()
+                stage.addActor(new.fadeIn())
                 activeWindows[name] = new
             }
             window.stage == stage -> window.fadeOut()

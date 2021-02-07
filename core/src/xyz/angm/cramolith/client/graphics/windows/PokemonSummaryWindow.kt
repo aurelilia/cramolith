@@ -55,8 +55,8 @@ class PokemonSummaryWindow(pokemon: Pokemon) : Window("summary") {
                 }
             }
             pack()
+            pad(15f)
         })
-        pad(15f)
         pack()
         isResizable = true
     }

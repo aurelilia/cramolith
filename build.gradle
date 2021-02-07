@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/7/21, 9:40 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -129,7 +129,7 @@ project(":core") {
         api "io.github.libktx:ktx-scene2d:$ktxVersion"
         api "io.github.libktx:ktx-vis-style:$ktxVersion"
         api "io.github.libktx:ktx-vis:$ktxVersion"
-        api "com.kotcrab.vis:vis-ui:1.4.8"
+        api "com.kotcrab.vis:vis-ui:1.4.10"
 
         api "de.ruedigermoeller:fst:2.56"
         api "io.netty:netty-all:4.1.36.Final"

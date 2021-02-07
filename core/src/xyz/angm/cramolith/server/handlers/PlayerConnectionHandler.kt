@@ -1,21 +1,23 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 9:20 PM.
+ * This file was last modified at 2/7/21, 10:37 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
 
 package xyz.angm.cramolith.server.handlers
 
-import com.badlogic.gdx.math.Vector2
 import ktx.collections.*
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.selectAll
 import xyz.angm.cramolith.common.ecs.components.NetworkSyncComponent
 import xyz.angm.cramolith.common.ecs.components.PositionComponent
+import xyz.angm.cramolith.common.ecs.components.RemoveFlag
 import xyz.angm.cramolith.common.ecs.components.VelocityComponent
 import xyz.angm.cramolith.common.ecs.components.specific.PlayerComponent
 import xyz.angm.cramolith.common.ecs.network
+import xyz.angm.cramolith.common.ecs.playerM
+import xyz.angm.cramolith.common.ecs.position
 import xyz.angm.cramolith.common.networking.InitPacket
 import xyz.angm.cramolith.common.networking.JoinPacket
 import xyz.angm.cramolith.common.networking.LoginRejectedPacket
@@ -59,9 +61,6 @@ internal fun Server.handleJoinPacket(connection: Connection, packet: JoinPacket)
     }
 }
 
-/** The default player spawn location. */
-private val defaultSpawnLocation = Vector2(100f, 100f)
-
 /** Create a new player entity. */
 fun createPlayerEntity(engine: Engine, dbEntry: Player) =
     engine.entity {
@@ -71,7 +70,20 @@ fun createPlayerEntity(engine: Engine, dbEntry: Player) =
             pokemon.add(Pokemon("pikachu", "Test Subject", 20, 64, arrayListOf("thundershock")))
             pokemon.add(Pokemon("pikachu", "pika!", 10, 30, arrayListOf("quickattack", "thundershock")))
         }
-        with<PositionComponent> { set(defaultSpawnLocation) }
+        with<PositionComponent> { set(dbEntry.posX.toFloat(), dbEntry.posY.toFloat()) }
         with<VelocityComponent>()
         with<NetworkSyncComponent>()
     }
+
+internal fun Server.handleDisconnect(connection: Connection) {
+    val player = players.find { it.value.conn.id == connection.id } ?: return
+    engine { RemoveFlag.flag(this, player.value.entity) }
+
+    val playerC = player.value.entity[playerM]
+    val posC = player.value.entity[position]
+    DB.transaction {
+        val db = Player.findById(playerC.clientUUID) ?: return@transaction
+        db.posX = posC.x.toInt()
+        db.posY = posC.y.toInt()
+    }
+}

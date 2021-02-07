@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/6/21, 2:08 AM.
+ * This file was last modified at 2/7/21, 10:36 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -14,7 +14,9 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 
 object Players : IntIdTable() {
     val name = varchar("name", 20)
-    val password = varchar("password",50)
+    val password = varchar("password", 50)
+    val posX = integer("posX")
+    val posY = integer("posY")
 }
 
 class Player(id: EntityID<Int>) : IntEntity(id) {
@@ -22,6 +24,8 @@ class Player(id: EntityID<Int>) : IntEntity(id) {
 
     var name by Players.name
     var password by Players.password
+    var posX by Players.posX
+    var posY by Players.posY
     val pokemon by Pokemon referrersOn Pokemons.owner
 }
 

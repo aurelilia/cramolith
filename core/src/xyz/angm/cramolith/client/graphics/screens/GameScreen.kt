@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 3:09 AM.
+ * This file was last modified at 2/7/21, 3:33 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -18,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import xyz.angm.cramolith.client.Cramolith
 import xyz.angm.cramolith.client.actions.PlayerInputHandler
+import xyz.angm.cramolith.client.ecs.PlayerMapper
 import xyz.angm.cramolith.client.ecs.systems.RenderSystem
 import xyz.angm.cramolith.client.graphics.panels.menu.MessagePanel
 import xyz.angm.cramolith.client.graphics.windows.ChatWindow
@@ -65,7 +66,8 @@ class GameScreen(
     // Entities
     val engine = Engine()
     private val inputHandler = PlayerInputHandler(this)
-    private val players = allOf(playerM)
+    val players = PlayerMapper()
+    private val playersFamily = allOf(playerM)
 
     // 2D Graphics
     val stage = Stage(ScreenViewport())
@@ -73,7 +75,7 @@ class GameScreen(
 
     val entitiesLoaded get() = engine.entities.size
     val systemsActive get() = engine.systems.size
-    val onlinePlayers get() = engine[players]
+    val onlinePlayers get() = engine[playersFamily]
 
     init {
         initSystems()
@@ -144,6 +146,7 @@ class GameScreen(
 
         add(VelocitySystem())
         add(RemoveSystem())
+        add(players)
     }
 
     // Initialize everything not render-related

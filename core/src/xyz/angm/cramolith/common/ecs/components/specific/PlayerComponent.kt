@@ -1,12 +1,13 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/6/21, 11:53 PM.
+ * This file was last modified at 2/7/21, 3:30 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
 
 package xyz.angm.cramolith.common.ecs.components.specific
 
+import xyz.angm.cramolith.common.pokemon.Battle
 import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.rox.Component
 
@@ -19,4 +20,5 @@ class PlayerComponent : Component {
     lateinit var name: String
     var clientUUID = 0
     val pokemon = ArrayList<Pokemon>()
+    var battle: Battle? = null
 }

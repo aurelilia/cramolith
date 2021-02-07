@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/6/21, 1:46 AM.
+ * This file was last modified at 2/7/21, 1:53 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -28,7 +28,7 @@ class LoginPanel(private val screen: MenuScreen) : Panel(screen) {
     private val password: TextField
 
     init {
-        focusedActor = scene2d.visTable {
+        this += scene2d.visTable {
             visLabel(I18N["login.login"]) { it.pad(20f).row() }
 
             onKeyDown { keycode ->
@@ -38,6 +38,7 @@ class LoginPanel(private val screen: MenuScreen) : Panel(screen) {
             }
 
             user = textField { it.width(400f).pad(20f).padBottom(40f).row() }
+            focusedActor = user
             password = textField {
                 it.width(400f).pad(20f).padBottom(40f).row()
                 isPasswordMode = true
@@ -52,7 +53,6 @@ class LoginPanel(private val screen: MenuScreen) : Panel(screen) {
 
             setFillParent(true)
         }
-        this += focusedActor
     }
 
     private fun start() {

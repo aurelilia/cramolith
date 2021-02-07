@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 4:47 PM.
+ * This file was last modified at 2/6/21, 11:53 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.kotcrab.vis.ui.util.dialog.Dialogs
 import com.kotcrab.vis.ui.widget.VisLabel
 import com.kotcrab.vis.ui.widget.VisTable
-import com.kotcrab.vis.ui.widget.VisWindow
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneAdapter
@@ -32,7 +31,7 @@ import xyz.angm.cramolith.common.networking.PrivateMessageRequest
 import xyz.angm.cramolith.common.networking.PrivateMessageResponse
 
 
-class ChatWindow(private val screen: GameScreen, initMsgs: Array<String>) : VisWindow(I18N["chat"]) {
+class ChatWindow(private val screen: GameScreen, initMsgs: Array<String>) : Window("chat") {
 
     private val pane = TabbedPane()
     private val container = VisTable()
@@ -65,15 +64,15 @@ class ChatWindow(private val screen: GameScreen, initMsgs: Array<String>) : VisW
         val firstTabTable = scene2d.visTable {
             val field = visTextField { it.padBottom(15f) }
             row()
-            visTextButton(I18N["add-chat"]) {
+            visTextButton(I18N["chat.new"]) {
                 onClick {
                     val sender = screen.onlinePlayers.find { it[playerM].name == field.text }?.get(playerM)
-                    if (sender == null) Dialogs.showErrorDialog(stage, I18N["unknown-user"])
+                    if (sender == null) Dialogs.showErrorDialog(stage, I18N["chat.unknown-user"])
                     else chats[sender.name] ?: createTab(sender.name, sender.clientUUID)
                 }
             }
         }
-        val firstTab = ChatTab(I18N["new-chat"], firstTabTable, false)
+        val firstTab = ChatTab(I18N["chat.new"], firstTabTable, false)
         pane.add(firstTab)
 
         val global = createTab("Global", 0)

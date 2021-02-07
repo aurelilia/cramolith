@@ -1,20 +1,24 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/6/21, 2:57 AM.
+ * This file was last modified at 2/6/21, 11:28 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
 
 package xyz.angm.cramolith.common.pokemon
 
+import java.io.Serializable
+
 class Pokemon(
-    val species: Species,
+    private val speciesIdent: String,
     var nickname: String?,
     var level: Int,
     var exp: Int,
-    val moves: Array<Move>
-) {
+    private val moveIdents: ArrayList<String> = ArrayList(),
+) : Serializable {
+    val species get() = Species.of(speciesIdent)
     val displayName get() = nickname ?: species.name
+
     val hp get() = hpFormula(species.hp, level)
     val attack get() = otherFormula(species.attack, level)
     val defense get() = otherFormula(species.defense, level)

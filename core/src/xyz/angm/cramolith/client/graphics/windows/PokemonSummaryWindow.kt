@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 9:49 PM.
+ * This file was last modified at 2/7/21, 10:40 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -47,7 +47,7 @@ class PokemonSummaryWindow(pokemon: Pokemon) : Window("summary") {
                 visLabel(move.name) {
                     color = move.type.color
                     visTooltip(scene2d.visTable {
-                        visLabel(I18N["type.${pokemon.species.type}"]) {
+                        visLabel(I18N["type.${move.type}"]) {
                             color = move.type.color
                             it.expandX().fillX().row()
                         }

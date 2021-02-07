@@ -14,10 +14,11 @@ class Pokemon(
     var nickname: String?,
     var level: Int,
     var exp: Int,
-    private val moveIdents: ArrayList<String> = ArrayList(),
+    val moveIdents: ArrayList<String> = ArrayList(),
 ) : Serializable {
     val species get() = Species.of(speciesIdent)
     val displayName get() = nickname ?: species.name
+    val expLeft get() = (level * level * level) - exp
 
     val hp get() = hpFormula(species.hp, level)
     val attack get() = otherFormula(species.attack, level)

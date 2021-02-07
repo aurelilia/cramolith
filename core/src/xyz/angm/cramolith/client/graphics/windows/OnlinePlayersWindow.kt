@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/6/21, 11:53 PM.
+ * This file was last modified at 2/7/21, 1:54 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -19,10 +19,13 @@ class OnlinePlayersWindow(private val screen: GameScreen) : Window("players-onli
 
     init {
         addCloseButton()
-        add(scene2d.scrollPane { actor = onlinePlayers })
+        add(scene2d.scrollPane { actor = onlinePlayers }).pad(5f)
+        act(0f)
+        pack()
     }
 
     override fun act(delta: Float) {
+        super.act(delta)
         val s = StringBuilder()
         screen.onlinePlayers.forEach { s.append("\n${it[playerM].name}") }
         onlinePlayers.setText(s)

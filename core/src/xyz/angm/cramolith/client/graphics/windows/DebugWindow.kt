@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/6/21, 11:53 PM.
+ * This file was last modified at 2/7/21, 1:54 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -19,9 +19,12 @@ class DebugWindow(private val screen: GameScreen) : Window("debug") {
     init {
         addCloseButton()
         add(text)
+        act(0f)
+        pack()
     }
 
     override fun act(delta: Float) {
+        super.act(delta)
         val txt = """
         FPS: ${Gdx.graphics.framesPerSecond}
         Time since last frame: ${(Gdx.graphics.deltaTime * 1000).format(1)}ms

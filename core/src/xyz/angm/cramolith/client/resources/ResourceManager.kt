@@ -1,14 +1,17 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/6/21, 11:08 PM.
+ * This file was last modified at 2/7/21, 10:36 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
 
 package xyz.angm.cramolith.client.resources
 
+import com.badlogic.gdx.assets.AssetDescriptor
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Texture
+import ktx.assets.file
 import xyz.angm.cramolith.client.graphics.Skin
 import xyz.angm.cramolith.common.pokemon.Species
 
@@ -27,6 +30,7 @@ object ResourceManager {
     fun <T> get(file: String): T = assets.get(file)
 
     private inline fun <reified T : Any> load(file: String) = assets.load(file, T::class.java)
+    private inline fun <reified T : Any> load(file: FileHandle) = assets.load(AssetDescriptor(file, T::class.java))
 
     /** Continues loading game assets. Returns loading progress as a float with value range 0-1. 1 means loading is finished.
      * @param processingTime How long to process, in milliseconds. */
@@ -43,6 +47,7 @@ object ResourceManager {
             load<Texture>("sprites/pokemon/${mon.ident}.png")
             load<Texture>("sprites/pokemon/icon/${mon.ident}.png")
         }
+        file("map/").list(".png").forEach { load<Texture>(it) }
     }
 
     private fun loadMenuAssets() {

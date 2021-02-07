@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 3:30 AM.
+ * This file was last modified at 2/7/21, 3:47 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -19,8 +19,6 @@ import xyz.angm.cramolith.common.ecs.network
 import xyz.angm.cramolith.common.networking.InitPacket
 import xyz.angm.cramolith.common.networking.JoinPacket
 import xyz.angm.cramolith.common.networking.LoginRejectedPacket
-import xyz.angm.cramolith.common.pokemon.Battle
-import xyz.angm.cramolith.common.pokemon.BattleSide
 import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.cramolith.server.Connection
 import xyz.angm.cramolith.server.Server
@@ -72,10 +70,6 @@ fun createPlayerEntity(engine: Engine, dbEntry: Player) =
             clientUUID = dbEntry.id.value
             pokemon.add(Pokemon("pikachu", "Test Subject", 20, 64))
             pokemon.add(Pokemon("pikachu", "pika!", 10, 30))
-            battle = Battle(
-                BattleSide(dbEntry.id.value, 0),
-                BattleSide(dbEntry.id.value, 1)
-            )
         }
         with<PositionComponent> { set(defaultSpawnLocation) }
         with<VelocityComponent>()

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 12:59 AM.
+ * This file was last modified at 2/7/21, 3:47 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -8,42 +8,56 @@
 package xyz.angm.cramolith.client.graphics.windows
 
 
-import ktx.actors.plusAssign
+import com.kotcrab.vis.ui.widget.VisImage
 import ktx.scene2d.scene2d
-import ktx.scene2d.vis.*
-import xyz.angm.cramolith.client.graphics.screens.GameScreen
+import ktx.scene2d.vis.visLabel
+import ktx.scene2d.vis.visTable
+import ktx.scene2d.vis.visTextTooltip
+import ktx.scene2d.vis.visTooltip
 import xyz.angm.cramolith.client.resources.I18N
 import xyz.angm.cramolith.common.pokemon.Move
 import xyz.angm.cramolith.common.pokemon.Pokemon
 
-class PokemonSummaryWindow(screen: GameScreen, pokemon: Pokemon) : Window("summary") {
+class PokemonSummaryWindow(pokemon: Pokemon) : Window("summary") {
 
     init {
         addCloseButton()
-        this += scene2d.visTable {
-            visImage(pokemon.species.sprite)
-            visTable{
-                visTable {
-                    it.expandX().fillX()
-                    visLabel(pokemon.displayName)
-                    visLabel("type.${pokemon.species.type}") {color = pokemon.species.type.color }
-                }.row()
+        add(VisImage(pokemon.species.sprite))
+        add(scene2d.visTable {
+            left()
+            visTable {
+                it.expandX().fillX()
+                visLabel(pokemon.displayName) { it.expandX().fillX().padRight(10f) }
+                visLabel("type.${pokemon.species.type}") { color = pokemon.species.type.color }
+            }
+            row()
 
-                visLabel("${I18N["pokemon.level"]}${pokemon.level}").visTextTooltip(visLabel(I18N["pokemon.expLeft"]).toString()).row()
-                visLabel("${I18N["pokemon.hp"]}${pokemon.hp}") {it.row() }
-                visLabel("${I18N["pokemon.attack"]}${pokemon.attack}") {it.row()}
-                visLabel("${I18N["pokemon.defense"]}${pokemon.defense}") {it.row()}
-                visLabel("${I18N["pokemon.speed"]}${pokemon.speed}") {it.row()}
-                for (move in pokemon.moveIdents){
-                    visLabel(Move.of(move).name).visTooltip(visTable {
-                        visLabel("type.${pokemon.species.type}") {color = pokemon.species.type.color; it.row()}
-                        visLabel(Move.of(move).damage.toString())
-                        visLabel(Move.of(move).accuracy.toString())
+            visLabel("${I18N["pokemon.level"]}: ${pokemon.level}") {
+                visTextTooltip(pokemon.expLeft.toString())
+                it.expandX().fillX().row()
+            }
+            visLabel("${I18N["pokemon.hp"]}: ${pokemon.hp}") { it.expandX().fillX().row() }
+            visLabel("${I18N["pokemon.attack"]}: ${pokemon.attack}") { it.expandX().fillX().row() }
+            visLabel("${I18N["pokemon.defense"]}: ${pokemon.defense}") { it.expandX().fillX().row() }
+            visLabel("${I18N["pokemon.speed"]}: ${pokemon.speed}") { it.expandX().fillX().row() }
+            for (move in pokemon.moveIdents) {
+                val move = Move.of(move)
+                visLabel(move.name) {
+                    visTooltip(scene2d.visTable {
+                        visLabel("type.${pokemon.species.type}") {
+                            color = pokemon.species.type.color
+                            it.row()
+                        }
+                        visLabel(move.damage.toString())
+                        visLabel(move.accuracy.toString())
                     })
+                    it.expandX().fillX().row()
                 }
-            }.row()
+            }
             pack()
-            setFillParent(true)
-        }
+        })
+        pad(15f)
+        pack()
+        isResizable = true
     }
 }

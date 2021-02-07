@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 1:08 AM.
+ * This file was last modified at 2/7/21, 3:46 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -47,7 +47,7 @@ class PartyWindow(private val screen: GameScreen) : Window("party") {
                     visLabel("${I18N["party.level"]} ${pokemon.level}")
                     pack()
 
-                    onClick { stage.addActor(PokemonSummaryWindow(screen, pokemon)) }
+                    onClick { stage.addActor(PokemonSummaryWindow(pokemon)) }
                 }
                 add(button).expandX().fillX().row()
             }

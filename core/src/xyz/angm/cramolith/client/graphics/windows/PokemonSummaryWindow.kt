@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 3:47 AM.
+ * This file was last modified at 2/7/21, 3:52 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -28,12 +28,12 @@ class PokemonSummaryWindow(pokemon: Pokemon) : Window("summary") {
             visTable {
                 it.expandX().fillX()
                 visLabel(pokemon.displayName) { it.expandX().fillX().padRight(10f) }
-                visLabel("type.${pokemon.species.type}") { color = pokemon.species.type.color }
+                visLabel(I18N["type.${pokemon.species.type}"]) { color = pokemon.species.type.color }
             }
             row()
 
             visLabel("${I18N["pokemon.level"]}: ${pokemon.level}") {
-                visTextTooltip(pokemon.expLeft.toString())
+                visTextTooltip("${I18N["pokemon.exp-left"]}: ${pokemon.expLeft}")
                 it.expandX().fillX().row()
             }
             visLabel("${I18N["pokemon.hp"]}: ${pokemon.hp}") { it.expandX().fillX().row() }

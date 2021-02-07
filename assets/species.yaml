@@ -2,8 +2,59 @@ pikachu:
   type: Electric
   moves:
     1: quickattack
-    2: thundershock
+    5: thundershock
   hp: 35
   attack: 55
   defense: 40
   speed: 90
+
+eevee:
+  type: Normal
+  moves:
+    1: tackle
+    5: quickattack
+  hp: 55
+  attack: 55
+  defense: 50
+  speed: 55
+
+machop:
+  type: Fighting
+  moves:
+    1: lowsweep
+    5: vitalthrow
+  hp: 70
+  attack: 80
+  defense: 50
+  speed: 35
+
+charizard:
+  type: Fire
+  moves:
+    1: heatwave
+    5: firefang
+  hp: 78
+  attack: 84
+  defense: 78
+  speed: 100
+
+snivy:
+  type: Grass
+  moves:
+    1: vinewhip
+    5: leaftornado
+  hp: 45
+  attack: 45
+  defense: 55
+  speed: 63
+
+piplup:
+  type: Water
+  moves:
+    1: bubble
+    5: bubblebeam
+  hp: 53
+  attack: 51
+  defense: 53
+  speed: 40
+

@@ -13,7 +13,7 @@ enum class Type(val color: Color) {
     Normal(Color.WHITE),
     Fighting(Color.BROWN),
     Fire(Color.RED),
-    Plant(Color.GREEN),
+    Grass(Color.GREEN),
     Water(Color.BLUE),
     Electric(Color.YELLOW)
 }

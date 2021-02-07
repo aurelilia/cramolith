@@ -7,3 +7,49 @@ thundershock:
   damage: 40
   accuracy: 40
   type: Electric
+
+tackle:
+  damage: 40
+  accuracy: 100
+  type: Normal
+
+lowsweep:
+  damage: 65
+  accuracy: 100
+  type: Fighting
+
+vitalthrow:
+  damage: 70
+  accuracy: 10000
+  type: Fighting
+
+heatwave:
+  damage: 95
+  accuracy: 90
+  type: Fire
+
+firefang:
+  damage: 65
+  accuracy: 95
+  type: Fire
+
+vinewhip:
+  damage: 35
+  accuracy: 100
+  type: Grass
+
+leaftornado:
+  damage: 65
+  accuracy: 90
+  type: Grass
+
+bubble:
+  damage: 20
+  accuracy: 100
+  type: Water
+
+bubblebeam:
+  damage: 65
+  accuracy: 100
+  type: Water
+

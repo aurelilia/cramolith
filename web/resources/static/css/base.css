@@ -14,6 +14,7 @@ body {
     font-weight: 400;
     background-color: var(--light-blue);
     margin: 0;
+    overflow: hidden;
 }
 
 header {

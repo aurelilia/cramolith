@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import xyz.angm.cramolith.common.*
+import xyz.angm.cramolith.common.ecs.components.specific.createWildPokemonEntity
 import xyz.angm.cramolith.common.ecs.network
 import xyz.angm.cramolith.common.ecs.systems.NetworkSystem
 import xyz.angm.cramolith.common.ecs.systems.RemoveSystem
@@ -19,6 +20,7 @@ import xyz.angm.cramolith.common.networking.ChatMessagePacket
 import xyz.angm.cramolith.common.networking.JoinPacket
 import xyz.angm.cramolith.common.networking.Packet
 import xyz.angm.cramolith.common.networking.PrivateMessageRequest
+import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.cramolith.server.handlers.*
 import xyz.angm.rox.Engine
 import xyz.angm.rox.Entity
@@ -43,6 +45,9 @@ class Server {
         engine {
             add(netSystem as EntityListener)
             add(netSystem as EntitySystem)
+            createWildPokemonEntity(this, Pokemon("charizard", null, 10, 0, arrayListOf("Heat Wave", "Fire Fang")))
+            createWildPokemonEntity(this, Pokemon("piplup", null, 10, 0, arrayListOf("Heat Wave", "Fire Fang")))
+            createWildPokemonEntity(this, Pokemon("snivy", null, 10, 0, arrayListOf("Heat Wave", "Fire Fang")))
             add(RemoveSystem())
         }
 

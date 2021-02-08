@@ -17,6 +17,7 @@ import xyz.angm.cramolith.client.resources.ResourceManager
 import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.ecs.position
 import xyz.angm.cramolith.common.ecs.renderable
+import xyz.angm.cramolith.common.ecs.wildPokemon
 import xyz.angm.rox.Entity
 import xyz.angm.rox.EntityListener
 import xyz.angm.rox.Family.Companion.allOf
@@ -51,6 +52,7 @@ class RenderSystem(private val screen: GameScreen) : IteratingSystem(allOf(rende
 
     private fun actorFor(e: Entity): Actor = when {
         e has playerM -> Image(ResourceManager.get<Texture>("sprites/player.png"))
+        e has wildPokemon -> Image(e[wildPokemon].wildPokemon.species.sprite)
         else -> TODO()
     }
 }

@@ -12,6 +12,7 @@ import com.charleskorn.kaml.Yaml
 import org.nustaq.serialization.FSTConfiguration
 import xyz.angm.cramolith.common.ecs.components.*
 import xyz.angm.cramolith.common.ecs.components.specific.PlayerComponent
+import xyz.angm.cramolith.common.ecs.components.specific.WildPokemonComponent
 import xyz.angm.cramolith.common.ecs.ignoreSync
 import xyz.angm.cramolith.common.ecs.renderable
 import xyz.angm.cramolith.common.networking.ChatMessagePacket
@@ -35,7 +36,7 @@ val fst = createFST(
     // Components
     Component::class, VectoredComponent::class,
     PositionComponent::class, VelocityComponent::class, PlayerComponent::class,
-    RemoveFlag::class, NetworkSyncComponent::class,
+    RemoveFlag::class, NetworkSyncComponent::class,WildPokemonComponent::class,
 
     // Various
     Vector2::class, Entity::class, ArrayList::class, Pokemon::class,

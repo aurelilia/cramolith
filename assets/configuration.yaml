@@ -9,5 +9,5 @@ keybinds:
     "W": "walkForward"
     "Enter": "chat"
 clientUUID: 1
-playerName: "Sam"
-language: "Deutsch"
+playerName: "ellie"
+language: "English"

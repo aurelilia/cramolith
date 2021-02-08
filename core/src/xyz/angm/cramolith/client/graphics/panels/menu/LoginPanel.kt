@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 1:53 AM.
+ * This file was last modified at 2/8/21, 9:03 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -9,14 +9,12 @@ package xyz.angm.cramolith.client.graphics.panels.menu
 
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
-import ktx.actors.onClick
 import ktx.actors.onKeyDown
 import ktx.actors.plusAssign
 import ktx.scene2d.scene2d
 import ktx.scene2d.textField
 import ktx.scene2d.vis.visLabel
 import ktx.scene2d.vis.visTable
-import xyz.angm.cramolith.client.graphics.Skin
 import xyz.angm.cramolith.client.graphics.panels.Panel
 import xyz.angm.cramolith.client.graphics.screens.MenuScreen
 import xyz.angm.cramolith.client.resources.I18N
@@ -44,10 +42,7 @@ class LoginPanel(private val screen: MenuScreen) : Panel(screen) {
                 isPasswordMode = true
             }
 
-            visTextButton(I18N["login.start"]) {
-                it.height(Skin.textButtonHeight).width(Skin.textButtonWidth).pad(20f).row()
-                onClick { start() }
-            }
+            textBtn("login.start") { start() }
 
             backButton(screen)
 

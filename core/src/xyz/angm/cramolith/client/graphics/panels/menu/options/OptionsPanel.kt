@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/6/21, 8:25 PM.
+ * This file was last modified at 2/8/21, 9:03 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -9,7 +9,6 @@ package xyz.angm.cramolith.client.graphics.panels.menu.options
 
 import com.badlogic.gdx.utils.Align
 import ktx.actors.onChange
-import ktx.actors.onClick
 import ktx.actors.plusAssign
 import ktx.scene2d.scene2d
 import ktx.scene2d.vis.visSelectBoxOf
@@ -47,11 +46,7 @@ class OptionsPanel(screen: Screen, parent: MainMenuPanel? = null) : Panel(screen
                 row()
             }
 
-            visTextButton(I18N["options.controls"]) {
-                it.height(Skin.textButtonHeight).width(Skin.textButtonWidth).pad(20f).row()
-                onClick { screen.pushPanel(ControlsPanel(screen)) }
-            }
-
+            textBtn("options.controls") { screen.pushPanel(ControlsPanel(screen)) }
             backButton(screen)
             setFillParent(true)
         }

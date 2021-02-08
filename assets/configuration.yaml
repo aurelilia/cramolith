@@ -8,6 +8,4 @@ keybinds:
     "Tab": "onlinePlayers"
     "W": "walkForward"
     "Enter": "chat"
-clientUUID: 1
-playerName: "ellie"
 language: "English"

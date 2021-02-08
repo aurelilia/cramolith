@@ -10,6 +10,7 @@ package xyz.angm.cramolith.common.ecs
 import xyz.angm.cramolith.client.ecs.components.RenderableComponent
 import xyz.angm.cramolith.common.ecs.components.*
 import xyz.angm.cramolith.common.ecs.components.specific.PlayerComponent
+import xyz.angm.cramolith.common.ecs.components.specific.WildPokemonComponent
 import xyz.angm.rox.mapperFor
 
 /*
@@ -21,6 +22,7 @@ val position = mapperFor<PositionComponent>()
 val velocity = mapperFor<VelocityComponent>()
 
 val playerM = mapperFor<PlayerComponent>()
+val wildPokemon = mapperFor<WildPokemonComponent>()
 
 val renderable = mapperFor<RenderableComponent>()
 

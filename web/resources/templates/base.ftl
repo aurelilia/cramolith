@@ -24,6 +24,8 @@
             <#--noinspection HtmlUnknownTarget-->
             <a href="/">Home</a>
             <#--noinspection HtmlUnknownTarget-->
+            <a href="/login">Login</a>
+            <#--noinspection HtmlUnknownTarget-->
             <a href="/register">Register</a>
             <#--noinspection HtmlUnknownTarget-->
             <a href="/changelog">Changelog</a>
@@ -34,7 +36,9 @@
     <main>
         <#nested>
     </main>
+    <footer>
+        <p>Impressum</p>
+    </footer>
     </body>
-
     </html>
 </#macro>

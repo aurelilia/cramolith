@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/8/21, 9:12 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -30,10 +30,7 @@ val configuration = {
 }()
 
 /** Handles all things that the player can configure.
- * @property playerName The player's name.
- * @property clientUUID The UUID of this client, used to identify with servers.
  * @property language The language to use for [I18N].
- *
  * @property keybinds All keybinds. */
 @Serializable
 class Configuration {
@@ -41,8 +38,6 @@ class Configuration {
     // All these are initialized by deserialization
     val keybinds = Keybinds()
 
-    var clientUUID = System.nanoTime().toInt()
-    var playerName = "player #$clientUUID"
     var language = "English"
 
     /** Should be called after deserialization to allow the object to correct its state. */

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/5/21, 10:16 PM.
+ * This file was last modified at 2/8/21, 9:13 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -15,15 +15,13 @@ import xyz.angm.cramolith.client.graphics.panels.menu.MessagePanel
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.client.graphics.screens.MenuScreen
 import xyz.angm.cramolith.client.networking.Client
-import xyz.angm.cramolith.client.resources.configuration
-import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.networking.InitPacket
 import xyz.angm.cramolith.common.networking.JoinPacket
 import xyz.angm.cramolith.common.networking.LoginRejectedPacket
 import kotlin.system.exitProcess
 
 /** The game itself. Only sets the screen, everything else is handled per-screen. */
-class Cramolith : Game() {
+open class Cramolith : Game() {
 
     /** Called when libGDX environment is ready. */
     override fun create() {
@@ -44,14 +42,11 @@ class Cramolith : Game() {
                 }
             }
         }
-        configuration.playerName = user
         client.send(JoinPacket(user, password))
     }
 
     private fun startGame(client: Client, data: InitPacket) {
-        configuration.clientUUID = data.player!![playerM].clientUUID
-        configuration.save()
-        setScreen(GameScreen(this, client, data.player, data.entities, data.globalChatMessages))
+        setScreen(GameScreen(this, client, data.player!!, data.entities, data.globalChatMessages))
     }
 
     override fun dispose() = exitProcess(0)

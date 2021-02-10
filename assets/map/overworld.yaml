@@ -25,3 +25,6 @@ triggers:
     width: 16
     height: 20
     idx: 1
+teleports:
+  - map: 1
+    target: 0

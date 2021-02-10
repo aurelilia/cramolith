@@ -1,3 +1,6 @@
 ident: "haus"
 index: 1
 triggers: []
+teleports:
+  - map: 0
+    target: 0

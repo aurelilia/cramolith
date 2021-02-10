@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 3:22 AM.
+ * This file was last modified at 2/10/21, 3:38 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -22,6 +22,7 @@ import xyz.angm.cramolith.common.world.WorldMap
 import xyz.angm.cramolith.editor.windows.DrawTriggerSelectWindow
 import xyz.angm.cramolith.editor.windows.MenuWindow
 import xyz.angm.cramolith.editor.windows.SelectMapWindow
+import xyz.angm.cramolith.editor.windows.TeleportsWindow
 
 class EditorScreen(val game: Cramolith) : Screen() {
 
@@ -36,6 +37,7 @@ class EditorScreen(val game: Cramolith) : Screen() {
         loadWindow(MenuWindow(this))
         loadWindow(SelectMapWindow(this))
         loadWindow(DrawTriggerSelectWindow(this))
+        loadWindow(TeleportsWindow(this))
 
         // Input
         val multiplex = InputMultiplexer()

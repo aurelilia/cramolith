@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 3:19 AM.
+ * This file was last modified at 2/10/21, 3:36 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -30,7 +30,9 @@ class MenuWindow(screen: EditorScreen) : VisWindow("Menu") {
         }
 
         textBtn("Save") {
-            Gdx.files.local("map/${screen.map.map.ident}.yaml").writeString(yaml.encodeToString(WorldMap.serializer(), screen.map.map), false)
+            for (map in WorldMap.all()) {
+                Gdx.files.local("map/${map.ident}.yaml").writeString(yaml.encodeToString(WorldMap.serializer(), map), false)
+            }
         }
         textBtn("Exit") { Gdx.app.exit() }
         pack()

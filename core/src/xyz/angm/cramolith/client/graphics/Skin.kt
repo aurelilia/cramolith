@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/6/21, 11:41 PM.
+ * This file was last modified at 2/10/21, 3:14 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -58,6 +58,9 @@ object Skin {
             val noto = get<BitmapFont>()
             noto.data.markupEnabled = true
             add("monospace", monospaceGen.generateFont(parameter))
+
+            parameter.size = 50
+            add("big", notoGen.generateFont(parameter))
 
             colors5.forEach { color ->
                 val pixmap = Pixmap(5, 5, Pixmap.Format.RGBA8888)

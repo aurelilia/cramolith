@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 2:58 AM.
+ * This file was last modified at 2/10/21, 3:14 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -10,8 +10,10 @@ package xyz.angm.cramolith.editor
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
+import com.kotcrab.vis.ui.VisUI
 import com.kotcrab.vis.ui.util.Validators
 import com.kotcrab.vis.ui.util.dialog.Dialogs
 import com.kotcrab.vis.ui.util.dialog.InputDialogAdapter
@@ -30,6 +32,7 @@ class Map(map: WorldMap) : VisImage(map.texture) {
 
     var mode: EditingMode? = null
     internal val shape = ShapeRenderer()
+    private val font = VisUI.getSkin().get("big", BitmapFont::class.java)
 
     var map = map
         set(value) {
@@ -47,7 +50,6 @@ class Map(map: WorldMap) : VisImage(map.texture) {
 
     override fun draw(batch: Batch, parentAlpha: Float) {
         super.draw(batch, parentAlpha)
-
         batch.end()
         Gdx.gl.glEnable(GL20.GL_BLEND)
 
@@ -66,6 +68,14 @@ class Map(map: WorldMap) : VisImage(map.texture) {
 
         shape.end()
         batch.begin()
+
+        for (trigger in map.triggers) {
+            if (trigger.idx < 0) continue
+            tmp.set(trigger.x.toFloat(), trigger.y.toFloat())
+            localToScreenCoordinates(tmp)
+            tmp.y = stage.height - tmp.y
+            font.draw(batch, trigger.idx.toString(), tmp.x + 5f, tmp.y + 55f)
+        }
     }
 
     fun scroll(x: Float, y: Float) {

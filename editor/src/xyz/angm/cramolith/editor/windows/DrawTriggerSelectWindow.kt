@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 1:59 AM.
+ * This file was last modified at 2/10/21, 3:04 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -14,7 +14,7 @@ import xyz.angm.cramolith.common.world.WorldMap
 import xyz.angm.cramolith.editor.EditorScreen
 import xyz.angm.cramolith.editor.FirstTriggerMode
 
-class MapSelectWindow(screen: EditorScreen) : VisWindow("Draw Trigger") {
+class DrawTriggerSelectWindow(screen: EditorScreen) : VisWindow("Draw Trigger") {
 
     init {
         for (trigger in WorldMap.TriggerType.values()) {

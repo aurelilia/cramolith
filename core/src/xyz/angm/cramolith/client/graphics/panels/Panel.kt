@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 2:01 AM.
+ * This file was last modified at 2/10/21, 2:23 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -64,7 +64,7 @@ abstract class Panel(screen: Screen) : Table(Scene2DSkin.defaultSkin) {
  * see most panels in menu for an example. */
 inline fun Table.textBtn(text: String, row: Boolean = true, crossinline clicked: VisTextButton.() -> Unit): VisTextButton {
     val btn = VisTextButton(I18N.tryGet(text) ?: text)
-    val cell = add(btn).height(Skin.textButtonHeight).width(Skin.textButtonWidth).pad(20f)
+    val cell = add(btn).height(Skin.textButtonHeight).width(Skin.textButtonWidth).pad(8f)
     if (row) cell.row()
     click()
     btn.onClick(clicked)

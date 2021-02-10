@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 10:36 PM.
+ * This file was last modified at 2/10/21, 5:59 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -22,11 +22,13 @@ import io.ktor.response.respond
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.routing
+import io.ktor.server.netty.EngineMain
 import xyz.angm.cramolith.server.database.DB
 import xyz.angm.cramolith.server.database.Player
 import xyz.angm.cramolith.server.database.Players
 
-fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+fun main(args: Array<String>) = EngineMain.main(args)
+fun startWeb() = main(emptyArray())
 
 fun Application.module() {
     install(FreeMarker) {

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/10/21, 6:00 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -13,12 +13,14 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.backends.headless.HeadlessApplication
 import xyz.angm.cramolith.common.level
 import xyz.angm.cramolith.common.log
+import xyz.angm.cramolith.web.startWeb
 import kotlin.system.exitProcess
 
 /** To be used with HeadlessApplication for creating a standalone server */
 class ServerLauncher : ApplicationAdapter() {
     /** Called on application creation */
     override fun create() {
+        Thread { startWeb() }.start()
         Server()
     }
 }

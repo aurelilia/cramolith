@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/9/21, 6:28 PM.
+ * This file was last modified at 2/10/21, 5:58 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -109,6 +109,7 @@ project(":editor") {
 project(":server") {
     dependencies {
         implementation project(":core")
+        implementation project(":web")
         implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     }

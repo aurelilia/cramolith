@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 8:54 PM.
+ * This file was last modified at 2/11/21, 12:08 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -11,6 +11,8 @@ import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
+import org.jetbrains.exposed.sql.statements.api.ExposedBlob
+import xyz.angm.cramolith.common.fst
 
 object Players : IntIdTable() {
     val name = varchar("name", 20)
@@ -18,6 +20,7 @@ object Players : IntIdTable() {
     val posX = integer("posX")
     val posY = integer("posY")
     val posMap = integer("posMap")
+    val actorsTriggered = blob("actorsTriggered")
 }
 
 class Player(id: EntityID<Int>) : IntEntity(id) {
@@ -28,6 +31,13 @@ class Player(id: EntityID<Int>) : IntEntity(id) {
     var posX by Players.posX
     var posY by Players.posY
     var posMap by Players.posMap
+    var actorsTriggered by Players.actorsTriggered
+    var triggeredActors: HashMap<Int, HashSet<Int>>
+        get() = fst.asObject(actorsTriggered.bytes) as HashMap<Int, HashSet<Int>>
+        set(value) {
+            actorsTriggered = ExposedBlob(fst.asByteArray(value))
+        }
+
     val pokemon by Pokemon referrersOn Pokemons.owner
 }
 

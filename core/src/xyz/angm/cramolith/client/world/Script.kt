@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 11:37 PM.
+ * This file was last modified at 2/11/21, 12:13 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -17,10 +17,12 @@ import ktx.collections.*
 import xyz.angm.cramolith.client.graphics.click
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.client.resources.I18N
+import xyz.angm.cramolith.common.ecs.playerM
+import xyz.angm.cramolith.common.world.WorldActor
 
-class Script(private val screen: GameScreen, private val lines: MutableList<String>) {
+class Script(private val screen: GameScreen, private val actor: WorldActor, private val completed: () -> Unit) {
 
-    private val id: String = lines[0]
+    private val id: String = actor.script[0]
     private var title = ""
     private var index = 1
     private var dialogIdx = 0
@@ -30,8 +32,11 @@ class Script(private val screen: GameScreen, private val lines: MutableList<Stri
     }
 
     fun next() {
-        if (lines.size == index) return
-        val line = lines[index++]
+        if (actor.script.size == index) {
+            completed()
+            return
+        }
+        val line = actor.script[index++]
         val idx = line.indexOfFirst { it == ' ' } - 1
         val command = line.substring(0..idx)
         val operands = line.substring((idx + 2) until line.length)
@@ -51,6 +56,11 @@ class Script(private val screen: GameScreen, private val lines: MutableList<Stri
             "title" -> {
                 title = I18N["dialogtitle.$operands"]
                 next()
+            }
+
+            "disable" -> {
+                val map = screen.player[playerM].actorsTriggered.getOrPut(screen.world.map.index, { HashSet() })
+                map.add(actor.index)
             }
 
             else -> Dialogs.showErrorDialog(

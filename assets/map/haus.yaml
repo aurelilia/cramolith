@@ -8,6 +8,6 @@ triggers:
   height: 20
   idx: 0
 teleports:
-  - map: 0
-    target: 0
+- map: 0
+  target: 0
 actors: {}

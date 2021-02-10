@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 9:31 PM.
+ * This file was last modified at 2/11/21, 12:14 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -12,8 +12,10 @@ import com.badlogic.gdx.math.Vector2
 import ktx.collections.*
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.client.world.PLAYER_SPRITE_SIZE
+import xyz.angm.cramolith.client.world.Script
 import xyz.angm.cramolith.common.ecs.components.PositionComponent
 import xyz.angm.cramolith.common.ecs.network
+import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.ecs.position
 import xyz.angm.cramolith.common.networking.PlayerMapChangedPacket
 import xyz.angm.cramolith.common.world.Trigger
@@ -82,7 +84,21 @@ class TriggerSystem(private val screen: GameScreen) : EntitySystem() {
                 screen.client.send(PlayerMapChangedPacket(screen.player[network].id))
             }
 
-            Actor -> TODO()
+            Actor -> {
+                val playerC = player[playerM]
+                if (playerC.isInCutscene) return
+                val map = playerC.actorsTriggered.getOrPut(screen.world.map.index, { HashSet() })
+                if (map.contains(trigger.idx)) return
+
+                playerC.isInCutscene = true
+                player[network].needsSync = true
+
+                val actor = screen.world.map.actorsId[trigger.idx]
+                Script(screen, actor) {
+                    playerC.isInCutscene = false
+                    player[network].needsSync = true
+                }
+            }
         }
     }
 

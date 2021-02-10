@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 3:00 AM.
+ * This file was last modified at 2/10/21, 3:19 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -25,16 +25,6 @@ class MenuWindow(screen: EditorScreen) : VisWindow("Menu") {
                 override fun finished(input: String) {
                     if (WorldMap.new(input)) Dialogs.showOKDialog(stage, "yes.", "Map created.")
                     else Dialogs.showErrorDialog(stage, "Map does not have a texture. Please create one and restart Editor or recreate the map.")
-                }
-            })
-        }
-
-        textBtn("Load Map") {
-            Dialogs.showInputDialog(stage, "Enter map identifier", null, object : InputDialogAdapter() {
-                override fun finished(input: String) {
-                    val map = WorldMap.maybeOf(input)
-                    if (map == null) Dialogs.showErrorDialog(stage, "Unknown map.")
-                    else screen.map.map = map
                 }
             })
         }

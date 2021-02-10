@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 2:56 AM.
+ * This file was last modified at 2/10/21, 3:21 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -39,7 +39,7 @@ class InputHandler(private val screen: EditorScreen) : InputAdapter() {
     }
 
     override fun scrolled(amountX: Float, amountY: Float): Boolean {
-        screen.map.zoom(amountY)
+        screen.map.zoom(-amountY)
         return true
     }
 }

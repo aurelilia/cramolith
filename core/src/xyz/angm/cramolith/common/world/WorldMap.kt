@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 2:50 AM.
+ * This file was last modified at 2/10/21, 3:17 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -20,6 +20,7 @@ import xyz.angm.cramolith.common.yaml
 @Serializable
 class WorldMap(
     val ident: String,
+    val index: Int,
     val triggers: MutableList<Trigger>
 ) {
 
@@ -46,6 +47,8 @@ class WorldMap(
             }
         }
 
+        fun size() = maps.size
+
         fun all() = maps.values()!!
 
         fun of(ident: String) = maps[ident]!!
@@ -55,7 +58,7 @@ class WorldMap(
          * if it does not exist then `false` is returned and the map is not added
          * to the list of maps. Its definition file will still be created however. */
         fun new(ident: String): Boolean {
-            val map = WorldMap(ident, ArrayList())
+            val map = WorldMap(ident, maps.size, ArrayList())
             Gdx.files.local("map/$ident.yaml").writeString(yaml.encodeToString(serializer(), map), false)
 
             return try {

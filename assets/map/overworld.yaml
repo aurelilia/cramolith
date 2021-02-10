@@ -1,4 +1,5 @@
 ident: "overworld"
+index: 0
 triggers:
   - type: "Collision"
     x: 352

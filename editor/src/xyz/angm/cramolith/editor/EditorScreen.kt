@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 3:04 AM.
+ * This file was last modified at 2/10/21, 3:22 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -21,6 +21,7 @@ import xyz.angm.cramolith.common.runLogE
 import xyz.angm.cramolith.common.world.WorldMap
 import xyz.angm.cramolith.editor.windows.DrawTriggerSelectWindow
 import xyz.angm.cramolith.editor.windows.MenuWindow
+import xyz.angm.cramolith.editor.windows.SelectMapWindow
 
 class EditorScreen(val game: Cramolith) : Screen() {
 
@@ -33,6 +34,7 @@ class EditorScreen(val game: Cramolith) : Screen() {
 
         // Windows
         loadWindow(MenuWindow(this))
+        loadWindow(SelectMapWindow(this))
         loadWindow(DrawTriggerSelectWindow(this))
 
         // Input
@@ -58,7 +60,7 @@ class EditorScreen(val game: Cramolith) : Screen() {
     private fun loadWindow(window: VisWindow) {
         stage += window
         window.setPosition(0f, lastWindowHeight, Align.bottomLeft)
-        lastWindowHeight = window.x + window.height
+        lastWindowHeight = window.y + window.height
     }
 
     override fun resize(width: Int, height: Int) {

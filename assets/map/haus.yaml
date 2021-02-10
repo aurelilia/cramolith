@@ -1,12 +1,12 @@
 ident: "haus"
 index: 1
 triggers:
-  - type: "Teleport"
-    x: 130
-    y: 1
-    width: 111
-    height: 20
-    idx: 0
+- type: "Teleport"
+  x: 130
+  y: 1
+  width: 111
+  height: 20
+  idx: 0
 teleports:
   - map: 0
     target: 0

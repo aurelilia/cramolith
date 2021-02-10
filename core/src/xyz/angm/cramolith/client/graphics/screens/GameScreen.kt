@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 9:38 PM.
+ * This file was last modified at 2/10/21, 11:22 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -87,8 +87,8 @@ class GameScreen(
         engine.add(player)
         entities.forEach { engine.add(it) }
 
-        initState(messages)
         initRender()
+        initState(messages)
     }
 
     override fun render(delta: Float) {
@@ -184,8 +184,8 @@ class GameScreen(
 
     // Initialize all rendering components
     private fun initRender() {
-        stage += panels
         stage += world
+        stage += panels
     }
 
     override fun resize(width: Int, height: Int) {

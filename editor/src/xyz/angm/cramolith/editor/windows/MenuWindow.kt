@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 2:42 AM.
+ * This file was last modified at 2/10/21, 3:00 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -11,7 +11,6 @@ import com.badlogic.gdx.Gdx
 import com.kotcrab.vis.ui.util.dialog.Dialogs
 import com.kotcrab.vis.ui.util.dialog.InputDialogAdapter
 import com.kotcrab.vis.ui.widget.VisWindow
-import ktx.assets.file
 import xyz.angm.cramolith.client.graphics.panels.textBtn
 import xyz.angm.cramolith.common.world.WorldMap
 import xyz.angm.cramolith.common.yaml
@@ -40,7 +39,9 @@ class MenuWindow(screen: EditorScreen) : VisWindow("Menu") {
             })
         }
 
-        textBtn("Save") { file("map/${screen.map.map.ident}").writeString(yaml.encodeToString(WorldMap.serializer(), screen.map.map), false) }
+        textBtn("Save") {
+            Gdx.files.local("map/${screen.map.map.ident}.yaml").writeString(yaml.encodeToString(WorldMap.serializer(), screen.map.map), false)
+        }
         textBtn("Exit") { Gdx.app.exit() }
         pack()
     }

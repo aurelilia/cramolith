@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 2:32 AM.
+ * This file was last modified at 2/10/21, 2:58 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -92,6 +92,7 @@ class Map(map: WorldMap) : VisImage(map.texture) {
 sealed class EditingMode {
     abstract fun handleClick(map: Map, x: Float, y: Float)
     abstract fun draw(batch: Batch, map: Map)
+    abstract fun cancel(map: Map)
 }
 
 class FirstTriggerMode(private val type: WorldMap.TriggerType) : EditingMode() {
@@ -103,41 +104,49 @@ class FirstTriggerMode(private val type: WorldMap.TriggerType) : EditingMode() {
     override fun draw(batch: Batch, map: Map): Unit = map.run {
         shape.color = type.color
 
-        tmp.set(Gdx.input.x.toFloat(), stage.height - Gdx.input.y)
+        tmp.set(Gdx.input.x.toFloat(), (stage.height - Gdx.input.y))
         screenToLocalCoordinates(tmp)
         tmp.x = tmp.x.roundToInt().toFloat()
         tmp.y = tmp.y.roundToInt().toFloat()
         localToScreenCoordinates(tmp)
         shape.rect(tmp.x, tmp.y, scaleX, scaleY)
     }
+
+    override fun cancel(map: Map) {
+        map.mode = null
+    }
 }
 
 class SecondTriggerMode(private val first: Vector2, private val type: WorldMap.TriggerType) : EditingMode() {
 
-    override fun handleClick(map: Map, x: Float, y: Float) = map.run {
+    override fun handleClick(map: Map, x: Float, y: Float): Unit = map.run {
         mode = null
         val x1 = x.roundToInt()
         val y1 = y.roundToInt()
         val x2 = first.x.roundToInt()
         val y2 = first.y.roundToInt()
 
-        Dialogs.showInputDialog(stage, "Enter ${type.indexSays}", null, Validators.INTEGERS, object : InputDialogAdapter() {
-            override fun finished(input: String) {
-                map.map.triggers.add(
-                    WorldMap.Trigger(
-                        type,
-                        min(x1, x2),
-                        min(y1, y2),
-                        abs(x1 - x2),
-                        abs(y1 - y2),
-                        Integer.parseInt(input)
-                    )
+        val add = { idx: Int ->
+            map.map.triggers.add(
+                WorldMap.Trigger(
+                    type,
+                    min(x1, x2),
+                    min(y1, y2),
+                    abs(x1 - x2),
+                    abs(y1 - y2),
+                    idx
                 )
+            )
 
-                mode = FirstTriggerMode(type)
-            }
-        })
-        Unit
+            mode = FirstTriggerMode(type)
+        }
+
+        if (type.indexSays == null) add(-1)
+        else {
+            Dialogs.showInputDialog(stage, "Enter ${type.indexSays}", null, Validators.INTEGERS, object : InputDialogAdapter() {
+                override fun finished(input: String) = add(Integer.parseInt(input))
+            })
+        }
     }
 
     override fun draw(batch: Batch, map: Map) = map.run {
@@ -151,5 +160,9 @@ class SecondTriggerMode(private val first: Vector2, private val type: WorldMap.T
         val x1 = Gdx.input.x.toFloat()
         val y1 = (stage.height - Gdx.input.y)
         shape.rect(min(x1, tmp.x), min(y1, tmp.y), abs(x1 - tmp.x), abs(y1 - tmp.y))
+    }
+
+    override fun cancel(map: Map) {
+        map.mode = FirstTriggerMode(type)
     }
 }

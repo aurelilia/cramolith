@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 2:49 AM.
+ * This file was last modified at 2/10/21, 2:50 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -28,7 +28,8 @@ class WorldMap(
     @Serializable
     data class Trigger(val type: TriggerType, val x: Int, val y: Int, val width: Int, val height: Int, val idx: Int)
 
-    enum class TriggerType(val color: Color, val indexSays: String) {
+    enum class TriggerType(val color: Color, val indexSays: String?) {
+        Collision(Color.DARK_GRAY, null),
         Teleport(Color.FOREST, "Map ID"),
         TrainerChallenge(Color.SCARLET, "Trainer ID"),
         Cutscene(Color.ROYAL, "Cutscene ID")

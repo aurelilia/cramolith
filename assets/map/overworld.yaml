@@ -1,8 +1,26 @@
-ident: overworld
+ident: "overworld"
 triggers:
-  - type: Teleport
+  - type: "Collision"
+    x: 352
+    y: 240
+    width: 128
+    height: 64
+    idx: -1
+  - type: "Collision"
+    x: 318
+    y: 240
+    width: 18
+    height: 64
+    idx: -1
+  - type: "Collision"
+    x: 336
+    y: 260
+    width: 16
+    height: 44
+    idx: -1
+  - type: "Teleport"
+    x: 336
+    y: 240
+    width: 16
+    height: 20
     idx: 1
-    x: 4
-    y: 6
-    height: 3
-    width: 6

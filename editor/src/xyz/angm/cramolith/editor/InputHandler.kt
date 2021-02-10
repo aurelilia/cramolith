@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 1:53 AM.
+ * This file was last modified at 2/10/21, 2:20 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -24,6 +24,11 @@ class InputHandler(private val screen: EditorScreen) : InputAdapter() {
         val y = screenY - prev.y
         prev.set(screenX.toFloat(), screenY.toFloat())
         screen.map.scroll(x, -y)
+        return false
+    }
+
+    override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        screen.map.scrollSnap()
         return false
     }
 

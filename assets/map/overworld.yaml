@@ -25,11 +25,35 @@ triggers:
   width: 16
   height: 20
   idx: 1
+- type: "Teleport"
+  x: 67
+  y: 606
+  width: 77
+  height: 32
+  idx: 1
+- type: "Teleport"
+  x: 273
+  y: 764
+  width: 46
+  height: 39
+  idx: 2
+- type: "Teleport"
+  x: 528
+  y: 280
+  width: 88
+  height: 48
+  idx: 0
 teleports:
   - map: 1
     target: 0
+  - map: 0
+    target: 2
+  - map: 0
+    target: 1
 actors:
   "joey":
     texture: "youngster"
     index: 0
+    x: 0
+    y: 0
     script: []

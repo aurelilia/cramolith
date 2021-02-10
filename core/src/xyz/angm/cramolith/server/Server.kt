@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 10:37 PM.
+ * This file was last modified at 2/10/21, 9:32 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -16,10 +16,7 @@ import xyz.angm.cramolith.common.ecs.components.specific.createWildPokemonEntity
 import xyz.angm.cramolith.common.ecs.network
 import xyz.angm.cramolith.common.ecs.systems.NetworkSystem
 import xyz.angm.cramolith.common.ecs.systems.RemoveSystem
-import xyz.angm.cramolith.common.networking.ChatMessagePacket
-import xyz.angm.cramolith.common.networking.JoinPacket
-import xyz.angm.cramolith.common.networking.Packet
-import xyz.angm.cramolith.common.networking.PrivateMessageRequest
+import xyz.angm.cramolith.common.networking.*
 import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.cramolith.server.handlers.*
 import xyz.angm.rox.Engine
@@ -78,6 +75,7 @@ class Server {
             is ChatMessagePacket -> handleChatMessage(packet)
             is PrivateMessageRequest -> handlePMRequest(connection, packet)
             is JoinPacket -> handleJoinPacket(connection, packet)
+            is PlayerMapChangedPacket -> sendToAll(packet)
             is Entity -> handleEntity(packet)
         }
     }

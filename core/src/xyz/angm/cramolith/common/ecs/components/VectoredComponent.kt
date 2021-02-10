@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/10/21, 8:58 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -20,7 +20,9 @@ abstract class VectoredComponent : Vector2(), Component {
 
 
 /** Component for all entities with an in-world position. */
-class PositionComponent : VectoredComponent()
+class PositionComponent : VectoredComponent() {
+    var map = 0
+}
 
 
 /** Component for all entities with a velocity. Also requires a position component. */

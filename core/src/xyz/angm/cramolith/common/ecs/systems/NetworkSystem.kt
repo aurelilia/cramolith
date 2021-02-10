@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/10/21, 9:03 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -62,4 +62,6 @@ class NetworkSystem(private val send: (Entity) -> Unit) : EntitySystem(Int.MAX_V
     override fun entityRemoved(entity: Entity) {
         entities.remove(entity[network].id)
     }
+
+    fun entityOf(id: Int): Entity? = entities[id]
 }

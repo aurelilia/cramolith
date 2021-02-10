@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 7:34 PM.
+ * This file was last modified at 2/10/21, 9:38 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -35,6 +35,7 @@ import xyz.angm.cramolith.common.ecs.systems.RemoveSystem
 import xyz.angm.cramolith.common.ecs.systems.VelocitySystem
 import xyz.angm.cramolith.common.networking.ChatMessagePacket
 import xyz.angm.cramolith.common.networking.InitPacket
+import xyz.angm.cramolith.common.networking.PlayerMapChangedPacket
 import xyz.angm.cramolith.common.runLogE
 import xyz.angm.rox.Engine
 import xyz.angm.rox.Entity
@@ -74,7 +75,7 @@ class GameScreen(
 
     // 2D Graphics
     val stage = Stage(ScreenViewport())
-    val world = World(player)
+    val world = World(this)
     private val activeWindows = HashMap<String, VisWindow>()
 
     val entitiesLoaded get() = engine.entities.size
@@ -140,9 +141,14 @@ class GameScreen(
     private fun initSystems() = engine.apply {
         addLocalPlayerComponents()
         val netSystem = NetworkSystem(client::send)
-        client.addListener { if (it is Entity) netSystem.receive(it) }
         add(netSystem as EntitySystem)
         add(netSystem as EntityListener)
+        client.addListener {
+            when (it) {
+                is Entity -> netSystem.receive(it)
+                is PlayerMapChangedPacket -> world.playerMapChange(netSystem.entityOf(it.entityId) ?: return@addListener)
+            }
+        }
 
         val renderSystem = RenderSystem(this@GameScreen)
         add(renderSystem as EntitySystem)

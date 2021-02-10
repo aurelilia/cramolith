@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 7:46 PM.
+ * This file was last modified at 2/10/21, 9:31 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -12,9 +12,13 @@ import com.badlogic.gdx.math.Vector2
 import ktx.collections.*
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.client.world.PLAYER_SPRITE_SIZE
+import xyz.angm.cramolith.common.ecs.components.PositionComponent
+import xyz.angm.cramolith.common.ecs.network
 import xyz.angm.cramolith.common.ecs.position
+import xyz.angm.cramolith.common.networking.PlayerMapChangedPacket
 import xyz.angm.cramolith.common.world.Trigger
 import xyz.angm.cramolith.common.world.TriggerType.*
+import xyz.angm.cramolith.common.world.WorldMap
 import xyz.angm.rox.systems.EntitySystem
 
 const val MAX_TRIGGER_DIST = 500 * 500
@@ -30,11 +34,15 @@ class TriggerSystem(private val screen: GameScreen) : EntitySystem() {
     private val lastPlayerPos = player[position].cpy()
     private val triggers = GdxArray<Trigger>()
 
+    private var playerWasOnTeleport = true
+    private var hitTeleport = false
+
     init {
         updateTriggers()
     }
 
     override fun update(delta: Float) {
+        hitTeleport = false
         val pos = player[position]
         if (lastTriggerPos.dst2(pos) > MAX_UPDATE_DIST) updateTriggers()
         playerRect.setPosition(pos)
@@ -44,9 +52,10 @@ class TriggerSystem(private val screen: GameScreen) : EntitySystem() {
         }
 
         lastPlayerPos.set(pos)
+        playerWasOnTeleport = hitTeleport
     }
 
-    private fun triggerHit(pos: Vector2, trigger: Trigger) {
+    private fun triggerHit(pos: PositionComponent, trigger: Trigger) {
         when (trigger.type) {
             Collision -> {
                 playerRect.x = lastPlayerPos.x
@@ -59,7 +68,19 @@ class TriggerSystem(private val screen: GameScreen) : EntitySystem() {
                 playerRect.setPosition(pos)
             }
 
-            Teleport -> println("TP")
+            Teleport -> {
+                hitTeleport = true
+                if (playerWasOnTeleport) return
+                val teleport = screen.world.map.teleports[trigger.idx]
+                val newMap = WorldMap.of(teleport.map)
+                val zone = newMap.triggers.find { it.type == Teleport && it.idx == teleport.target }!!
+                pos.x = zone.x.toFloat()
+                pos.y = zone.y.toFloat()
+                pos.map = newMap.index
+                screen.world.map = newMap
+                updateTriggers()
+                screen.client.send(PlayerMapChangedPacket(screen.player[network].id))
+            }
 
             Actor -> TODO()
         }

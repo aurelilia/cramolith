@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 5:59 PM.
+ * This file was last modified at 2/10/21, 9:06 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -74,6 +74,7 @@ fun Application.module() {
                         password = pw
                         posX = 100
                         posY = 100
+                        posMap = 0
                     }
                 }
                 call.respond(FreeMarkerContent("index.ftl", mapOf("message" to "Successfully registered. Welcome, $username!")))

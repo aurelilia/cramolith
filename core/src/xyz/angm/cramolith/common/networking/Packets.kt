@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/5/21, 10:30 PM.
+ * This file was last modified at 2/10/21, 9:31 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -56,3 +56,8 @@ class PrivateMessageResponse(
     val other: Int = 0,
     val messages: Array<String> = emptyArray()
 ) : Packet
+
+
+/** Sent when a player changes map/dimension. Used to
+ * allow other clients to update world actors.  */
+class PlayerMapChangedPacket(val entityId: Int) : Packet

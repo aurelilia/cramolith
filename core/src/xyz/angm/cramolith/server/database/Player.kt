@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 10:36 PM.
+ * This file was last modified at 2/10/21, 8:54 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -17,6 +17,7 @@ object Players : IntIdTable() {
     val password = varchar("password", 50)
     val posX = integer("posX")
     val posY = integer("posY")
+    val posMap = integer("posMap")
 }
 
 class Player(id: EntityID<Int>) : IntEntity(id) {
@@ -26,6 +27,7 @@ class Player(id: EntityID<Int>) : IntEntity(id) {
     var password by Players.password
     var posX by Players.posX
     var posY by Players.posY
+    var posMap by Players.posMap
     val pokemon by Pokemon referrersOn Pokemons.owner
 }
 

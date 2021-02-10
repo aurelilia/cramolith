@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 5:36 PM.
+ * This file was last modified at 2/10/21, 9:17 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -35,6 +35,7 @@ class Map(private val screen: EditorScreen, map: WorldMap) : VisImage(map.textur
         set(value) {
             field = value
             setDrawable(value.texture)
+            pack()
             screen.mapOrLayoutChanged()
         }
 

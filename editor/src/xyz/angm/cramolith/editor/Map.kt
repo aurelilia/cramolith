@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 9:17 PM.
+ * This file was last modified at 2/10/21, 9:55 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -35,6 +35,8 @@ class Map(private val screen: EditorScreen, map: WorldMap) : VisImage(map.textur
         set(value) {
             field = value
             setDrawable(value.texture)
+            x = 0f
+            y = 0f
             pack()
             screen.mapOrLayoutChanged()
         }
@@ -98,7 +100,10 @@ class Map(private val screen: EditorScreen, map: WorldMap) : VisImage(map.textur
     }
 
     fun zoom(amount: Float) {
+        val amount = amount * scaleX * 0.2f
+        if (scaleX < 0.5f && amount < 0) return
         if (mode is SecondTriggerMode) return
+
         x /= scaleX
         y /= scaleY
         scaleBy(amount)

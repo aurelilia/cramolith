@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/9/21, 7:06 PM.
+ * This file was last modified at 2/10/21, 2:40 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -31,6 +31,11 @@ object ResourceManager {
 
     private inline fun <reified T : Any> load(file: String) = assets.load(file, T::class.java)
     private inline fun <reified T : Any> load(file: FileHandle) = assets.load(AssetDescriptor(file, T::class.java))
+
+    fun loadTexture(file: String) {
+        assets.load(file, Texture::class.java)
+        assets.finishLoading()
+    }
 
     /** Continues loading game assets. Returns loading progress as a float with value range 0-1. 1 means loading is finished.
      * @param processingTime How long to process, in milliseconds. */

@@ -1,1 +1,8 @@
 ident: overworld
+triggers:
+  - type: Teleport
+    idx: 1
+    x: 4
+    y: 6
+    height: 3
+    width: 6

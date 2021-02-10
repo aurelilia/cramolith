@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 10:36 PM.
+ * This file was last modified at 2/9/21, 7:06 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -36,7 +36,7 @@ object ResourceManager {
      * @param processingTime How long to process, in milliseconds. */
     fun continueLoading(processingTime: Int = 10): Float {
         val time = System.currentTimeMillis()
-        while ((System.currentTimeMillis() - time) < processingTime)
+        while (!assets.isFinished && (System.currentTimeMillis() - time) < processingTime)
             assets.update()
         return assets.progress
     }

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/8/21, 9:03 PM.
+ * This file was last modified at 2/10/21, 2:01 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -11,12 +11,11 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.kotcrab.vis.ui.widget.VisTextButton
 import ktx.actors.onClick
 import ktx.actors.onKeyDown
 import ktx.scene2d.Scene2DSkin
 import ktx.scene2d.vis.KVisTable
-import ktx.scene2d.vis.KVisTextButton
-import ktx.scene2d.vis.visTextButton
 import xyz.angm.cramolith.client.graphics.Skin
 import xyz.angm.cramolith.client.graphics.click
 import xyz.angm.cramolith.client.graphics.screens.Screen
@@ -43,17 +42,6 @@ abstract class Panel(screen: Screen) : Table(Scene2DSkin.defaultSkin) {
      * see most panels in menu for an example. */
     internal fun KVisTable.backButton(screen: Screen) = textBtn("back") { screen.popPanel() }
 
-    /** A function that will add a back button to a panel constructed with KTX,
-     * see most panels in menu for an example. */
-    internal inline fun KVisTable.textBtn(text: String, row: Boolean = true, crossinline clicked: KVisTextButton.() -> Unit): KVisTextButton {
-        return visTextButton(I18N[text]) {
-            it.height(Skin.textButtonHeight).width(Skin.textButtonWidth).pad(20f)
-            if (row) it.row()
-            click()
-            onClick(clicked)
-        }
-    }
-
     override fun setStage(stage: Stage?) {
         super.setStage(stage)
         stage?.keyboardFocus = focusedActor
@@ -70,4 +58,15 @@ abstract class Panel(screen: Screen) : Table(Scene2DSkin.defaultSkin) {
 
     /** Should be called when panel is to be removed. */
     open fun dispose() {}
+}
+
+/** A function that will add a back button to a panel constructed with KTX,
+ * see most panels in menu for an example. */
+inline fun Table.textBtn(text: String, row: Boolean = true, crossinline clicked: VisTextButton.() -> Unit): VisTextButton {
+    val btn = VisTextButton(I18N.tryGet(text) ?: text)
+    val cell = add(btn).height(Skin.textButtonHeight).width(Skin.textButtonWidth).pad(20f)
+    if (row) cell.row()
+    click()
+    btn.onClick(clicked)
+    return btn
 }

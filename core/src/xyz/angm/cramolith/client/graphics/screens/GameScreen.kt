@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 6:43 PM.
+ * This file was last modified at 2/10/21, 7:34 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -21,6 +21,7 @@ import xyz.angm.cramolith.client.Cramolith
 import xyz.angm.cramolith.client.actions.PlayerInputHandler
 import xyz.angm.cramolith.client.ecs.PlayerMapper
 import xyz.angm.cramolith.client.ecs.systems.RenderSystem
+import xyz.angm.cramolith.client.ecs.systems.TriggerSystem
 import xyz.angm.cramolith.client.graphics.panels.menu.MessagePanel
 import xyz.angm.cramolith.client.graphics.windows.ChatWindow
 import xyz.angm.cramolith.client.graphics.windows.MenuWindow
@@ -148,6 +149,7 @@ class GameScreen(
         add(renderSystem as EntityListener)
 
         add(VelocitySystem())
+        add(TriggerSystem(this@GameScreen))
         add(RemoveSystem())
         add(players)
     }

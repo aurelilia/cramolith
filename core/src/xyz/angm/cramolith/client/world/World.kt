@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 6:56 PM.
+ * This file was last modified at 2/10/21, 7:01 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -28,7 +28,7 @@ private val tmpP = Vector3()
 
 class World(private val player: Entity) : Group() {
 
-    private val map = WorldMap.of("overworld")
+    val map = WorldMap.of("overworld")
     private var goalScale = DEFAULT_SCALE
 
     init {

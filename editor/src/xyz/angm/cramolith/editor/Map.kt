@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 3:14 AM.
+ * This file was last modified at 2/10/21, 4:42 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -19,6 +19,8 @@ import com.kotcrab.vis.ui.util.dialog.Dialogs
 import com.kotcrab.vis.ui.util.dialog.InputDialogAdapter
 import com.kotcrab.vis.ui.widget.VisImage
 import ktx.actors.onClickEvent
+import xyz.angm.cramolith.common.world.Trigger
+import xyz.angm.cramolith.common.world.TriggerType
 import xyz.angm.cramolith.common.world.WorldMap
 import kotlin.math.abs
 import kotlin.math.min
@@ -26,7 +28,7 @@ import kotlin.math.roundToInt
 
 private val tmp = Vector2()
 
-class Map(map: WorldMap) : VisImage(map.texture) {
+class Map(private val screen: EditorScreen, map: WorldMap) : VisImage(map.texture) {
 
     private var scrolled = false
 
@@ -38,6 +40,7 @@ class Map(map: WorldMap) : VisImage(map.texture) {
         set(value) {
             field = value
             setDrawable(value.texture)
+            screen.mapOrLayoutChanged()
         }
 
     init {
@@ -105,7 +108,7 @@ sealed class EditingMode {
     abstract fun cancel(map: Map)
 }
 
-class FirstTriggerMode(private val type: WorldMap.TriggerType) : EditingMode() {
+class FirstTriggerMode(private val type: TriggerType) : EditingMode() {
 
     override fun handleClick(map: Map, x: Float, y: Float) {
         map.mode = SecondTriggerMode(Vector2(x.roundToInt().toFloat(), y.roundToInt().toFloat()), type)
@@ -127,7 +130,7 @@ class FirstTriggerMode(private val type: WorldMap.TriggerType) : EditingMode() {
     }
 }
 
-class SecondTriggerMode(private val first: Vector2, private val type: WorldMap.TriggerType) : EditingMode() {
+class SecondTriggerMode(private val first: Vector2, private val type: TriggerType) : EditingMode() {
 
     override fun handleClick(map: Map, x: Float, y: Float): Unit = map.run {
         mode = null
@@ -138,7 +141,7 @@ class SecondTriggerMode(private val first: Vector2, private val type: WorldMap.T
 
         val add = { idx: Int ->
             map.map.triggers.add(
-                WorldMap.Trigger(
+                Trigger(
                     type,
                     min(x1, x2),
                     min(y1, y2),

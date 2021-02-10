@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 3:38 AM.
+ * This file was last modified at 2/10/21, 5:06 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -11,23 +11,20 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import com.kotcrab.vis.ui.widget.VisWindow
 import ktx.actors.plusAssign
+import ktx.collections.*
 import xyz.angm.cramolith.client.Cramolith
 import xyz.angm.cramolith.client.graphics.screens.Screen
 import xyz.angm.cramolith.common.runLogE
 import xyz.angm.cramolith.common.world.WorldMap
-import xyz.angm.cramolith.editor.windows.DrawTriggerSelectWindow
-import xyz.angm.cramolith.editor.windows.MenuWindow
-import xyz.angm.cramolith.editor.windows.SelectMapWindow
-import xyz.angm.cramolith.editor.windows.TeleportsWindow
+import xyz.angm.cramolith.editor.windows.*
 
 class EditorScreen(val game: Cramolith) : Screen() {
 
     val stage = Stage(ScreenViewport())
-    val map = Map(WorldMap.of("overworld"))
+    val map = Map(this, WorldMap.of("overworld"))
+    private val windows = GdxArray<Window>()
     private var lastWindowHeight = 0f
 
     init {
@@ -38,6 +35,7 @@ class EditorScreen(val game: Cramolith) : Screen() {
         loadWindow(SelectMapWindow(this))
         loadWindow(DrawTriggerSelectWindow(this))
         loadWindow(TeleportsWindow(this))
+        loadWindow(PlaceActorSelectWindow(this))
 
         // Input
         val multiplex = InputMultiplexer()
@@ -59,10 +57,20 @@ class EditorScreen(val game: Cramolith) : Screen() {
         stage.draw()
     }
 
-    private fun loadWindow(window: VisWindow) {
+    internal fun mapOrLayoutChanged() {
+        lastWindowHeight = 0f
+        windows.forEach { window ->
+            window.mapChanged(this)
+            window.setPosition(0f, lastWindowHeight)
+            lastWindowHeight = window.y + window.height + 10f
+        }
+    }
+
+    private fun loadWindow(window: Window) {
         stage += window
-        window.setPosition(0f, lastWindowHeight, Align.bottomLeft)
-        lastWindowHeight = window.y + window.height
+        windows.add(window)
+        window.setPosition(0f, lastWindowHeight)
+        lastWindowHeight = window.y + window.height + 10f
     }
 
     override fun resize(width: Int, height: Int) {

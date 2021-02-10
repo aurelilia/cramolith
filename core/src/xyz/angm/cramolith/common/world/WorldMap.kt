@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 3:34 AM.
+ * This file was last modified at 2/10/21, 4:12 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -8,11 +8,11 @@
 package xyz.angm.cramolith.common.world
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.IntMap
 import com.badlogic.gdx.utils.ObjectMap
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import ktx.assets.file
 import ktx.collections.*
 import xyz.angm.cramolith.client.resources.ResourceManager
@@ -23,23 +23,28 @@ class WorldMap(
     val ident: String,
     val index: Int,
     val triggers: MutableList<Trigger> = ArrayList(),
-    val teleports: MutableList<Teleport> = ArrayList()
+    val teleports: MutableList<Teleport> = ArrayList(),
+    val actors: MutableMap<String, WorldActor> = HashMap()
 ) {
 
     val texture get() = ResourceManager.get<Texture>("map/$ident.png")
 
-    @Serializable
-    data class Trigger(val type: TriggerType, val x: Int, val y: Int, val width: Int, val height: Int, val idx: Int)
+    @Transient
+    val actorsId = IntMap<WorldActor>()
 
-    enum class TriggerType(val color: Color, val indexSays: String?) {
-        Collision(Color.DARK_GRAY, null),
-        Teleport(Color.FOREST, "Map ID"),
-        TrainerChallenge(Color.SCARLET, "Trainer ID"),
-        Cutscene(Color.ROYAL, "Cutscene ID")
+    init {
+        for (actor in actors.values) {
+            actorsId[actor.index] = actor
+        }
     }
 
-    @Serializable
-    data class Teleport(val map: Int, val target: Int)
+    fun newActor(name: String, texture: String): Boolean {
+        val actor = WorldActor(texture, actorsId.size, ArrayList())
+        if (!actor.tryLoad()) return false
+        actors[name] = actor
+        actorsId[actorsId.size] = actor
+        return true
+    }
 
     companion object {
 

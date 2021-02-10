@@ -4,3 +4,4 @@ triggers: []
 teleports:
   - map: 0
     target: 0
+actors: {}

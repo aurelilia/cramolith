@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 2:23 AM.
+ * This file was last modified at 2/10/21, 4:26 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -62,9 +62,9 @@ abstract class Panel(screen: Screen) : Table(Scene2DSkin.defaultSkin) {
 
 /** A function that will add a back button to a panel constructed with KTX,
  * see most panels in menu for an example. */
-inline fun Table.textBtn(text: String, row: Boolean = true, crossinline clicked: VisTextButton.() -> Unit): VisTextButton {
+inline fun Table.textBtn(text: String, row: Boolean = true, colspan: Int = 1, crossinline clicked: VisTextButton.() -> Unit): VisTextButton {
     val btn = VisTextButton(I18N.tryGet(text) ?: text)
-    val cell = add(btn).height(Skin.textButtonHeight).width(Skin.textButtonWidth).pad(8f)
+    val cell = add(btn).height(Skin.textButtonHeight).width(Skin.textButtonWidth).pad(8f).colspan(colspan)
     if (row) cell.row()
     click()
     btn.onClick(clicked)

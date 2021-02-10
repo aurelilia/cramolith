@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 2:40 AM.
+ * This file was last modified at 2/10/21, 5:33 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -52,6 +52,7 @@ object ResourceManager {
             load<Texture>("sprites/pokemon/${mon.ident}.png")
             load<Texture>("sprites/pokemon/icon/${mon.ident}.png")
         }
+        file("sprites/actors").list(".png").forEach { load<Texture>(it) }
         file("map/").list(".png").forEach { load<Texture>(it) }
     }
 

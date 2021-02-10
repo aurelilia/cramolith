@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 4:42 PM.
+ * This file was last modified at 2/10/21, 5:21 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -14,6 +14,7 @@ import com.kotcrab.vis.ui.widget.VisWindow
 import ktx.actors.plusAssign
 import xyz.angm.cramolith.client.graphics.panels.textBtn
 import xyz.angm.cramolith.editor.EditorScreen
+import xyz.angm.cramolith.editor.modes.PlaceActorMode
 
 class PlaceActorSelectWindow(screen: EditorScreen) : Window("Place Actor") {
 
@@ -24,7 +25,9 @@ class PlaceActorSelectWindow(screen: EditorScreen) : Window("Place Actor") {
     override fun mapChanged(screen: EditorScreen) {
         clearChildren()
         for (actor in screen.map.map.actors) {
-            textBtn(actor.key) { Dialogs.showOKDialog(stage, "actor", actor.value.texture) }
+            textBtn(actor.key) {
+                screen.map.mode = PlaceActorMode(actor.value)
+            }
         }
         textBtn("New Actor") { stage += NewActorWindow(screen) }
         pack()

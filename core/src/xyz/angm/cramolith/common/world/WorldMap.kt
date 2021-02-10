@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 4:12 PM.
+ * This file was last modified at 2/10/21, 5:22 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -39,7 +39,7 @@ class WorldMap(
     }
 
     fun newActor(name: String, texture: String): Boolean {
-        val actor = WorldActor(texture, actorsId.size, ArrayList())
+        val actor = WorldActor(texture, actorsId.size)
         if (!actor.tryLoad()) return false
         actors[name] = actor
         actorsId[actorsId.size] = actor

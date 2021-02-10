@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/10/21, 6:47 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -25,7 +25,7 @@ import xyz.angm.rox.systems.IteratingSystem
 
 /** A system that automatically updates the positions of all renderable components that need it.
  * Also an entity listener for adding the rendering component to new entities. */
-class RenderSystem(private val screen: GameScreen) : IteratingSystem(allOf(renderable, position)), EntityListener {
+class RenderSystem(private val screen: GameScreen) : IteratingSystem(allOf(renderable, position), 10000), EntityListener {
 
     override val family = allOf()
 
@@ -42,7 +42,7 @@ class RenderSystem(private val screen: GameScreen) : IteratingSystem(allOf(rende
             val actor = actorFor(entity)
             val component = RenderableComponent(actor)
             entity.add(engine, component)
-            screen.stage.addActor(actor)
+            screen.world.addActor(actor)
         }
     }
 

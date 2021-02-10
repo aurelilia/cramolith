@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/10/21, 6:32 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -24,6 +24,11 @@ class PlayerInputHandler(private val screen: GameScreen) : InputAdapter() {
     /** Searches and executes the action bound to the key */
     override fun keyUp(keycode: Int): Boolean {
         configuration.keybinds[keycode]?.keyUp?.invoke(screen)
+        return true
+    }
+
+    override fun scrolled(amountX: Float, amountY: Float): Boolean {
+        screen.world.zoom(-amountY)
         return true
     }
 }

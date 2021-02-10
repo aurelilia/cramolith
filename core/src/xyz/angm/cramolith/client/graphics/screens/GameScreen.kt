@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 3:33 AM.
+ * This file was last modified at 2/10/21, 6:43 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -16,6 +16,7 @@ import com.kotcrab.vis.ui.widget.VisWindow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
+import ktx.actors.plusAssign
 import xyz.angm.cramolith.client.Cramolith
 import xyz.angm.cramolith.client.actions.PlayerInputHandler
 import xyz.angm.cramolith.client.ecs.PlayerMapper
@@ -25,6 +26,7 @@ import xyz.angm.cramolith.client.graphics.windows.ChatWindow
 import xyz.angm.cramolith.client.graphics.windows.MenuWindow
 import xyz.angm.cramolith.client.networking.Client
 import xyz.angm.cramolith.client.resources.I18N
+import xyz.angm.cramolith.client.world.World
 import xyz.angm.cramolith.common.ecs.components.IgnoreSyncFlag
 import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.ecs.systems.NetworkSystem
@@ -71,6 +73,7 @@ class GameScreen(
 
     // 2D Graphics
     val stage = Stage(ScreenViewport())
+    val world = World(player)
     private val activeWindows = HashMap<String, VisWindow>()
 
     val entitiesLoaded get() = engine.entities.size
@@ -111,7 +114,7 @@ class GameScreen(
             window == null -> {
                 val new = create(this)
                 new.centerWindow()
-                stage.addActor(new.fadeIn())
+                stage += new.fadeIn()
                 activeWindows[name] = new
             }
             window.stage == stage -> window.fadeOut()
@@ -173,7 +176,8 @@ class GameScreen(
 
     // Initialize all rendering components
     private fun initRender() {
-        stage.addActor(panels)
+        stage += panels
+        stage += world
     }
 
     override fun resize(width: Int, height: Int) {

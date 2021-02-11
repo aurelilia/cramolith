@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 4:42 PM.
+ * This file was last modified at 2/11/21, 11:21 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -32,7 +32,8 @@ class TeleportsWindow(screen: EditorScreen) : Window("Map Teleports") {
                     val map = WorldMap.maybeOf(input)
                     if (map == null) Dialogs.showErrorDialog(stage, "Unknown map.")
                     else {
-                        screen.map.map.teleports.add(Teleport(map = map.index, map.teleports.size))
+                        val offs = if (screen.map.map === map) 1 else 0
+                        screen.map.map.teleports.add(Teleport(map = map.index, map.teleports.size + offs))
                         map.teleports.add(Teleport(map = screen.map.map.index, screen.map.map.teleports.size - 1))
                     }
                     screen.mapOrLayoutChanged()

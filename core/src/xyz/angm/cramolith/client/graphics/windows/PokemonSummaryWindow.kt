@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 10:40 PM.
+ * This file was last modified at 2/11/21, 10:27 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -42,7 +42,7 @@ class PokemonSummaryWindow(pokemon: Pokemon) : Window("summary") {
             visLabel("${I18N["pokemon.speed"]}: ${pokemon.speed}") { it.expandX().fillX().row() }
 
             visLabel(I18N["pokemon.moves"]) { it.expandX().fillX().padTop(10f).row() }
-            for (move in pokemon.moveIdents) {
+            for (move in pokemon.moveIds) {
                 val move = Move.of(move)
                 visLabel(move.name) {
                     color = move.type.color

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 9:36 PM.
+ * This file was last modified at 2/11/21, 10:25 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -17,6 +17,7 @@ class Battle(
     val right get() = rightOp!!
 }
 
+@kotlinx.serialization.Serializable
 class PokeBattleState(var hp: Int, var status: StatusEffect?) : Serializable
 
 enum class StatusEffect : Serializable {

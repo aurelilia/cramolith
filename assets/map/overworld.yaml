@@ -74,4 +74,7 @@ actors:
       - "dialog 2"
       - "title player"
       - "dialog 1"
+      - "title joey"
+      - "dialog 1"
+      - "battle joey"
       - "disable trigger"

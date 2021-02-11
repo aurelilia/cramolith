@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 10:00 PM.
+ * This file was last modified at 2/11/21, 10:36 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -25,7 +25,7 @@ class PlayerOpponent(val playerId: Int = 0, val activePokemonIdx: Int = 0) : Opp
     override fun calcQueuedAction(battle: Battle) = queuedAction
 }
 
-class NpcTrainerOpponent(val party: ArrayList<Pokemon> = ArrayList(), val activeIdx: Int = 0) : Opponent() {
+class NpcTrainerOpponent(val party: Array<Pokemon> = emptyArray(), val activeIdx: Int = 0) : Opponent() {
     override fun activePokemon(screen: GameScreen) = party[activeIdx]
     override fun calcQueuedAction(battle: Battle) = QueuedMove(0)
 }

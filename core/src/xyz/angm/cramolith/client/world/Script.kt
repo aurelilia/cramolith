@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 7:37 PM.
+ * This file was last modified at 2/11/21, 10:36 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -15,8 +15,14 @@ import ktx.actors.onClick
 import ktx.actors.plusAssign
 import ktx.collections.*
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
+import xyz.angm.cramolith.client.graphics.windows.BattleWindow
 import xyz.angm.cramolith.client.resources.I18N
+import xyz.angm.cramolith.common.ecs.network
 import xyz.angm.cramolith.common.ecs.playerM
+import xyz.angm.cramolith.common.pokemon.Trainer
+import xyz.angm.cramolith.common.pokemon.battle.Battle
+import xyz.angm.cramolith.common.pokemon.battle.NpcTrainerOpponent
+import xyz.angm.cramolith.common.pokemon.battle.PlayerOpponent
 import xyz.angm.cramolith.common.world.WorldActor
 
 /** A script that is executed when the player interacts with an actor
@@ -59,6 +65,15 @@ class Script(private val screen: GameScreen, private val actor: WorldActor, priv
                 }
                 dialogIdx += count
                 screen.stage += TextWindow(title, list) { next() }
+            }
+
+            "battle" -> {
+                val trainer = Trainer.of(operands)
+                screen.player[playerM].battle = Battle(
+                    PlayerOpponent(screen.player[network].id),
+                    NpcTrainerOpponent(trainer.pokemon)
+                )
+                screen.stage += BattleWindow(screen)
             }
 
             "title" -> {

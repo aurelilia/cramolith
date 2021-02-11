@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 6:32 PM.
+ * This file was last modified at 2/11/21, 7:42 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -94,11 +94,13 @@ class TriggerSystem(private val screen: GameScreen) : EntitySystem() {
 
                 playerC.isInCutscene = true
                 player[network].needsSync = true
+                screen.inputHandler.disabled = true
 
                 val actor = screen.world.map.actorsId[trigger.idx]
                 Script(screen, actor) {
                     playerC.isInCutscene = false
                     player[network].needsSync = true
+                    screen.inputHandler.disabled = false
                 }
             }
         }

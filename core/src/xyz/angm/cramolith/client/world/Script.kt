@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 6:51 PM.
+ * This file was last modified at 2/11/21, 7:37 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -56,7 +56,6 @@ class Script(private val screen: GameScreen, private val actor: WorldActor, priv
                 val list = GdxArray<String>()
                 for (i in count - 1 downTo 0) {
                     list.add(I18N["dialog.$id.${dialogIdx + i}"])
-                    println("dialog.$id.${dialogIdx + i}")
                 }
                 dialogIdx += count
                 screen.stage += TextWindow(title, list) { next() }
@@ -70,11 +69,15 @@ class Script(private val screen: GameScreen, private val actor: WorldActor, priv
             "disable" -> {
                 val map = screen.player[playerM].actorsTriggered.getOrPut(screen.world.map.index, { HashSet() })
                 map.add(actor.index)
+                next()
             }
 
-            else -> Dialogs.showErrorDialog(
-                screen.stage, "Encountered unknown command $command while executing actor script. Aborting, please report to devs."
-            )
+            else -> {
+                Dialogs.showErrorDialog(
+                    screen.stage, "Encountered unknown command $command while executing actor script. Aborting, please report to devs."
+                )
+                completed()
+            }
         }
     }
 

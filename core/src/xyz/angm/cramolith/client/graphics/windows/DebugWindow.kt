@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 1:54 AM.
+ * This file was last modified at 2/11/21, 10:41 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -9,7 +9,10 @@ package xyz.angm.cramolith.client.graphics.windows
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.kotcrab.vis.ui.util.dialog.Dialogs
+import xyz.angm.cramolith.client.graphics.panels.textBtn
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
+import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.ecs.position
 
 class DebugWindow(private val screen: GameScreen) : Window("debug") {
@@ -18,7 +21,11 @@ class DebugWindow(private val screen: GameScreen) : Window("debug") {
 
     init {
         addCloseButton()
-        add(text)
+        add(text).row()
+        textBtn("Clear tripped actors") {
+            screen.player[playerM].actorsTriggered.clear()
+            Dialogs.showOKDialog(stage, "cleared", "triggers cleared.")
+        }
         act(0f)
         pack()
     }

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 5:10 PM.
+ * This file was last modified at 2/11/21, 11:16 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -8,6 +8,8 @@
 package xyz.angm.cramolith.editor.modes
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.kotcrab.vis.ui.util.Validators
 import com.kotcrab.vis.ui.util.dialog.Dialogs
@@ -20,6 +22,25 @@ import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.roundToInt
 
+class DeleteTriggerMode : EditingMode() {
+    override fun handleClick(map: Map, x: Float, y: Float) {
+        val rect = Rectangle()
+        map.map.triggers.removeIf { trigger ->
+            rect.set(trigger.x.toFloat(), trigger.y.toFloat(), trigger.width.toFloat(), trigger.height.toFloat())
+            rect.contains(x, y)
+        }
+    }
+
+    override fun drawShape(map: Map) = map.run {
+        shape.color = Color.RED
+        tmp.set(Gdx.input.x.toFloat(), (stage.height - Gdx.input.y))
+        shape.rect(tmp.x - 10f, tmp.y - 10f, 20f, 20f)
+    }
+
+    override fun cancel(map: Map) {
+        map.mode = null
+    }
+}
 
 class FirstTriggerMode(private val type: TriggerType) : EditingMode() {
 

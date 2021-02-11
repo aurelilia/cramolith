@@ -1,19 +1,20 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 3:08 AM.
+ * This file was last modified at 2/11/21, 10:00 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
 
 package xyz.angm.cramolith.common.pokemon
 
+import xyz.angm.cramolith.common.pokemon.battle.PokeBattleState
 import java.io.Serializable
 
 class Pokemon(
-    private val speciesIdent: String,
-    var nickname: String?,
-    var level: Int,
-    var exp: Int,
+    private val speciesIdent: String = "",
+    var nickname: String? = null,
+    var level: Int = 0,
+    var exp: Int = 0,
     val moveIdents: ArrayList<String> = ArrayList(),
 ) : Serializable {
     val species get() = Species.of(speciesIdent)

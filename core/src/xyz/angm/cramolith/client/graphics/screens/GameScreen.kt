@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 7:28 PM.
+ * This file was last modified at 2/11/21, 9:41 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -67,6 +67,7 @@ class GameScreen(
 
     // Entities
     val engine = Engine()
+    val netSystem = NetworkSystem(client::send)
     val inputHandler = PlayerInputHandler(this)
     val players = PlayerMapper()
     private val playersFamily = allOf(playerM)
@@ -137,7 +138,6 @@ class GameScreen(
     // Initialize all ECS systems
     private fun initSystems() = engine.apply {
         addLocalPlayerComponents()
-        val netSystem = NetworkSystem(client::send)
         add(netSystem as EntitySystem)
         add(netSystem as EntityListener)
         client.addListener {

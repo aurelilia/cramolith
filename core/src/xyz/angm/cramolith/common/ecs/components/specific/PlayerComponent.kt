@@ -1,14 +1,14 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 12:10 AM.
+ * This file was last modified at 2/11/21, 10:21 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
 
 package xyz.angm.cramolith.common.ecs.components.specific
 
-import xyz.angm.cramolith.common.pokemon.Battle
 import xyz.angm.cramolith.common.pokemon.Pokemon
+import xyz.angm.cramolith.common.pokemon.battle.Battle
 import xyz.angm.rox.Component
 
 /** Component for all player state. Not all is persisted (see server-side DB)

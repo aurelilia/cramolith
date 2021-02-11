@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/9/21, 6:28 PM.
+ * This file was last modified at 2/11/21, 5:25 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -27,7 +27,7 @@ val game = object : Cramolith() {
         VisUI.load()
         ResourceManager.init()
         ResourceManager.continueLoading(Int.MAX_VALUE)
-        setScreen(EditorScreen(this))
+        setScreen(EditorScreen())
     }
 }
 

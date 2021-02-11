@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/6/21, 10:25 PM.
+ * This file was last modified at 2/11/21, 5:22 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -9,7 +9,6 @@ package xyz.angm.cramolith.client.actions
 
 import com.badlogic.gdx.utils.ObjectMap
 import ktx.collections.*
-import xyz.angm.cramolith.client.graphics.panels.game.PausePanel
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.client.graphics.windows.DebugWindow
 import xyz.angm.cramolith.client.graphics.windows.OnlinePlayersWindow
@@ -50,10 +49,6 @@ object PlayerActions {
         window("chat") { throw UnsupportedOperationException() }
         window("debug") { DebugWindow(it) }
         window("party") { PartyWindow(it) }
-
-        add("pauseMenu") {
-            if (it.panels.isEmpty) it.pushPanel(PausePanel(it))
-        }
     }
 
     /** Get an action. */

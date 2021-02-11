@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 5:22 PM.
+ * This file was last modified at 2/11/21, 6:43 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -18,6 +18,12 @@ import ktx.collections.*
 import xyz.angm.cramolith.client.resources.ResourceManager
 import xyz.angm.cramolith.common.yaml
 
+/** A world map containing everything inside it. Maps are serialized in `assets/map/`.
+ * @property ident Identifier of the map.
+ * @property index Inded of the map used for cross-map references.
+ * @property triggers All triggers in this map.
+ * @property teleports All teleports in this map.
+ * @property actors All actors in this map. */
 @Serializable
 class WorldMap(
     val ident: String,

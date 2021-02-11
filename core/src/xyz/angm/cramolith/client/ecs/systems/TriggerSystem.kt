@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 12:14 AM.
+ * This file was last modified at 2/11/21, 6:32 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -26,6 +26,8 @@ import xyz.angm.rox.systems.EntitySystem
 const val MAX_TRIGGER_DIST = 500 * 500
 const val MAX_UPDATE_DIST = 500 * 500
 
+/** System responsible for processing the triggers a player steps on.
+ * Triggers are part of the map and cause some action when the player intersects them. */
 class TriggerSystem(private val screen: GameScreen) : EntitySystem() {
 
     private val player = screen.player

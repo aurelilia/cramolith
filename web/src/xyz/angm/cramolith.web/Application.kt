@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 12:23 AM.
+ * This file was last modified at 2/11/21, 6:29 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -30,6 +30,7 @@ import xyz.angm.cramolith.server.database.Players
 fun main(args: Array<String>) = EngineMain.main(args)
 fun startWeb() = main(emptyArray())
 
+@Suppress("unused")
 fun Application.module() {
     install(FreeMarker) {
         templateLoader = ClassTemplateLoader(this::class.java.classLoader, "templates")

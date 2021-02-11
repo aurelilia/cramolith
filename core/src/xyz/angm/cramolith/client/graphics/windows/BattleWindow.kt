@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 3:29 AM.
+ * This file was last modified at 2/11/21, 6:27 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -52,10 +52,10 @@ class BattleWindow(private val screen: GameScreen) : Window("battle") {
 
     class PokemonDisplay(pokemon: Pokemon) : VisTable() {
 
-        val nameLabel = VisLabel(pokemon.displayName)
-        val hpLabel = VisLabel("${pokemon.battleState?.hp ?: 10} / ${pokemon.hp}")
-        val hpBar = VisProgressBar(0f, pokemon.hp.toFloat(), 1f, false)
-        val sprite = VisImage(pokemon.species.sprite)
+        private val nameLabel = VisLabel(pokemon.displayName)
+        private val hpLabel = VisLabel("${pokemon.battleState?.hp ?: 10} / ${pokemon.hp}")
+        private val hpBar = VisProgressBar(0f, pokemon.hp.toFloat(), 1f, false)
+        private val sprite = VisImage(pokemon.species.sprite)
 
         init {
             add(nameLabel).width(200f)

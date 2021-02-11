@@ -1,17 +1,21 @@
+/*
+ * Developed as part of the Cramolith project.
+ * This file was last modified at 2/11/21, 6:20 PM.
+ * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
+ * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
+ */
+
 package xyz.angm.cramolith.common.ecs.components.specific
 
 import com.badlogic.gdx.math.MathUtils
 import xyz.angm.cramolith.common.ecs.components.NetworkSyncComponent
 import xyz.angm.cramolith.common.ecs.components.PositionComponent
 import xyz.angm.cramolith.common.ecs.components.VelocityComponent
-import xyz.angm.cramolith.common.ecs.position
-import xyz.angm.cramolith.common.ecs.velocity
 import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.rox.Component
-import xyz.angm.rox.ComponentMapper
 import xyz.angm.rox.Engine
 
-class WildPokemonComponent() : Component {
+class WildPokemonComponent : Component {
     lateinit var wildPokemon: Pokemon
 }
 

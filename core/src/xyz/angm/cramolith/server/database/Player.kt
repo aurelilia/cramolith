@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 12:08 AM.
+ * This file was last modified at 2/11/21, 6:27 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -31,7 +31,7 @@ class Player(id: EntityID<Int>) : IntEntity(id) {
     var posX by Players.posX
     var posY by Players.posY
     var posMap by Players.posMap
-    var actorsTriggered by Players.actorsTriggered
+    private var actorsTriggered by Players.actorsTriggered
     var triggeredActors: HashMap<Int, HashSet<Int>>
         get() = fst.asObject(actorsTriggered.bytes) as HashMap<Int, HashSet<Int>>
         set(value) {

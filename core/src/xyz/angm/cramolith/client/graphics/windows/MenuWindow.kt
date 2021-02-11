@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 3:09 AM.
+ * This file was last modified at 2/11/21, 5:14 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -9,6 +9,7 @@ package xyz.angm.cramolith.client.graphics.windows
 
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Align
+import com.kotcrab.vis.ui.util.dialog.Dialogs
 import com.kotcrab.vis.ui.widget.VisTextButton
 import ktx.actors.onClick
 import ktx.scene2d.vis.visTextTooltip
@@ -30,7 +31,16 @@ class MenuWindow(screen: GameScreen) : Window("menu") {
         addButton("players-online", "onlinePlayers")
         addButton("debug", "debug")
         addButton("party", "party")
-        addButton("pause", "pauseMenu")
+
+        val exitBtn = VisTextButton("X")
+        exitBtn.onClick {
+            Dialogs.showConfirmDialog(stage, I18N["exit.title"], I18N["exit.msg"], arrayOf(I18N["yes"], I18N["no"]), arrayOf(true, false)) {
+                if (it == true) screen.returnToMenu()
+            }
+        }
+        exitBtn.visTextTooltip(I18N["exit.tooltip"])
+        add(exitBtn).left().pad(5f)
+
         pack()
     }
 

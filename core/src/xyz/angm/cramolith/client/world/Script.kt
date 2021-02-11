@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 12:13 AM.
+ * This file was last modified at 2/11/21, 6:40 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -20,6 +20,16 @@ import xyz.angm.cramolith.client.resources.I18N
 import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.world.WorldActor
 
+/** A script that is executed when the player interacts with an actor
+ * or steps on an Actor trigger. Script is part of the actor definition.
+ *
+ * Uses a small custom scripting language with following instructions:
+ * - FIRST INSTRUCTION: Specifies the script id. See other instructions.
+ * - `dialog X`: Display the next X dialog boxes, where the text for each box is I18N `dialog.$scriptid.$index`. Starts
+ *               at 0 and counts up, remembering previous `dialog` instructions.
+ * - `title X`: Sets the title of dialog boxes (the speaker) to I18N `dialogtitle.$X`.
+ * - `disable trigger`: Sets this script as done, preventing the player from triggering ever it again.
+ *                      Not putting this at the end will cause a script to be executable infinitely often. */
 class Script(private val screen: GameScreen, private val actor: WorldActor, private val completed: () -> Unit) {
 
     private val id: String = actor.script[0]

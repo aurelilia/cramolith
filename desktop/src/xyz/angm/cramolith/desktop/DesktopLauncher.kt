@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/11/21, 6:30 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -12,6 +12,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import xyz.angm.cramolith.client.Cramolith
+import xyz.angm.cramolith.client.resources.soundPlayer
 import xyz.angm.cramolith.common.level
 import xyz.angm.cramolith.common.log
 import javax.swing.JOptionPane
@@ -29,8 +30,7 @@ fun main(arg: Array<String>) {
     Thread.setDefaultUncaughtExceptionHandler(::handleException)
 
     setConfiguration()
-    // TODO: unresolved import?
-    // soundPlayer = Sound
+    soundPlayer = Sound
     Lwjgl3Application(game, configuration)
 }
 

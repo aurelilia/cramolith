@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 4:26 PM.
+ * This file was last modified at 2/11/21, 6:20 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -18,14 +18,14 @@ import ktx.scene2d.Scene2DSkin
 import ktx.scene2d.vis.KVisTable
 import xyz.angm.cramolith.client.graphics.Skin
 import xyz.angm.cramolith.client.graphics.click
-import xyz.angm.cramolith.client.graphics.screens.Screen
+import xyz.angm.cramolith.client.graphics.screens.MenuScreen
 import xyz.angm.cramolith.client.resources.I18N
 
 /** A panel is overlaid onto a screen, and used for UI.
  * @param screen The screen currently active
  * @property focusedActor The actor to receive keyboard & scroll focus. Defaults to the panel itself. */
 @Suppress("LeakingThis") // While this can be an issue, the methods called should not be overridden anyways
-abstract class Panel(screen: Screen) : Table(Scene2DSkin.defaultSkin) {
+abstract class Panel(screen: MenuScreen) : Table(Scene2DSkin.defaultSkin) {
 
     protected open var focusedActor: Actor = this
 
@@ -40,7 +40,7 @@ abstract class Panel(screen: Screen) : Table(Scene2DSkin.defaultSkin) {
 
     /** A function that will add a back button to a panel constructed with KTX,
      * see most panels in menu for an example. */
-    internal fun KVisTable.backButton(screen: Screen) = textBtn("back") { screen.popPanel() }
+    internal fun KVisTable.backButton(screen: MenuScreen) = textBtn("back") { screen.popPanel() }
 
     override fun setStage(stage: Stage?) {
         super.setStage(stage)
@@ -55,9 +55,6 @@ abstract class Panel(screen: Screen) : Table(Scene2DSkin.defaultSkin) {
             stage?.scrollFocus = focusedActor
         }
     }
-
-    /** Should be called when panel is to be removed. */
-    open fun dispose() {}
 }
 
 /** A function that will add a back button to a panel constructed with KTX,

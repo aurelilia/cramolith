@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 5:22 PM.
+ * This file was last modified at 2/11/21, 6:45 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -23,7 +23,8 @@ import xyz.angm.cramolith.common.ecs.velocity
 data class PlayerAction(
     val type: String,
     val keyDown: (GameScreen) -> Unit,
-    val keyUp: (GameScreen) -> Unit
+    val keyUp: (GameScreen) -> Unit,
+    var triggered: Boolean = false
 )
 
 /** The object that contains all actions and allows retrieving them. */

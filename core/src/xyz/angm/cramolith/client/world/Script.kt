@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 6:40 PM.
+ * This file was last modified at 2/11/21, 6:51 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -14,7 +14,6 @@ import com.kotcrab.vis.ui.widget.VisWindow
 import ktx.actors.onClick
 import ktx.actors.plusAssign
 import ktx.collections.*
-import xyz.angm.cramolith.client.graphics.click
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.client.resources.I18N
 import xyz.angm.cramolith.common.ecs.playerM
@@ -86,7 +85,6 @@ class Script(private val screen: GameScreen, private val actor: WorldActor, priv
             add(label).width(400f)
             val btn = VisTextButton(I18N["dialogui.next"])
             add(btn).pad(5f)
-            btn.click()
             btn.onClick {
                 if (lines.isEmpty) {
                     this@TextWindow.remove()

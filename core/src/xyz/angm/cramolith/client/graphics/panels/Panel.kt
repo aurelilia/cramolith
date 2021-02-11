@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 6:20 PM.
+ * This file was last modified at 2/11/21, 6:51 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -17,7 +17,6 @@ import ktx.actors.onKeyDown
 import ktx.scene2d.Scene2DSkin
 import ktx.scene2d.vis.KVisTable
 import xyz.angm.cramolith.client.graphics.Skin
-import xyz.angm.cramolith.client.graphics.click
 import xyz.angm.cramolith.client.graphics.screens.MenuScreen
 import xyz.angm.cramolith.client.resources.I18N
 
@@ -63,7 +62,6 @@ inline fun Table.textBtn(text: String, row: Boolean = true, colspan: Int = 1, cr
     val btn = VisTextButton(I18N.tryGet(text) ?: text)
     val cell = add(btn).height(Skin.textButtonHeight).width(Skin.textButtonWidth).pad(8f).colspan(colspan)
     if (row) cell.row()
-    click()
     btn.onClick(clicked)
     return btn
 }

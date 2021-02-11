@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/9/21, 6:28 PM.
+ * This file was last modified at 2/11/21, 6:20 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -18,40 +18,34 @@ import xyz.angm.cramolith.client.graphics.panels.Panel
 import xyz.angm.cramolith.client.graphics.panels.menu.MainMenuPanel
 import xyz.angm.cramolith.client.graphics.panels.textBtn
 import xyz.angm.cramolith.client.graphics.screens.MenuScreen
-import xyz.angm.cramolith.client.graphics.screens.Screen
 import xyz.angm.cramolith.client.resources.I18N
 import xyz.angm.cramolith.client.resources.configuration
 
 /** Main options menu. */
-class OptionsPanel(screen: Screen, parent: MainMenuPanel? = null) : Panel(screen) {
+class OptionsPanel(screen: MenuScreen, parent: MainMenuPanel) : Panel(screen) {
 
     init {
         reload(screen, parent)
     }
 
-    private fun reload(screen: Screen, parent: MainMenuPanel?) {
+    private fun reload(screen: MenuScreen, parent: MainMenuPanel) {
         clearChildren()
         this += scene2d.visTable {
-            // Only show certain options on menu screen
-            if (screen is MenuScreen) {
-                val box = visSelectBoxOf(I18N.languages())
-                box.selected = configuration.language
-                box.setAlignment(Align.center)
-                box.onChange {
-                    I18N.setLanguage(box.selected)
-                    parent!!.reload(screen)
-                    reload(screen, parent)
-                    this@OptionsPanel.isVisible = true // Regrab focus lost by reload
-                }
-                box.inCell.height(Skin.textButtonHeight).width(Skin.textButtonWidth).pad(20f).row()
-                row()
+            val box = visSelectBoxOf(I18N.languages())
+            box.selected = configuration.language
+            box.setAlignment(Align.center)
+            box.onChange {
+                I18N.setLanguage(box.selected)
+                parent.reload(screen)
+                reload(screen, parent)
+                this@OptionsPanel.isVisible = true // Regrab focus lost by reload
             }
+            box.inCell.height(Skin.textButtonHeight).width(Skin.textButtonWidth).pad(20f).row()
+            row()
 
             textBtn("options.controls") { screen.pushPanel(ControlsPanel(screen)) }
             backButton(screen)
             setFillParent(true)
         }
     }
-
-    override fun dispose() = configuration.save()
 }

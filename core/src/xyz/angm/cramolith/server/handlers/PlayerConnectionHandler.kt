@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 8:58 PM.
+ * This file was last modified at 2/11/21, 12:22 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -67,6 +67,7 @@ fun createPlayerEntity(engine: Engine, dbEntry: Player) =
         with<PlayerComponent> {
             name = dbEntry.name
             clientUUID = dbEntry.id.value
+            actorsTriggered = dbEntry.triggeredActors
             pokemon.add(Pokemon("pikachu", "Test Subject", 20, 64, arrayListOf("thundershock")))
             pokemon.add(Pokemon("pikachu", "pika!", 10, 30, arrayListOf("quickattack", "thundershock")))
         }
@@ -88,5 +89,7 @@ internal fun Server.handleDisconnect(connection: Connection) {
         val db = Player.findById(playerC.clientUUID) ?: return@transaction
         db.posX = posC.x.toInt()
         db.posY = posC.y.toInt()
+        db.posMap = posC.map
+        db.triggeredActors = playerC.actorsTriggered
     }
 }

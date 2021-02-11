@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 11:22 PM.
+ * This file was last modified at 2/11/21, 9:41 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -10,8 +10,6 @@ package xyz.angm.cramolith.client.graphics.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.kotcrab.vis.ui.widget.VisWindow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -51,7 +49,7 @@ import xyz.angm.rox.systems.EntitySystem
  * The only other responsibility of this class is putting together all graphics sources and drawing them.
  *
  * The screen is initialized by [Cramolith], which means that it's only created after a server connection
- * was established and the initial [InitPacket] was received, and the world around the player was meshed.
+ * was established and the initial [InitPacket] was received.
  *
  * @param client The client for communicating with the server
  *
@@ -69,12 +67,12 @@ class GameScreen(
 
     // Entities
     val engine = Engine()
-    private val inputHandler = PlayerInputHandler(this)
+    val netSystem = NetworkSystem(client::send)
+    val inputHandler = PlayerInputHandler(this)
     val players = PlayerMapper()
     private val playersFamily = allOf(playerM)
 
     // 2D Graphics
-    val stage = Stage(ScreenViewport())
     val world = World(this)
     private val activeWindows = HashMap<String, VisWindow>()
 
@@ -132,15 +130,14 @@ class GameScreen(
         client.disconnectListener = {} // Prevent it from showing the 'disconnected' message when it shouldn't
         game.screen = MenuScreen(game)
         dispose()
-        (game.screen as Screen).pushPanel(MessagePanel(game.screen as Screen, message ?: return) {
-            (game.screen as Screen).popPanel()
+        (game.screen as MenuScreen).pushPanel(MessagePanel(game.screen as MenuScreen, message ?: return) {
+            (game.screen as MenuScreen).popPanel()
         })
     }
 
     // Initialize all ECS systems
     private fun initSystems() = engine.apply {
         addLocalPlayerComponents()
-        val netSystem = NetworkSystem(client::send)
         add(netSystem as EntitySystem)
         add(netSystem as EntityListener)
         client.addListener {
@@ -167,7 +164,7 @@ class GameScreen(
         activeWindows["chat"] = ChatWindow(this, messages)
 
         // Network
-        client.disconnectListener = { Cramolith.postRunnable { returnToMenu(I18N["disconnected-from-server"]) } }
+        client.disconnectListener = { Cramolith.postRunnable { returnToMenu("disconnected-from-server") } }
         client.send(ChatMessagePacket("[CYAN]${player[playerM].name}[LIGHT_GRAY] ${I18N["joined-game"]}"))
 
         // Input
@@ -185,19 +182,11 @@ class GameScreen(
     // Initialize all rendering components
     private fun initRender() {
         stage += world
-        stage += panels
     }
-
-    override fun resize(width: Int, height: Int) {
-        stage.viewport.update(width, height, true)
-    }
-
-    /** hide is called when the screen is no longer active, at which point this type of screen becomes dereferenced and needs to be disposed. */
-    override fun hide() = dispose()
 
     override fun dispose() {
+        super.dispose()
         client.close()
         coScope.cancel()
-        panels.dispose()
     }
 }

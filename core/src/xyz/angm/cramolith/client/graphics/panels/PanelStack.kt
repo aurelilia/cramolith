@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/6/21, 6:21 PM.
+ * This file was last modified at 2/11/21, 6:26 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -11,17 +11,15 @@ import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.utils.Array
-import com.badlogic.gdx.utils.Disposable
 
 private const val TRANSITION_DURATION = 0.2f
 private val TRANSITION = Interpolation.pow3
 
 /** A stack of panels. Always displays the panel at the top of the stack,
  * while also using nice animations for transitioning between panels. */
-class PanelStack : Actor(), Disposable {
+class PanelStack : Actor() {
 
     private val panels = Array<Panel>(true, 5)
-    val isEmpty get() = panels.isEmpty
     val current get() = panels.last()!!
 
     /** Pops the top panel off the stack. Will automatically display the next panel. */
@@ -31,7 +29,6 @@ class PanelStack : Actor(), Disposable {
             Actions.sequence(
                 Actions.moveTo(stage.width * direction, 0f, TRANSITION_DURATION, TRANSITION),
                 Actions.visible(false),
-                Actions.run { panel.dispose() },
                 Actions.removeActor()
             )
         )
@@ -67,7 +64,4 @@ class PanelStack : Actor(), Disposable {
             )
         )
     }
-
-    /** Disposes all panels in the stack. */
-    override fun dispose() = panels.forEach { it.dispose() }
 }

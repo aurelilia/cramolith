@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 11:38 PM.
+ * This file was last modified at 2/11/21, 6:20 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -9,9 +9,9 @@ package xyz.angm.cramolith.client.graphics.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.utils.viewport.ScreenViewport
 import xyz.angm.cramolith.client.Cramolith
+import xyz.angm.cramolith.client.graphics.panels.Panel
+import xyz.angm.cramolith.client.graphics.panels.PanelStack
 import xyz.angm.cramolith.client.graphics.panels.menu.LoadingPanel
 import xyz.angm.cramolith.client.graphics.panels.menu.MainMenuPanel
 import xyz.angm.cramolith.client.resources.ResourceManager
@@ -20,7 +20,7 @@ import xyz.angm.cramolith.client.resources.ResourceManager
  * @param game The game instance. */
 class MenuScreen(private val game: Cramolith) : Screen() {
 
-    private val stage = Stage(ScreenViewport())
+    val panels = PanelStack()
 
     override fun show() {
         stage.addActor(panels)
@@ -46,10 +46,10 @@ class MenuScreen(private val game: Cramolith) : Screen() {
         panels.pushPanel(MainMenuPanel(this))
     }
 
-    override fun resize(width: Int, height: Int) = stage.viewport.update(width, height, true)
+    /** Push a new panel on top of the PanelStack active. */
+    fun pushPanel(panel: Panel) = panels.pushPanel(panel)
 
-    override fun dispose() {
-        stage.dispose()
-        panels.dispose()
-    }
+    /** Pops the current panel of the PanelStack and returns it. */
+    fun popPanel() = panels.popPanel()
+
 }

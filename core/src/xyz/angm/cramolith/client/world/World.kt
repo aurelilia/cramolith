@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 10:02 PM.
+ * This file was last modified at 2/11/21, 6:41 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -29,9 +29,10 @@ const val SCALE_SPEED = 0.1f
 private val tmp = Vector2()
 private val tmpP = Vector3()
 
+/** In-game world, containing all in-world actors and the map. */
 class World(private val screen: GameScreen) : Group() {
 
-    val renderables = allOf(renderable)
+    private val renderables = allOf(renderable)
     var map = WorldMap.of(screen.player[position].map)
         set(value) {
             field = value
@@ -85,6 +86,7 @@ class World(private val screen: GameScreen) : Group() {
         }
     }
 
+    /** Called when a player changes map to check if they need to be rendered. */
     fun playerMapChange(player: Entity) {
         if (player == screen.player) return
         player[renderable].actor.remove()

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/8/21, 9:12 PM.
+ * This file was last modified at 2/11/21, 7:23 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -73,7 +73,7 @@ class Configuration {
         operator fun get(action: String): Int? = bindsRev[action, -1]
 
         /** Iterates over all registered keys. */
-        fun forEach(func: (Int) -> Unit) = binds.forEach { func(it.key) }
+        fun forEach(func: (PlayerAction) -> Unit) = binds.forEach { func(it.value) }
 
         /** Returns all binds as a sorted list of pairs.
          * The weird array gymnastics are needed since IntMap.Entry is static and not reusable. */

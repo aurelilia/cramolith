@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/6/21, 8:10 PM.
+ * This file was last modified at 2/11/21, 6:18 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -20,12 +20,12 @@ import ktx.scene2d.vis.visTable
 import xyz.angm.cramolith.client.actions.PlayerAction
 import xyz.angm.cramolith.client.graphics.Skin
 import xyz.angm.cramolith.client.graphics.panels.Panel
-import xyz.angm.cramolith.client.graphics.screens.Screen
+import xyz.angm.cramolith.client.graphics.screens.MenuScreen
 import xyz.angm.cramolith.client.resources.I18N
 import xyz.angm.cramolith.client.resources.configuration
 
 /** Options submenu for controls. */
-class ControlsPanel(private var screen: Screen) : Panel(screen) {
+class ControlsPanel(private var screen: MenuScreen) : Panel(screen) {
 
     private var current: Pair<Int, PlayerAction>? = null
     private var currentBtn: TextButton? = null

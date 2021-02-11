@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 2/11/21, 6:27 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -32,8 +32,7 @@ class Engine {
     private val listeners = RoxArray<EntityListener>(5)
     private val builder = EntityBuilder()
 
-    var updating = false
-        private set
+    private var updating = false
     private val pendingAdd = RoxArray<Entity>(false, 5)
     private val pendingRemove = RoxArray<Entity>(false, 5)
 

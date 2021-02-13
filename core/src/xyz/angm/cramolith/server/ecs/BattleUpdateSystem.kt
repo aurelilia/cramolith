@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/13/21, 2:36 AM.
+ * This file was last modified at 2/13/21, 3:17 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -29,15 +29,16 @@ class BattleUpdateSystem(private val server: Server) : IteratingSystem(allOf(pla
 
         if (turn1 != null && turn2 != null) {
             battle.advance(getter)
-            sendUpdate(battle, battle.left)
-            sendUpdate(battle, battle.right)
+            val send = if (battle.isOver) null else battle
+            sendUpdate(send, battle.left)
+            sendUpdate(send, battle.right)
         }
     }
 
-    private fun sendUpdate(battle: Battle, side: Opponent) {
+    private fun sendUpdate(battle: Battle?, side: Opponent) {
         if (side is PlayerOpponent) {
             val player = server.players[side.playerId]
-            server.send(player.conn, BattleUpdatePacket(battle))
+            server.send(player.conn, BattleUpdatePacket(battle, player.entity[playerM].pokemon))
         }
     }
 }

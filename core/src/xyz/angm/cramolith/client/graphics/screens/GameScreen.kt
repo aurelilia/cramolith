@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/13/21, 1:55 AM.
+ * This file was last modified at 2/13/21, 3:20 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -28,6 +28,7 @@ import xyz.angm.cramolith.client.networking.Client
 import xyz.angm.cramolith.client.resources.I18N
 import xyz.angm.cramolith.client.world.World
 import xyz.angm.cramolith.common.ecs.components.IgnoreSyncFlag
+import xyz.angm.cramolith.common.ecs.components.specific.BattleComponent
 import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.ecs.systems.NetworkSystem
 import xyz.angm.cramolith.common.ecs.systems.RemoveSystem
@@ -36,6 +37,10 @@ import xyz.angm.cramolith.common.networking.BattleUpdatePacket
 import xyz.angm.cramolith.common.networking.ChatMessagePacket
 import xyz.angm.cramolith.common.networking.InitPacket
 import xyz.angm.cramolith.common.networking.PlayerMapChangedPacket
+import xyz.angm.cramolith.common.pokemon.battle.Battle
+import xyz.angm.cramolith.common.pokemon.battle.Opponent
+import xyz.angm.cramolith.common.pokemon.battle.PlayerOpponent
+import xyz.angm.cramolith.common.pokemon.battle.PokeBattleState
 import xyz.angm.cramolith.common.runLogE
 import xyz.angm.rox.Engine
 import xyz.angm.rox.Entity
@@ -108,6 +113,18 @@ class GameScreen(
         stage.draw()
     }
 
+    fun initBattle(opponent: Opponent, onComplete: () -> Unit) {
+        val c = BattleComponent()
+        c.battle = Battle(PlayerOpponent(player[playerM].clientUUID), opponent)
+        player.add(engine, c)
+
+        val firstMon = player[playerM].pokemon[0]
+        firstMon.battleState = PokeBattleState(firstMon.hp)
+
+        battleWindow = BattleWindow(this, onComplete)
+        stage += battleWindow!!
+    }
+
     /** Toggles a window.
      * @param name The name of the window to uniquely identify its type
      * @param create A closure to create the window if it isn't active yet and will be added */
@@ -147,7 +164,7 @@ class GameScreen(
             when (it) {
                 is Entity -> netSystem.receive(it)
                 is PlayerMapChangedPacket -> world.playerMapChange(netSystem.entityOf(it.entityId) ?: return@addListener)
-                is BattleUpdatePacket -> battleWindow?.battleUpdate(it.battle)
+                is BattleUpdatePacket -> battleWindow?.battleUpdate(it)
             }
         }
 

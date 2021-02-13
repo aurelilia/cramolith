@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 11:08 PM.
+ * This file was last modified at 2/13/21, 2:41 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -27,7 +27,6 @@ class Pokemon(
     val defense get() = otherFormula(species.defense, level)
     val speed get() = otherFormula(species.speed, level)
 
-    @Transient
     var battleState: PokeBattleState? = null
 }
 

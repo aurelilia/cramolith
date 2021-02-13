@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/13/21, 1:51 AM.
+ * This file was last modified at 2/13/21, 3:20 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -16,14 +16,14 @@ import xyz.angm.cramolith.client.resources.I18N
 import xyz.angm.cramolith.common.ecs.battleM
 import xyz.angm.cramolith.common.ecs.network
 import xyz.angm.cramolith.common.ecs.playerM
+import xyz.angm.cramolith.common.networking.BattleUpdatePacket
 import xyz.angm.cramolith.common.pokemon.Move
 import xyz.angm.cramolith.common.pokemon.Pokemon
-import xyz.angm.cramolith.common.pokemon.battle.Battle
 import xyz.angm.cramolith.common.pokemon.battle.PlayerOpponent
 import xyz.angm.cramolith.common.pokemon.battle.QueuedMove
 import xyz.angm.cramolith.common.pokemon.battle.QueuedSwitch
 
-class BattleWindow(private val screen: GameScreen) : Window("battle") {
+class BattleWindow(private val screen: GameScreen, private val onComplete: () -> Unit) : Window("battle") {
 
     private val battleTable = VisTable()
     private val messageTable: VisTable
@@ -83,19 +83,22 @@ class BattleWindow(private val screen: GameScreen) : Window("battle") {
         message(I18N["battle.waiting"])
     }
 
-    fun battleUpdate(battle: Battle?) {
-        if (battle == null) {
+    fun battleUpdate(update: BattleUpdatePacket) {
+        if (update.battle == null) {
             endBattle()
             return
         }
-        screen.player[battleM].battle = battle
+        screen.player[playerM].pokemon = update.playerPoke!!
+        screen.player[battleM].battle = update.battle
         updatePokemon()
         mainMenu()
     }
 
     private fun endBattle() {
         screen.player.remove(screen.engine, battleM)
+        screen.player[playerM].pokemon.forEach { it.battleState = null }
         remove()
+        onComplete()
     }
 
     private fun message(msg: String) {
@@ -106,7 +109,7 @@ class BattleWindow(private val screen: GameScreen) : Window("battle") {
     }
 
     private fun msgBtn(text: String, clicked: () -> Unit) {
-        val btn = VisTextButton(I18N[text])
+        val btn = VisTextButton(I18N.tryGet(text) ?: text)
         messageTable.add(btn).pad(8f)
         btn.onClick { clicked() }
     }

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/13/21, 1:54 AM.
+ * This file was last modified at 2/13/21, 2:36 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -20,13 +20,15 @@ import xyz.angm.rox.systems.IteratingSystem
 
 class BattleUpdateSystem(private val server: Server) : IteratingSystem(allOf(playerM, battleM)) {
 
+    private val getter = { it: Int -> server.players[it].entity[playerM] }
+
     override fun process(entity: Entity, delta: Float) {
         val battle = entity[battleM].battle
-        val turn1 = battle.left.calcQueuedAction(battle)
-        val turn2 = battle.right.calcQueuedAction(battle)
+        val turn1 = battle.left.calcQueuedAction(getter, battle)
+        val turn2 = battle.right.calcQueuedAction(getter, battle)
 
         if (turn1 != null && turn2 != null) {
-            battle.advance()
+            battle.advance(getter)
             sendUpdate(battle, battle.left)
             sendUpdate(battle, battle.right)
         }

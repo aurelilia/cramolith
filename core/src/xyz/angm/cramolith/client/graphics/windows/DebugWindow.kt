@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 10:41 PM.
+ * This file was last modified at 2/13/21, 2:53 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -14,6 +14,7 @@ import xyz.angm.cramolith.client.graphics.panels.textBtn
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.ecs.position
+import xyz.angm.cramolith.common.world.WorldMap
 
 class DebugWindow(private val screen: GameScreen) : Window("debug") {
 
@@ -25,6 +26,12 @@ class DebugWindow(private val screen: GameScreen) : Window("debug") {
         textBtn("Clear tripped actors") {
             screen.player[playerM].actorsTriggered.clear()
             Dialogs.showOKDialog(stage, "cleared", "triggers cleared.")
+        }
+        textBtn("Teleport to overworld") {
+            val pos = screen.player[position]
+            pos.map = 0
+            pos.set(400f, 400f)
+            screen.world.map = WorldMap.of(0)
         }
         act(0f)
         pack()

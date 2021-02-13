@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 11:16 PM.
+ * This file was last modified at 2/13/21, 2:12 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -11,11 +11,17 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
-import com.kotcrab.vis.ui.util.Validators
-import com.kotcrab.vis.ui.util.dialog.Dialogs
-import com.kotcrab.vis.ui.util.dialog.InputDialogAdapter
+import com.badlogic.gdx.utils.Align
+import com.kotcrab.vis.ui.widget.VisSelectBox
+import com.kotcrab.vis.ui.widget.VisWindow
+import ktx.actors.plusAssign
+import ktx.collections.*
+import xyz.angm.cramolith.client.graphics.Skin
+import xyz.angm.cramolith.client.graphics.panels.textBtn
 import xyz.angm.cramolith.common.world.Trigger
 import xyz.angm.cramolith.common.world.TriggerType
+import xyz.angm.cramolith.common.world.TriggerType.*
+import xyz.angm.cramolith.common.world.WorldMap
 import xyz.angm.cramolith.editor.Map
 import xyz.angm.cramolith.editor.tmp
 import kotlin.math.abs
@@ -88,11 +94,16 @@ class SecondTriggerMode(private val first: Vector2, private val type: TriggerTyp
             mode = FirstTriggerMode(type)
         }
 
-        if (type.indexSays == null) add(-1)
-        else {
-            Dialogs.showInputDialog(stage, "Enter ${type.indexSays}", null, Validators.INTEGERS, object : InputDialogAdapter() {
-                override fun finished(input: String) = add(Integer.parseInt(input))
-            })
+        when (type) {
+            Collision, Water -> add(-1)
+            Teleport -> {
+                val items = map.map.teleports.mapIndexed { i, it -> DropdownWindow.Item("${WorldMap.of(it.map).ident} @ ${it.target}", i) }
+                stage += DropdownWindow(items.toTypedArray()) { add(it.idx) }
+            }
+            Actor -> {
+                val items = map.map.actors.entries.mapIndexed { i, it -> DropdownWindow.Item(it.key, it.value.index) }
+                stage += DropdownWindow(items.toTypedArray()) { add(it.idx) }
+            }
         }
     }
 
@@ -111,5 +122,26 @@ class SecondTriggerMode(private val first: Vector2, private val type: TriggerTyp
 
     override fun cancel(map: Map) {
         map.mode = FirstTriggerMode(type)
+    }
+}
+
+class DropdownWindow(val items: Array<Item>, val clicked: (Item) -> Unit) : VisWindow("Select") {
+
+    init {
+        val box = VisSelectBox<Item>()
+        box.items = GdxArray(items)
+        box.setAlignment(Align.center)
+        add(box).height(Skin.textButtonHeight).width(Skin.textButtonWidth).pad(20f).row()
+        textBtn("Select") {
+            clicked(box.selected)
+            this@DropdownWindow.remove()
+        }
+        addCloseButton()
+        pack()
+        centerWindow()
+    }
+
+    data class Item(val name: String, val idx: Int) {
+        override fun toString() = name
     }
 }

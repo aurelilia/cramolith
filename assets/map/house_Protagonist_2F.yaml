@@ -1,5 +1,5 @@
 ident: "house_Protagonist_2F"
-index: 3
+index: 7
 triggers:
 - type: "Collision"
   x: 42

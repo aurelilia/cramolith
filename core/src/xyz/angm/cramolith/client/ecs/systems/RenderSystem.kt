@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 6:47 PM.
+ * This file was last modified at 2/13/21, 2:23 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -14,6 +14,7 @@ import xyz.angm.cramolith.client.Cramolith
 import xyz.angm.cramolith.client.ecs.components.RenderableComponent
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.client.resources.ResourceManager
+import xyz.angm.cramolith.common.HUMAN_SIZE
 import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.ecs.position
 import xyz.angm.cramolith.common.ecs.renderable
@@ -51,7 +52,12 @@ class RenderSystem(private val screen: GameScreen) : IteratingSystem(allOf(rende
     }
 
     private fun actorFor(e: Entity): Actor = when {
-        e has playerM -> Image(ResourceManager.get<Texture>("sprites/player.png"))
+        e has playerM -> {
+            val img = Image(ResourceManager.get<Texture>("sprites/player.png"))
+            img.setSize(HUMAN_SIZE, HUMAN_SIZE)
+            img
+        }
+
         e has wildPokemon -> Image(e[wildPokemon].wildPokemon.species.sprite)
         else -> TODO()
     }

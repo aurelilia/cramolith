@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 7:42 PM.
+ * This file was last modified at 2/13/21, 2:25 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -11,8 +11,8 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import ktx.collections.*
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
-import xyz.angm.cramolith.client.world.PLAYER_SPRITE_SIZE
 import xyz.angm.cramolith.client.world.Script
+import xyz.angm.cramolith.common.HUMAN_SIZE
 import xyz.angm.cramolith.common.ecs.components.PositionComponent
 import xyz.angm.cramolith.common.ecs.network
 import xyz.angm.cramolith.common.ecs.playerM
@@ -31,7 +31,7 @@ const val MAX_UPDATE_DIST = 500 * 500
 class TriggerSystem(private val screen: GameScreen) : EntitySystem() {
 
     private val player = screen.player
-    private val playerRect = Rectangle(player[position].x, player[position].y, PLAYER_SPRITE_SIZE, PLAYER_SPRITE_SIZE)
+    private val playerRect = Rectangle(player[position].x, player[position].y, HUMAN_SIZE, HUMAN_SIZE)
     private val triggerRect = Rectangle()
 
     private val lastTriggerPos = player[position].cpy()

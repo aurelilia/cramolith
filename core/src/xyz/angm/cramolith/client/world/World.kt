@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 6:41 PM.
+ * This file was last modified at 2/13/21, 2:24 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Group
 import com.kotcrab.vis.ui.widget.VisImage
 import ktx.actors.plusAssign
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
+import xyz.angm.cramolith.common.HUMAN_SIZE
 import xyz.angm.cramolith.common.ecs.position
 import xyz.angm.cramolith.common.ecs.renderable
 import xyz.angm.cramolith.common.world.WorldMap
@@ -21,8 +22,7 @@ import xyz.angm.rox.Entity
 import xyz.angm.rox.Family.Companion.allOf
 
 
-const val PLAYER_SPRITE_SIZE = 32f
-const val PLAYER_CENTER = PLAYER_SPRITE_SIZE / 2f
+const val PLAYER_CENTER = HUMAN_SIZE / 2f
 const val DEFAULT_SCALE = 5f
 const val SCALE_SPEED = 0.1f
 
@@ -82,6 +82,7 @@ class World(private val screen: GameScreen) : Group() {
             val img = VisImage(actor.drawable)
             img.x = actor.x.toFloat()
             img.y = actor.y.toFloat()
+            img.setSize(HUMAN_SIZE, HUMAN_SIZE)
             this += img
         }
     }

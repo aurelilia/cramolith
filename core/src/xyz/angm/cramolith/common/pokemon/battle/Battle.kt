@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 10:25 PM.
+ * This file was last modified at 2/13/21, 1:54 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -15,6 +15,8 @@ class Battle(
 ) : Serializable {
     val left get() = leftOp!!
     val right get() = rightOp!!
+
+    fun advance(): Unit = TODO()
 }
 
 @kotlinx.serialization.Serializable

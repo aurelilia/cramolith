@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 10:20 PM.
+ * This file was last modified at 2/13/21, 1:51 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -13,43 +13,102 @@ import ktx.scene2d.scene2d
 import ktx.scene2d.vis.visTable
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.client.resources.I18N
+import xyz.angm.cramolith.common.ecs.battleM
+import xyz.angm.cramolith.common.ecs.network
 import xyz.angm.cramolith.common.ecs.playerM
+import xyz.angm.cramolith.common.pokemon.Move
 import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.cramolith.common.pokemon.battle.Battle
+import xyz.angm.cramolith.common.pokemon.battle.PlayerOpponent
+import xyz.angm.cramolith.common.pokemon.battle.QueuedMove
+import xyz.angm.cramolith.common.pokemon.battle.QueuedSwitch
 
 class BattleWindow(private val screen: GameScreen) : Window("battle") {
 
     private val battleTable = VisTable()
     private val messageTable: VisTable
+    private val mapper = { it: Int -> screen.players[it] }
+    private val player get() = screen.player[playerM]
+    private val battle get() = screen.player[battleM].battle
+    private val playerSide get() = (if ((battle.left as? PlayerOpponent)?.playerId == player.clientUUID) battle.left else battle.right) as PlayerOpponent
 
     init {
         add(battleTable).row()
-        update(screen.player[playerM].battle!!)
+        updatePokemon()
 
         messageTable = scene2d.visTable { background = skin.getDrawable("dark-grey") }
         add(messageTable).expandX().fillX().height(100f).padTop(15f)
-        message("Hello!")
+        mainMenu()
 
         pack()
     }
 
-    private fun update(battle: Battle) {
+    private fun updatePokemon() {
         battleTable.clearChildren()
-        battleTable.add(PokemonDisplay(battle.left.activePokemon(screen))).pad(20f)
-        battleTable.add(PokemonDisplay(battle.right.activePokemon(screen))).pad(20f)
+        battleTable.add(PokemonDisplay(battle.left.activePokemon(mapper))).pad(20f)
+        battleTable.add(PokemonDisplay(battle.right.activePokemon(mapper))).pad(20f)
     }
 
-    fun message(msg: String) {
+    private fun mainMenu() {
+        messageTable.clearChildren()
+        msgBtn("battle.attack", ::attacks)
+        msgBtn("battle.switch", ::switch)
+    }
+
+    private fun attacks() {
+        messageTable.clearChildren()
+        msgBtn("back") { mainMenu() }
+        playerSide.activePokemon(mapper).moveIds.forEachIndexed { idx, attack ->
+            val move = Move.of(attack)
+            msgBtn(move.name) {
+                playerSide.queuedAction = QueuedMove(idx)
+                moveQueued()
+            }
+        }
+    }
+
+    private fun switch() {
+        messageTable.clearChildren()
+        msgBtn("back") { mainMenu() }
+        player.pokemon.forEachIndexed { idx, poke ->
+            msgBtn(poke.displayName) {
+                playerSide.queuedAction = QueuedSwitch(idx)
+                moveQueued()
+            }
+        }
+    }
+
+    private fun moveQueued() {
+        screen.player[network].needsSync = true
+        message(I18N["battle.waiting"])
+    }
+
+    fun battleUpdate(battle: Battle?) {
+        if (battle == null) {
+            endBattle()
+            return
+        }
+        screen.player[battleM].battle = battle
+        updatePokemon()
+        mainMenu()
+    }
+
+    private fun endBattle() {
+        screen.player.remove(screen.engine, battleM)
+        remove()
+    }
+
+    private fun message(msg: String) {
         messageTable.clearChildren()
         messageTable.add(VisLabel(msg))
         msgBtn("battle.attack") {}
         msgBtn("battle.switch") {}
     }
 
-    private fun msgBtn(text: String, clicked: VisTextButton.() -> Unit) {
+    private fun msgBtn(text: String, clicked: () -> Unit) {
         val btn = VisTextButton(I18N[text])
         messageTable.add(btn).pad(8f)
-        btn.onClick(clicked)
+        btn.onClick { clicked() }
     }
 
     class PokemonDisplay(pokemon: Pokemon) : VisTable() {

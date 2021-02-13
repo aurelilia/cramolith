@@ -1,12 +1,13 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 9:31 PM.
+ * This file was last modified at 2/12/21, 3:01 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
 
 package xyz.angm.cramolith.common.networking
 
+import xyz.angm.cramolith.common.pokemon.battle.Battle
 import xyz.angm.rox.Entity
 import java.io.Serializable
 
@@ -60,4 +61,7 @@ class PrivateMessageResponse(
 
 /** Sent when a player changes map/dimension. Used to
  * allow other clients to update world actors.  */
-class PlayerMapChangedPacket(val entityId: Int) : Packet
+class PlayerMapChangedPacket(val entityId: Int = 0) : Packet
+
+
+class BattleUpdatePacket(val battle: Battle? = null) : Packet

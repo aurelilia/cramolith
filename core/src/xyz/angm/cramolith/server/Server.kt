@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/10/21, 9:32 PM.
+ * This file was last modified at 2/13/21, 1:55 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -18,6 +18,7 @@ import xyz.angm.cramolith.common.ecs.systems.NetworkSystem
 import xyz.angm.cramolith.common.ecs.systems.RemoveSystem
 import xyz.angm.cramolith.common.networking.*
 import xyz.angm.cramolith.common.pokemon.Pokemon
+import xyz.angm.cramolith.server.ecs.BattleUpdateSystem
 import xyz.angm.cramolith.server.handlers.*
 import xyz.angm.rox.Engine
 import xyz.angm.rox.Entity
@@ -46,6 +47,7 @@ class Server {
             createWildPokemonEntity(this, Pokemon("piplup", null, 10, 0, arrayListOf("Heat Wave", "Fire Fang")))
             createWildPokemonEntity(this, Pokemon("snivy", null, 10, 0, arrayListOf("Heat Wave", "Fire Fang")))
             add(RemoveSystem())
+            add(BattleUpdateSystem(this@Server))
         }
 
         // Executed on SIGTERM

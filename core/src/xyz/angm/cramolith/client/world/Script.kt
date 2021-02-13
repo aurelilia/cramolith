@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 10:36 PM.
+ * This file was last modified at 2/12/21, 2:58 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -17,7 +17,7 @@ import ktx.collections.*
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.client.graphics.windows.BattleWindow
 import xyz.angm.cramolith.client.resources.I18N
-import xyz.angm.cramolith.common.ecs.network
+import xyz.angm.cramolith.common.ecs.components.specific.BattleComponent
 import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.pokemon.Trainer
 import xyz.angm.cramolith.common.pokemon.battle.Battle
@@ -69,11 +69,15 @@ class Script(private val screen: GameScreen, private val actor: WorldActor, priv
 
             "battle" -> {
                 val trainer = Trainer.of(operands)
-                screen.player[playerM].battle = Battle(
-                    PlayerOpponent(screen.player[network].id),
+                val c = BattleComponent()
+                c.battle = Battle(
+                    PlayerOpponent(screen.player[playerM].clientUUID),
                     NpcTrainerOpponent(trainer.pokemon)
                 )
-                screen.stage += BattleWindow(screen)
+                screen.player.add(screen.engine, c)
+                val window = BattleWindow(screen)
+                screen.battleWindow = window
+                screen.stage += window
             }
 
             "title" -> {

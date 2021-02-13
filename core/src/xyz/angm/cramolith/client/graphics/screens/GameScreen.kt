@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 9:41 PM.
+ * This file was last modified at 2/13/21, 1:55 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -21,6 +21,7 @@ import xyz.angm.cramolith.client.ecs.PlayerMapper
 import xyz.angm.cramolith.client.ecs.systems.RenderSystem
 import xyz.angm.cramolith.client.ecs.systems.TriggerSystem
 import xyz.angm.cramolith.client.graphics.panels.menu.MessagePanel
+import xyz.angm.cramolith.client.graphics.windows.BattleWindow
 import xyz.angm.cramolith.client.graphics.windows.ChatWindow
 import xyz.angm.cramolith.client.graphics.windows.MenuWindow
 import xyz.angm.cramolith.client.networking.Client
@@ -31,6 +32,7 @@ import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.ecs.systems.NetworkSystem
 import xyz.angm.cramolith.common.ecs.systems.RemoveSystem
 import xyz.angm.cramolith.common.ecs.systems.VelocitySystem
+import xyz.angm.cramolith.common.networking.BattleUpdatePacket
 import xyz.angm.cramolith.common.networking.ChatMessagePacket
 import xyz.angm.cramolith.common.networking.InitPacket
 import xyz.angm.cramolith.common.networking.PlayerMapChangedPacket
@@ -75,6 +77,7 @@ class GameScreen(
     // 2D Graphics
     val world = World(this)
     private val activeWindows = HashMap<String, VisWindow>()
+    var battleWindow: BattleWindow? = null
 
     val entitiesLoaded get() = engine.entities.size
     val systemsActive get() = engine.systems.size
@@ -144,6 +147,7 @@ class GameScreen(
             when (it) {
                 is Entity -> netSystem.receive(it)
                 is PlayerMapChangedPacket -> world.playerMapChange(netSystem.entityOf(it.entityId) ?: return@addListener)
+                is BattleUpdatePacket -> battleWindow?.battleUpdate(it.battle)
             }
         }
 

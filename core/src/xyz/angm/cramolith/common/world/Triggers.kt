@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/13/21, 1:57 AM.
+ * This file was last modified at 2/13/21, 2:34 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
  * with a player, handled by TriggerSystem.
  * @property idx An index that has a different meaning depending on the type of trigger. See TriggerType for exact info. */
 @Serializable
-data class Trigger(val type: TriggerType, val x: Int, val y: Int, val width: Int, val height: Int, val idx: Int)
+data class Trigger(val type: TriggerType, val x: Int, val y: Int, val width: Int, val height: Int, var idx: Int)
 
 /** The type of a trigger.
  * The color is only for the editor and not actually used in-game.

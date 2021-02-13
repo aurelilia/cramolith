@@ -87,6 +87,7 @@ class Map(private val screen: EditorScreen, map: WorldMap) : VisImage(map.textur
         }
 
         mode?.drawBatch(batch, this)
+
     }
 
     fun scroll(x: Float, y: Float) {

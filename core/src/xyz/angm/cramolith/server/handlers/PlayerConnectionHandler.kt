@@ -1,12 +1,13 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 12:22 AM.
+ * This file was last modified at 2/18/21, 7:04 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
 
 package xyz.angm.cramolith.server.handlers
 
+import ktx.assets.ignore
 import ktx.collections.*
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.selectAll
@@ -24,12 +25,10 @@ import xyz.angm.cramolith.common.networking.LoginRejectedPacket
 import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.cramolith.server.Connection
 import xyz.angm.cramolith.server.Server
-import xyz.angm.cramolith.server.database.DB
-import xyz.angm.cramolith.server.database.Player
-import xyz.angm.cramolith.server.database.Players
-import xyz.angm.cramolith.server.database.Posts
+import xyz.angm.cramolith.server.database.*
 import xyz.angm.rox.Engine
 import xyz.angm.rox.Entity
+import xyz.angm.cramolith.server.database.Pokemon as DBPoke
 
 internal fun Server.handleJoinPacket(connection: Connection, packet: JoinPacket) {
     var globalMessages = emptyArray<String>()
@@ -68,8 +67,21 @@ fun createPlayerEntity(engine: Engine, dbEntry: Player) =
             name = dbEntry.name
             clientUUID = dbEntry.id.value
             actorsTriggered = dbEntry.triggeredActors
-            pokemon.add(Pokemon("pikachu", "Test Subject", 20, 64, arrayListOf("thundershock")))
-            pokemon.add(Pokemon("pikachu", "pika!", 10, 30, arrayListOf("quickattack", "thundershock")))
+
+            DB.transaction { // TODO 2 transactions per login is... suboptimal
+                for (db in dbEntry.pokemon) {
+                    val moves = arrayListOf(db.move1)
+                    if (db.move2 != null) moves.add(db.move2!!)
+                    if (db.move3 != null) moves.add(db.move3!!)
+                    if (db.move4 != null) moves.add(db.move4!!)
+                    pokemon.add(Pokemon(db.species, db.nickname, db.level, db.exp, moves, db.id.value))
+                }
+            }
+
+            if (pokemon.isEmpty()) {
+                pokemon.add(Pokemon("pikachu", "Test Subject", 20, 64, arrayListOf("thundershock")))
+                pokemon.add(Pokemon("pikachu", "pika!", 10, 30, arrayListOf("quickattack", "thundershock")))
+            }
         }
         with<PositionComponent> {
             set(dbEntry.posX.toFloat(), dbEntry.posY.toFloat())
@@ -91,5 +103,27 @@ internal fun Server.handleDisconnect(connection: Connection) {
         db.posY = posC.y.toInt()
         db.posMap = posC.map
         db.triggeredActors = playerC.actorsTriggered
+
+        for (mon in playerC.pokemon) {
+            val writer: DBPoke.() -> Unit = {
+                species = mon.species.ident
+                nickname = mon.nickname
+                owner = db.id
+                level = mon.level
+                exp = mon.exp
+
+                try {
+                    move1 = mon.moveIds[0]
+                    move2 = mon.moveIds[1]
+                    move3 = mon.moveIds[2]
+                    move4 = mon.moveIds[3]
+                } catch (e: IndexOutOfBoundsException) {
+                    e.ignore()
+                }
+            }
+
+            if (mon.uuid == -1) DBPoke.new(writer)
+            else writer(DBPoke.find { Pokemons.id eq mon.uuid }.first())
+        }
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 6:27 PM.
+ * This file was last modified at 2/18/21, 6:42 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -47,10 +47,10 @@ object Pokemons : IntIdTable() {
     val owner = reference("owner", Players)
     val level = integer("level")
     val exp = integer("exp")
-    val move1 = integer("move1")
-    val move2 = integer("move2")
-    val move3 = integer("move3")
-    val move4 = integer("move4")
+    val move1 = varchar("move1", 25)
+    val move2 = varchar("move2", 25).nullable()
+    val move3 = varchar("move3", 25).nullable()
+    val move4 = varchar("move4", 25).nullable()
 }
 
 class Pokemon(id: EntityID<Int>) : IntEntity(id) {

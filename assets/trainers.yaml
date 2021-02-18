@@ -6,3 +6,21 @@ joey:
       moveIds:
         - quickattack
         - thundershock
+
+timmy:
+  texture: youngster
+  pokemon: 
+    - speciesId: eevee
+      level: 15
+      moveIds:
+        - quickattack
+        - tackle
+
+josh:
+  texture: youngster
+  pokemon: 
+    - speciesId: snivy
+      level: 12
+      moveIds:
+        - vinewhip
+        - leaftornado

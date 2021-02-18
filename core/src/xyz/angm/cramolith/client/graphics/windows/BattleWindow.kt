@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/18/21, 6:14 PM.
+ * This file was last modified at 2/18/21, 6:57 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -10,6 +10,7 @@ package xyz.angm.cramolith.client.graphics.windows
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
+import com.kotcrab.vis.ui.util.dialog.Dialogs
 import com.kotcrab.vis.ui.widget.*
 import ktx.actors.alpha
 import ktx.actors.onClick
@@ -62,7 +63,10 @@ class BattleWindow(private val screen: GameScreen, message: String, private val 
         messageTable.add(VisLabel(msg))
         msgBtn("battle.attack", ::attacks)
         msgBtn("battle.switch", ::switch)
-        if (isWildEncounter) msgBtn("battle.run", ::run)
+        if (isWildEncounter) {
+            msgBtn("battle.catch", ::catch)
+            msgBtn("battle.run", ::run)
+        }
     }
 
     private fun attacks() {
@@ -86,6 +90,12 @@ class BattleWindow(private val screen: GameScreen, message: String, private val 
                 moveQueued()
             }
         }
+    }
+
+    private fun catch() {
+        screen.player[playerM].pokemon.add(battle.right.activePokemon(mapper))
+        Dialogs.showOKDialog(stage, I18N["battle.caught-title"], I18N.fmt("battle.caught", battle.right.activePokemon(mapper).displayName))
+        endBattle(true)
     }
 
     private fun run() = endBattle(false)

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/18/21, 4:26 PM.
+ * This file was last modified at 2/18/21, 5:38 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -46,6 +46,7 @@ class BattleWindow(private val screen: GameScreen, private val onComplete: (Bool
         add(messageTable).expandX().fillX().height(100f).padTop(15f)
         mainMenu()
 
+        centerWindow()
         pack()
     }
 
@@ -166,7 +167,7 @@ class BattleWindow(private val screen: GameScreen, private val onComplete: (Bool
 
     private fun msgBtn(text: String, clicked: () -> Unit) {
         val btn = VisTextButton(I18N.tryGet(text) ?: text)
-        messageTable.add(btn).pad(8f)
+        messageTable.add(btn).pad(8f).expand().fill()
         btn.onClick { clicked() }
     }
 

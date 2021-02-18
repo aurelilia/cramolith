@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 6:43 PM.
+ * This file was last modified at 2/18/21, 5:48 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -16,6 +16,7 @@ import kotlinx.serialization.Transient
 import ktx.assets.file
 import ktx.collections.*
 import xyz.angm.cramolith.client.resources.ResourceManager
+import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.cramolith.common.yaml
 
 /** A world map containing everything inside it. Maps are serialized in `assets/map/`.
@@ -30,7 +31,8 @@ class WorldMap(
     val index: Int,
     val triggers: MutableList<Trigger> = ArrayList(),
     val teleports: MutableList<Teleport> = ArrayList(),
-    val actors: MutableMap<String, WorldActor> = HashMap()
+    val actors: MutableMap<String, WorldActor> = HashMap(),
+    val wildEncounters: MutableList<Array<Pokemon>> = ArrayList()
 ) {
 
     val texture get() = ResourceManager.get<Texture>("map/$ident.png")

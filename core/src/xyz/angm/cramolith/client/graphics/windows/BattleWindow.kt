@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/18/21, 5:38 PM.
+ * This file was last modified at 2/18/21, 6:14 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -28,13 +28,14 @@ import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.cramolith.common.pokemon.battle.*
 import kotlin.math.max
 
-class BattleWindow(private val screen: GameScreen, private val onComplete: (Boolean) -> Unit) : Window("battle") {
+class BattleWindow(private val screen: GameScreen, message: String, private val onComplete: (Boolean) -> Unit) : Window("battle") {
 
     private val battleTable = VisTable()
     private val messageTable: VisTable
     private val mapper = { it: Int -> screen.players[it] }
     private val player get() = screen.player[playerM]
     private val battle get() = screen.player[battleM].battle
+    private val isWildEncounter get() = (battle.right as? AiOpponent)?.isWild ?: false
     private val playerSide get() = (if ((battle.left as? PlayerOpponent)?.playerId == player.clientUUID) battle.left else battle.right) as PlayerOpponent
     private val playerSideE get() = if (playerSide == battle.left) BattleSide.Left else BattleSide.Right
 
@@ -44,7 +45,7 @@ class BattleWindow(private val screen: GameScreen, private val onComplete: (Bool
 
         messageTable = scene2d.visTable { background = skin.getDrawable("dark-grey") }
         add(messageTable).expandX().fillX().height(100f).padTop(15f)
-        mainMenu()
+        mainMenu(message)
 
         centerWindow()
         pack()
@@ -56,15 +57,17 @@ class BattleWindow(private val screen: GameScreen, private val onComplete: (Bool
         battleTable.add(PokemonDisplay(battle.right.activePokemon(mapper))).pad(20f)
     }
 
-    private fun mainMenu() {
+    private fun mainMenu(msg: String) {
         messageTable.clearChildren()
+        messageTable.add(VisLabel(msg))
         msgBtn("battle.attack", ::attacks)
         msgBtn("battle.switch", ::switch)
+        if (isWildEncounter) msgBtn("battle.run", ::run)
     }
 
     private fun attacks() {
         messageTable.clearChildren()
-        msgBtn("back") { mainMenu() }
+        msgBtn("back") { mainMenu(I18N["battle.what-do"]) }
         playerSide.activePokemon(mapper).moveIds.forEachIndexed { idx, attack ->
             val move = Move.of(attack)
             msgBtn(move.name) {
@@ -76,7 +79,7 @@ class BattleWindow(private val screen: GameScreen, private val onComplete: (Bool
 
     private fun switch() {
         messageTable.clearChildren()
-        msgBtn("back") { mainMenu() }
+        msgBtn("back") { mainMenu(I18N["battle.what-do"]) }
         player.pokemon.forEachIndexed { idx, poke ->
             msgBtn(poke.displayName) {
                 playerSide.queuedAction = QueuedSwitch(idx)
@@ -84,6 +87,8 @@ class BattleWindow(private val screen: GameScreen, private val onComplete: (Bool
             }
         }
     }
+
+    private fun run() = endBattle(false)
 
     private fun moveQueued() {
         screen.player[network].needsSync = true
@@ -101,7 +106,7 @@ class BattleWindow(private val screen: GameScreen, private val onComplete: (Bool
         events.forEach { execEvent(it, action) }
         action += Actions.run {
             updatePokemon()
-            mainMenu()
+            mainMenu(I18N["battle.what-do"])
         }
         addAction(action)
     }

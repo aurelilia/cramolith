@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/13/21, 2:34 AM.
+ * This file was last modified at 2/18/21, 5:43 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -21,12 +21,14 @@ data class Trigger(val type: TriggerType, val x: Int, val y: Int, val width: Int
  * - Collision: Player cannot walk on this trigger, `idx` is always -1
  * - Water: Player cannot walk on this trigger, `idx` is always -1; player can swim in trigger if ability is unlocked
  * - Teleport: Player will be teleported to the corresponding teleport, teleport is taken from the map at `idx`
- * - Actor: Triggers an actor's script when stepped on, `idx` is the actor's index */
+ * - Actor: Triggers an actor's script when stepped on, `idx` is the actor's index
+ * - WildEncounter: Can randomly trigger wild pokemon encounter when walked on, `idx` is encounter table index */
 enum class TriggerType(val color: Color) {
     Collision(Color.ROYAL),
     Water(Color.ORANGE),
     Teleport(Color.FOREST),
-    Actor(Color.SCARLET)
+    Actor(Color.SCARLET),
+    WildEncounter(Color.PINK)
 }
 
 /** A teleport. Always comes in pairs, each map has a list of them.

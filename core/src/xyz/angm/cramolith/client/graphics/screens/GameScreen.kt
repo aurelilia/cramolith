@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/18/21, 3:21 PM.
+ * This file was last modified at 2/18/21, 6:14 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -30,6 +30,7 @@ import xyz.angm.cramolith.client.resources.I18N
 import xyz.angm.cramolith.client.world.World
 import xyz.angm.cramolith.common.ecs.components.IgnoreSyncFlag
 import xyz.angm.cramolith.common.ecs.components.specific.BattleComponent
+import xyz.angm.cramolith.common.ecs.network
 import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.ecs.systems.NetworkSystem
 import xyz.angm.cramolith.common.ecs.systems.RemoveSystem
@@ -114,7 +115,7 @@ class GameScreen(
         stage.draw()
     }
 
-    fun initBattle(opponent: Opponent, onComplete: () -> Unit) {
+    fun initBattle(opponent: Opponent, message: String, showPopup: Boolean = true, onComplete: () -> Unit) {
         val c = BattleComponent()
         c.battle = Battle(PlayerOpponent(player[playerM].clientUUID), opponent)
         player.add(engine, c)
@@ -122,12 +123,18 @@ class GameScreen(
         val firstMon = player[playerM].pokemon[0]
         firstMon.battleState = PokeBattleState(firstMon.hp)
 
-        battleWindow = BattleWindow(this) { won ->
+        battleWindow = BattleWindow(this, message) { won ->
             val text = if (won) I18N["battle.won"] else I18N["battle.lost"]
-            Dialogs.showOKDialog(stage, I18N["battle.over-title"], text)
+            if (showPopup) Dialogs.showOKDialog(stage, I18N["battle.over-title"], text)
             onComplete()
         }
         stage += battleWindow!!
+    }
+
+    fun setCutscene(inCut: Boolean) {
+        player[playerM].isInCutscene = inCut
+        player[network].needsSync = true
+        inputHandler.disabled = inCut
     }
 
     /** Toggles a window.

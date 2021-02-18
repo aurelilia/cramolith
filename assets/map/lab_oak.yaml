@@ -105,3 +105,4 @@ triggers:
   idx: -1
 teleports: []
 actors: {}
+wildEncounters: []

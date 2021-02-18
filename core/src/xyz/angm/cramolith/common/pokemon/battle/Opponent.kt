@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/18/21, 3:16 PM.
+ * This file was last modified at 2/18/21, 5:39 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -38,7 +38,7 @@ class PlayerOpponent(val playerId: Int = 0) : Opponent() {
     }
 }
 
-class AiOpponent(val party: Array<Pokemon> = emptyArray()) : Opponent() {
+class AiOpponent(val party: Array<Pokemon> = emptyArray(), val isWild: Boolean = false) : Opponent() {
     override fun activePokemon(playerGetter: (Int) -> PlayerComponent) = party[activePkmnIdx]
     override fun calcQueuedAction(playerGetter: (Int) -> PlayerComponent, battle: Battle) = QueuedMove(0)
     override fun getPokemon(playerGetter: (Int) -> PlayerComponent) = party.iterator()

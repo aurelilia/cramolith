@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 10:31 PM.
+ * This file was last modified at 2/18/21, 6:17 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -12,9 +12,12 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import ktx.assets.file
+import xyz.angm.cramolith.client.resources.I18N
 import xyz.angm.cramolith.common.yaml
 
 class Trainer(val ident: String, val texture: String, val pokemon: Array<Pokemon>) {
+
+    val name get() = I18N["trainer.$ident"]
 
     companion object {
 

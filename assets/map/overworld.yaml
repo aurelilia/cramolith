@@ -301,6 +301,30 @@ triggers:
   width: 21
   height: 64
   idx: 0
+- type: "WildEncounter"
+  x: 243
+  y: 567
+  width: 102
+  height: 128
+  idx: 0
+- type: "WildEncounter"
+  x: 348
+  y: 828
+  width: 103
+  height: 65
+  idx: 0
+- type: "WildEncounter"
+  x: 127
+  y: 743
+  width: 103
+  height: 152
+  idx: 0
+- type: "WildEncounter"
+  x: 1
+  y: 742
+  width: 67
+  height: 154
+  idx: 0
 teleports:
 - map: 3
   target: 0
@@ -326,3 +350,20 @@ actors:
     - "dialog 1"
     - "battle joey"
     - "disable trigger"
+wildEncounters:
+  - - speciesId: "snivy"
+      nickname: null
+      level: 12
+      exp: 0
+      moveIds:
+        - "vinewhip"
+        - "leaftornado"
+      battleState: null
+    - speciesId: "pikachu"
+      nickname: null
+      level: 10
+      exp: 0
+      moveIds:
+        - "quickattack"
+        - "thundershock"
+      battleState: null

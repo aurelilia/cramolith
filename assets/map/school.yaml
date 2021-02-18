@@ -161,3 +161,4 @@ teleports:
 - map: 0
   target: 2
 actors: {}
+wildEncounters: []

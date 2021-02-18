@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/13/21, 2:12 AM.
+ * This file was last modified at 2/18/21, 5:52 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -101,7 +101,11 @@ class SecondTriggerMode(private val first: Vector2, private val type: TriggerTyp
                 stage += DropdownWindow(items.toTypedArray()) { add(it.idx) }
             }
             Actor -> {
-                val items = map.map.actors.entries.mapIndexed { i, it -> DropdownWindow.Item(it.key, it.value.index) }
+                val items = map.map.actors.entries.map { DropdownWindow.Item(it.key, it.value.index) }
+                stage += DropdownWindow(items.toTypedArray()) { add(it.idx) }
+            }
+            WildEncounter -> {
+                val items = map.map.wildEncounters.mapIndexed { i, _ -> DropdownWindow.Item(i.toString(), i) }
                 stage += DropdownWindow(items.toTypedArray()) { add(it.idx) }
             }
         }

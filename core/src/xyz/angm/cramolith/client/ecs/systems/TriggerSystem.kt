@@ -1,23 +1,30 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/13/21, 2:25 AM.
+ * This file was last modified at 2/18/21, 6:18 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
 
 package xyz.angm.cramolith.client.ecs.systems
 
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import ktx.collections.*
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
+import xyz.angm.cramolith.client.resources.I18N
 import xyz.angm.cramolith.client.world.Script
 import xyz.angm.cramolith.common.HUMAN_SIZE
+import xyz.angm.cramolith.common.ecs.battleM
 import xyz.angm.cramolith.common.ecs.components.PositionComponent
 import xyz.angm.cramolith.common.ecs.network
 import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.ecs.position
+import xyz.angm.cramolith.common.fst
 import xyz.angm.cramolith.common.networking.PlayerMapChangedPacket
+import xyz.angm.cramolith.common.pokemon.Pokemon
+import xyz.angm.cramolith.common.pokemon.battle.AiOpponent
+import xyz.angm.cramolith.common.pokemon.battle.PokeBattleState
 import xyz.angm.cramolith.common.world.Trigger
 import xyz.angm.cramolith.common.world.TriggerType.*
 import xyz.angm.cramolith.common.world.WorldMap
@@ -92,15 +99,19 @@ class TriggerSystem(private val screen: GameScreen) : EntitySystem() {
                 val map = playerC.actorsTriggered.getOrPut(screen.world.map.index, { HashSet() })
                 if (map.contains(trigger.idx)) return
 
-                playerC.isInCutscene = true
-                player[network].needsSync = true
-                screen.inputHandler.disabled = true
-
+                screen.setCutscene(true)
                 val actor = screen.world.map.actorsId[trigger.idx]
-                Script(screen, actor) {
-                    playerC.isInCutscene = false
-                    player[network].needsSync = true
-                    screen.inputHandler.disabled = false
+                Script(screen, actor) { screen.setCutscene(true) }
+            }
+
+            WildEncounter -> {
+                if (screen.player has battleM || screen.player[position].isZero || MathUtils.random(1000) != 0) return
+                screen.setCutscene(true)
+                val mons = screen.world.map.wildEncounters[trigger.idx]
+                val pokemon = fst.asObject(fst.asByteArray(mons[MathUtils.random(mons.size - 1)])) as Pokemon
+                pokemon.battleState = PokeBattleState(pokemon.hp)
+                screen.initBattle(AiOpponent(arrayOf(pokemon), true), I18N.fmt("battle.wild-attack", pokemon.displayName), false) {
+                    screen.setCutscene(false)
                 }
             }
         }

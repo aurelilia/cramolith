@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 9:50 PM.
+ * This file was last modified at 2/18/21, 3:58 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -20,10 +20,11 @@ class Move(
     val ident: String,
     val damage: Int,
     val accuracy: Int,
-    val type: Type
+    val type: Type,
+    val priority: Int = 1
 ) {
 
-    var name = I18N.tryGet("move.$ident") ?: ident.capitalize()
+    val name get() = i18nMoveName(ident)
 
     companion object {
 
@@ -37,6 +38,8 @@ class Move(
         }
 
         fun of(ident: String) = moves[ident]!!
+
+        fun i18nMoveName(ident: String) = I18N.tryGet("move.$ident") ?: ident.capitalize()
 
         @Serializable
         private class Serialized(

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/13/21, 3:09 AM.
+ * This file was last modified at 2/18/21, 3:10 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -9,6 +9,7 @@ package xyz.angm.cramolith.common.networking
 
 import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.cramolith.common.pokemon.battle.Battle
+import xyz.angm.cramolith.common.pokemon.battle.TurnEvent
 import xyz.angm.rox.Entity
 import java.io.Serializable
 
@@ -65,4 +66,8 @@ class PrivateMessageResponse(
 class PlayerMapChangedPacket(val entityId: Int = 0) : Packet
 
 
-class BattleUpdatePacket(val battle: Battle? = null, val playerPoke: ArrayList<Pokemon>? = null) : Packet
+class BattleUpdatePacket(
+    val battle: Battle = Battle(),
+    val turn: ArrayList<TurnEvent> = ArrayList(),
+    val playerPoke: ArrayList<Pokemon>? = null
+) : Packet

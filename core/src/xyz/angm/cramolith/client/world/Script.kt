@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/13/21, 3:20 AM.
+ * This file was last modified at 2/18/21, 3:10 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -20,7 +20,7 @@ import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.fst
 import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.cramolith.common.pokemon.Trainer
-import xyz.angm.cramolith.common.pokemon.battle.NpcTrainerOpponent
+import xyz.angm.cramolith.common.pokemon.battle.AiOpponent
 import xyz.angm.cramolith.common.pokemon.battle.PokeBattleState
 import xyz.angm.cramolith.common.world.WorldActor
 
@@ -70,7 +70,7 @@ class Script(private val screen: GameScreen, private val actor: WorldActor, priv
                 val trainer = Trainer.of(operands)
                 val pokemon = fst.asObject(fst.asByteArray(trainer.pokemon)) as Array<Pokemon>
                 pokemon.forEach { it.battleState = PokeBattleState(it.hp) }
-                screen.initBattle(NpcTrainerOpponent(pokemon)) { next() }
+                screen.initBattle(AiOpponent(pokemon)) { next() }
             }
 
             "title" -> {

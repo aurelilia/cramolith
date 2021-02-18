@@ -295,6 +295,12 @@ triggers:
   width: 17
   height: 6
   idx: -1
+- type: "Actor"
+  x: 314
+  y: 830
+  width: 21
+  height: 64
+  idx: 0
 teleports:
 - map: 3
   target: 0

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 5:48 PM.
+ * This file was last modified at 2/18/21, 3:57 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -46,6 +46,9 @@ object I18N {
     }
 
     operator fun get(name: String) = bundle[name]!!
+
+    fun fmt(name: String, arg: String) = bundle.format(name, arg)!!
+    fun fmt(name: String, arg1: String, arg2: String) = bundle.format(name, arg1, arg2)!!
 
     fun tryGet(name: String): String? {
         return try {

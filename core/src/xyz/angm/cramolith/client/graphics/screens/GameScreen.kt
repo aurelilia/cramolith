@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/13/21, 3:20 AM.
+ * This file was last modified at 2/18/21, 3:21 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -10,6 +10,7 @@ package xyz.angm.cramolith.client.graphics.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
+import com.kotcrab.vis.ui.util.dialog.Dialogs
 import com.kotcrab.vis.ui.widget.VisWindow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -121,7 +122,11 @@ class GameScreen(
         val firstMon = player[playerM].pokemon[0]
         firstMon.battleState = PokeBattleState(firstMon.hp)
 
-        battleWindow = BattleWindow(this, onComplete)
+        battleWindow = BattleWindow(this) { won ->
+            val text = if (won) I18N["battle.won"] else I18N["battle.lost"]
+            Dialogs.showOKDialog(stage, I18N["battle.over-title"], text)
+            onComplete()
+        }
         stage += battleWindow!!
     }
 

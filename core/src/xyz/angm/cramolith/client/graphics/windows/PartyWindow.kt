@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 6:51 PM.
+ * This file was last modified at 2/18/21, 7:01 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -8,7 +8,6 @@
 package xyz.angm.cramolith.client.graphics.windows
 
 import com.badlogic.gdx.utils.Scaling
-import com.kotcrab.vis.ui.widget.VisTable
 import ktx.actors.onClick
 import ktx.scene2d.button
 import ktx.scene2d.scene2d
@@ -22,17 +21,22 @@ import xyz.angm.cramolith.common.ecs.playerM
 
 class PartyWindow(private val screen: GameScreen) : Window("party") {
 
-    private lateinit var table: VisTable
+    private var sinceLastUpdate = 0f
 
     init {
         addCloseButton()
         reload()
-        add(scene2d.scrollPane { actor = table })
-        pack()
+    }
+
+    override fun act(delta: Float) {
+        super.act(delta)
+        sinceLastUpdate += delta
+        if (sinceLastUpdate > 1f) reload()
     }
 
     private fun reload() {
-        table = scene2d.visTable {
+        clearChildren()
+        val table = scene2d.visTable {
             for (pokemon in screen.player[playerM].pokemon) {
                 val button = scene2d.button("list") {
                     isDisabled = true
@@ -51,5 +55,7 @@ class PartyWindow(private val screen: GameScreen) : Window("party") {
                 add(button).expandX().fillX().row()
             }
         }
+        add(scene2d.scrollPane { actor = table })
+        pack()
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/18/21, 6:18 PM.
+ * This file was last modified at 2/22/21, 1:46 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -101,7 +101,7 @@ class TriggerSystem(private val screen: GameScreen) : EntitySystem() {
 
                 screen.setCutscene(true)
                 val actor = screen.world.map.actorsId[trigger.idx]
-                Script(screen, actor) { screen.setCutscene(true) }
+                Script(screen, actor) { screen.setCutscene(false) }
             }
 
             WildEncounter -> {

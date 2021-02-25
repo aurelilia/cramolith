@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/18/21, 6:57 PM.
+ * This file was last modified at 2/25/21, 1:26 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -29,10 +29,13 @@ import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.cramolith.common.pokemon.battle.*
 import kotlin.math.max
 
-class BattleWindow(private val screen: GameScreen, message: String, private val onComplete: (Boolean) -> Unit) : Window("battle") {
+class BattleWindow(private val screen: GameScreen, msg: String, private val onComplete: (Boolean) -> Unit) : Window("battle") {
 
     private val battleTable = VisTable()
-    private val messageTable: VisTable
+    private val message = VisLabel()
+    private val buttonsTable = scene2d.visTable { background = skin.getDrawable("dark-grey") }
+    private val backButton = msgBtn("back") { mainMenu(I18N["battle.what-do"]) }
+
     private val mapper = { it: Int -> screen.players[it] }
     private val player get() = screen.player[playerM]
     private val battle get() = screen.player[battleM].battle
@@ -44,10 +47,14 @@ class BattleWindow(private val screen: GameScreen, message: String, private val 
         add(battleTable).row()
         updatePokemon()
 
-        messageTable = scene2d.visTable { background = skin.getDrawable("dark-grey") }
-        add(messageTable).expandX().fillX().height(100f).padTop(15f)
-        mainMenu(message)
+        add(buttonsTable).expandX().fillX().height(100f).padTop(15f).row()
+        val msgTable = VisTable()
+        msgTable.add(message).expandX().fillX().height(25f).padTop(5f).padBottom(5f)
+        msgTable.add(backButton)
+        add(msgTable).expandX().fillX().height(25f).padTop(5f).padBottom(5f)
+        backButton.isVisible = false
 
+        mainMenu(msg)
         centerWindow()
         pack()
     }
@@ -59,21 +66,24 @@ class BattleWindow(private val screen: GameScreen, message: String, private val 
     }
 
     private fun mainMenu(msg: String) {
-        messageTable.clearChildren()
-        messageTable.add(VisLabel(msg))
+        buttonsTable.clearChildren()
+        message.setText(msg)
         msgBtn("battle.attack", ::attacks)
         msgBtn("battle.switch", ::switch)
         if (isWildEncounter) {
+            buttonsTable.row()
             msgBtn("battle.catch", ::catch)
             msgBtn("battle.run", ::run)
         }
     }
 
     private fun attacks() {
-        messageTable.clearChildren()
-        msgBtn("back") { mainMenu(I18N["battle.what-do"]) }
+        message(I18N["battle.choose-attack"])
+        buttonsTable.clearChildren()
+        enableBackButton()
         playerSide.activePokemon(mapper).moveIds.forEachIndexed { idx, attack ->
             val move = Move.of(attack)
+            if (idx % 2 == 0) buttonsTable.row()
             msgBtn(move.name) {
                 playerSide.queuedAction = QueuedMove(idx)
                 moveQueued()
@@ -82,9 +92,11 @@ class BattleWindow(private val screen: GameScreen, message: String, private val 
     }
 
     private fun switch() {
-        messageTable.clearChildren()
-        msgBtn("back") { mainMenu(I18N["battle.what-do"]) }
+        message(I18N["battle.choose-pokemon"])
+        buttonsTable.clearChildren()
+        enableBackButton()
         player.pokemon.forEachIndexed { idx, poke ->
+            if (idx % 3 == 0) buttonsTable.row()
             msgBtn(poke.displayName) {
                 playerSide.queuedAction = QueuedSwitch(idx)
                 moveQueued()
@@ -136,6 +148,15 @@ class BattleWindow(private val screen: GameScreen, message: String, private val 
                             Actions.moveBy(0f, 10f, 0.3f, Interpolation.exp10),
                             Actions.moveBy(0f, -10f, 0.3f, Interpolation.exp10)
                         )
+                    val otherCell = battleTable.cells.get(if (idx == 0) 1 else 0)
+                    (otherCell.actor as PokemonDisplay).sprite +=
+                        Actions.sequence(
+                            Actions.delay(0.5f),
+                            Actions.moveBy(5f, 0f, 0.2f, Interpolation.pow2),
+                            Actions.moveBy(-10f, 0f, 0.2f, Interpolation.pow2),
+                            Actions.moveBy(10f, 0f, 0.2f, Interpolation.pow2),
+                            Actions.moveBy(-5f, 0f, 0.2f, Interpolation.pow2)
+                        )
                     val other = if (event.side == BattleSide.Left) 1 else 0
                     (battleTable.cells.get(other).actor as PokemonDisplay).goalHp -= event.damage
                 }
@@ -176,14 +197,20 @@ class BattleWindow(private val screen: GameScreen, message: String, private val 
     }
 
     private fun message(msg: String) {
-        messageTable.clearChildren()
-        messageTable.add(VisLabel(msg))
+        message.setText(msg)
+        buttonsTable.clearChildren()
+        backButton.isVisible = false
     }
 
-    private fun msgBtn(text: String, clicked: () -> Unit) {
+    private fun msgBtn(text: String, clicked: () -> Unit): VisTextButton {
         val btn = VisTextButton(I18N.tryGet(text) ?: text)
-        messageTable.add(btn).pad(8f).expand().fill()
+        buttonsTable.add(btn).pad(5f).expand().fill().uniform()
         btn.onClick { clicked() }
+        return btn
+    }
+
+    private fun enableBackButton() {
+        backButton.isVisible = true
     }
 
     class PokemonDisplay(private var pokemon: Pokemon, var goalHp: Int = pokemon.battleState!!.hp) : VisTable() {

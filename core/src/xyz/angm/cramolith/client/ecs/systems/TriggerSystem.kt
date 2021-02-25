@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/22/21, 1:46 PM.
+ * This file was last modified at 2/25/21, 12:49 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -13,12 +13,10 @@ import com.badlogic.gdx.math.Vector2
 import ktx.collections.*
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.client.resources.I18N
-import xyz.angm.cramolith.client.world.Script
 import xyz.angm.cramolith.common.HUMAN_SIZE
 import xyz.angm.cramolith.common.ecs.battleM
 import xyz.angm.cramolith.common.ecs.components.PositionComponent
 import xyz.angm.cramolith.common.ecs.network
-import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.ecs.position
 import xyz.angm.cramolith.common.fst
 import xyz.angm.cramolith.common.networking.PlayerMapChangedPacket
@@ -27,6 +25,7 @@ import xyz.angm.cramolith.common.pokemon.battle.AiOpponent
 import xyz.angm.cramolith.common.pokemon.battle.PokeBattleState
 import xyz.angm.cramolith.common.world.Trigger
 import xyz.angm.cramolith.common.world.TriggerType.*
+import xyz.angm.cramolith.common.world.WorldActor
 import xyz.angm.cramolith.common.world.WorldMap
 import xyz.angm.rox.systems.EntitySystem
 
@@ -93,25 +92,16 @@ class TriggerSystem(private val screen: GameScreen) : EntitySystem() {
                 screen.client.send(PlayerMapChangedPacket(screen.player[network].id))
             }
 
-            Actor -> {
-                val playerC = player[playerM]
-                if (playerC.isInCutscene) return
-                val map = playerC.actorsTriggered.getOrPut(screen.world.map.index, { HashSet() })
-                if (map.contains(trigger.idx)) return
-
-                screen.setCutscene(true)
-                val actor = screen.world.map.actorsId[trigger.idx]
-                Script(screen, actor) { screen.setCutscene(false) }
-            }
+            Actor -> screen.loadScriptCutscene(trigger.idx)
 
             WildEncounter -> {
                 if (screen.player has battleM || screen.player[position].isZero || MathUtils.random(1000) != 0) return
-                screen.setCutscene(true)
+                screen.setCutsceneStatus(true)
                 val mons = screen.world.map.wildEncounters[trigger.idx]
                 val pokemon = fst.asObject(fst.asByteArray(mons[MathUtils.random(mons.size - 1)])) as Pokemon
                 pokemon.battleState = PokeBattleState(pokemon.hp)
                 screen.initBattle(AiOpponent(arrayOf(pokemon), true), I18N.fmt("battle.wild-attack", pokemon.displayName), false) {
-                    screen.setCutscene(false)
+                    screen.setCutsceneStatus(false)
                 }
             }
         }
@@ -129,6 +119,9 @@ class TriggerSystem(private val screen: GameScreen) : EntitySystem() {
         for (trigger in screen.world.map.triggers) {
             if (isInRange(pos, trigger.x.toFloat(), trigger.y.toFloat(), trigger.width, trigger.height)) triggers.add(trigger)
         }
+        for (actor in screen.world.map.actorsId.values()) {
+            if (isInRange(pos, actor.x.toFloat(), actor.y.toFloat(), HUMAN_SIZE.toInt(), HUMAN_SIZE.toInt())) triggers.add(actorTrigger(actor))
+        }
     }
 
     private fun isInRange(pos: Vector2, x: Float, y: Float, width: Int, height: Int) =
@@ -136,4 +129,8 @@ class TriggerSystem(private val screen: GameScreen) : EntitySystem() {
                 || pos.dst2(x + width, y) < MAX_TRIGGER_DIST
                 || pos.dst2(x, y + height) < MAX_TRIGGER_DIST
                 || pos.dst2(x + width, y + height) < MAX_TRIGGER_DIST
+
+    companion object {
+        private fun actorTrigger(actor: WorldActor) = Trigger(type = Collision, actor.x, actor.y, HUMAN_SIZE.toInt(), HUMAN_SIZE.toInt(), -1)
+    }
 }

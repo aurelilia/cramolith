@@ -295,12 +295,6 @@ triggers:
   width: 17
   height: 6
   idx: -1
-- type: "Actor"
-  x: 314
-  y: 830
-  width: 21
-  height: 64
-  idx: 0
 - type: "WildEncounter"
   x: 243
   y: 567
@@ -325,6 +319,12 @@ triggers:
   width: 67
   height: 154
   idx: 0
+- type: "Actor"
+  x: 451
+  y: 828
+  width: 52
+  height: 65
+  idx: 0
 teleports:
 - map: 3
   target: 0
@@ -338,18 +338,18 @@ actors:
   "joey":
     texture: "youngster"
     index: 0
-    x: 315
-    y: 882
+    x: 260
+    y: 789
     script:
-    - "joey"
-    - "title joey"
-    - "dialog 2"
-    - "title player"
-    - "dialog 1"
-    - "title joey"
-    - "dialog 1"
-    - "battle joey"
-    - "disable trigger"
+      - "joey"
+      - "title joey"
+      - "dialog 2"
+      - "title player"
+      - "dialog 1"
+      - "title joey"
+      - "dialog 1"
+      - "battle joey"
+      - "disable trigger"
 wildEncounters:
   - - speciesId: "snivy"
       nickname: null
@@ -358,6 +358,7 @@ wildEncounters:
       moveIds:
         - "vinewhip"
         - "leaftornado"
+      uuid: -1
       battleState: null
     - speciesId: "pikachu"
       nickname: null
@@ -366,4 +367,5 @@ wildEncounters:
       moveIds:
         - "quickattack"
         - "thundershock"
+      uuid: -1
       battleState: null

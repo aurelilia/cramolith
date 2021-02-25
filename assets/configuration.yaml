@@ -7,4 +7,5 @@ keybinds:
     "Tab": "onlinePlayers"
     "W": "walkForward"
     "Enter": "chat"
+    "Space": "interact"
 language: "English"

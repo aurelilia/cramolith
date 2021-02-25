@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/18/21, 6:14 PM.
+ * This file was last modified at 2/25/21, 12:51 AM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -27,6 +27,7 @@ import xyz.angm.cramolith.client.graphics.windows.ChatWindow
 import xyz.angm.cramolith.client.graphics.windows.MenuWindow
 import xyz.angm.cramolith.client.networking.Client
 import xyz.angm.cramolith.client.resources.I18N
+import xyz.angm.cramolith.client.world.Script
 import xyz.angm.cramolith.client.world.World
 import xyz.angm.cramolith.common.ecs.components.IgnoreSyncFlag
 import xyz.angm.cramolith.common.ecs.components.specific.BattleComponent
@@ -76,8 +77,8 @@ class GameScreen(
 
     // Entities
     val engine = Engine()
-    val netSystem = NetworkSystem(client::send)
-    val inputHandler = PlayerInputHandler(this)
+    private val netSystem = NetworkSystem(client::send)
+    private val inputHandler = PlayerInputHandler(this)
     val players = PlayerMapper()
     private val playersFamily = allOf(playerM)
 
@@ -131,10 +132,21 @@ class GameScreen(
         stage += battleWindow!!
     }
 
-    fun setCutscene(inCut: Boolean) {
+    fun setCutsceneStatus(inCut: Boolean) {
         player[playerM].isInCutscene = inCut
         player[network].needsSync = true
         inputHandler.disabled = inCut
+    }
+
+    fun loadScriptCutscene(triggerIdx: Int) {
+        val playerC = player[playerM]
+        if (playerC.isInCutscene) return
+        val map = playerC.actorsTriggered.getOrPut(world.map.index, { HashSet() })
+        if (map.contains(triggerIdx)) return
+
+        setCutsceneStatus(true)
+        val actor = world.map.actorsId[triggerIdx]
+        Script(this, actor) { setCutsceneStatus(false) }
     }
 
     /** Toggles a window.

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/6/21, 11:53 PM.
+ * This file was last modified at 3/1/21, 1:44 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -123,16 +123,18 @@ class ChatWindow(private val screen: GameScreen, initMsgs: Array<String>) : Wind
         return chat
     }
 
-    private fun addMessage(msg: ChatMessagePacket) {
-        val chat = getChat(msg.sender, msg.receiver)
-        (chat.msgTable.actor as VisTable).add(VisLabel(msg.message)).left().expandX().row()
-    }
+    private fun addMessage(msg: ChatMessagePacket) = insertMessage(getChat(msg.sender, msg.receiver), msg.message)
 
     private fun addMessages(packet: PrivateMessageResponse) {
         val chat = getChat(packet.other, -1)
-        for (msg in packet.messages) {
-            (chat.msgTable.actor as VisTable).add(VisLabel(msg)).left().expandX().row()
-        }
+        for (msg in packet.messages) insertMessage(chat, msg)
+    }
+
+    private fun insertMessage(chat: Chat, msg: String) {
+        val cell = (chat.msgTable.actor as VisTable).add(VisLabel(msg)).left().expandX()
+        cell.row()
+        chat.msgTable.layout()
+        chat.msgTable.scrollTo(0f, cell.actorY, 0f, 0f)
     }
 
     private fun getChat(sender: Int, receiver: Int): Chat {

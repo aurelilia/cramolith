@@ -98,24 +98,6 @@ triggers:
   height: 79
   idx: -1
 - type: "Collision"
-  x: 2
-  y: 270
-  width: 33
-  height: 42
-  idx: -1
-- type: "Collision"
-  x: 1
-  y: 389
-  width: 35
-  height: 33
-  idx: -1
-- type: "Collision"
-  x: 0
-  y: 308
-  width: 20
-  height: 114
-  idx: -1
-- type: "Collision"
   x: 133
   y: 245
   width: 7
@@ -212,34 +194,10 @@ triggers:
   height: 59
   idx: -1
 - type: "Collision"
-  x: 119
-  y: 395
-  width: 13
-  height: 64
-  idx: -1
-- type: "Collision"
-  x: 163
-  y: 396
-  width: 17
-  height: 62
-  idx: -1
-- type: "Collision"
   x: 130
   y: 445
   width: 50
   height: 14
-  idx: -1
-- type: "Collision"
-  x: 149
-  y: 397
-  width: 14
-  height: 5
-  idx: -1
-- type: "Collision"
-  x: 149
-  y: 397
-  width: 3
-  height: 23
   idx: -1
 - type: "Teleport"
   x: 380
@@ -283,18 +241,6 @@ triggers:
   width: 16
   height: 19
   idx: 3
-- type: "Collision"
-  x: 397
-  y: 354
-  width: 15
-  height: 5
-  idx: -1
-- type: "Collision"
-  x: 356
-  y: 353
-  width: 17
-  height: 6
-  idx: -1
 - type: "WildEncounter"
   x: 243
   y: 567
@@ -319,12 +265,84 @@ triggers:
   width: 67
   height: 154
   idx: 0
-- type: "Actor"
-  x: 451
-  y: 828
-  width: 52
-  height: 65
-  idx: 0
+- type: "Water"
+  x: 1
+  y: 270
+  width: 33
+  height: 40
+  idx: -1
+- type: "Water"
+  x: 1
+  y: 271
+  width: 17
+  height: 150
+  idx: -1
+- type: "Water"
+  x: 2
+  y: 392
+  width: 31
+  height: 28
+  idx: -1
+- type: "Collision"
+  x: 118
+  y: 396
+  width: 10
+  height: 62
+  idx: -1
+- type: "Collision"
+  x: 126
+  y: 454
+  width: 5
+  height: 4
+  idx: -1
+- type: "Collision"
+  x: 168
+  y: 400
+  width: 10
+  height: 56
+  idx: -1
+- type: "Collision"
+  x: 153
+  y: 397
+  width: 9
+  height: 3
+  idx: -1
+- type: "Collision"
+  x: 398
+  y: 355
+  width: 13
+  height: 4
+  idx: -1
+- type: "Collision"
+  x: 355
+  y: 355
+  width: 17
+  height: 3
+  idx: -1
+- type: "Collision"
+  x: 373
+  y: 374
+  width: 24
+  height: 5
+  idx: -1
+- type: "Collision"
+  x: 129
+  y: 417
+  width: 26
+  height: 6
+  idx: -1
+- type: "Collision"
+  x: 145
+  y: 203
+  width: 25
+  height: 7
+  idx: -1
+- type: "Collision"
+  x: 377
+  y: 198
+  width: 20
+  height: 6
+  idx: -1
 teleports:
 - map: 3
   target: 0
@@ -338,34 +356,67 @@ actors:
   "joey":
     texture: "youngster"
     index: 0
-    x: 260
-    y: 789
+    x: 1
+    y: 395
     script:
-      - "joey"
-      - "title joey"
-      - "dialog 2"
-      - "title player"
+    - "joey"
+    - "title joey"
+    - "dialog 2"
+    - "title player"
+    - "dialog 1"
+    - "title joey"
+    - "dialog 1"
+    - "battle joey"
+    - "disable trigger"
+  "sign_P":
+    texture: "actor_size"
+    index: 1
+    x: 162
+    y: 384
+    script:
+      - "sign_P"
       - "dialog 1"
-      - "title joey"
+
+  "sign_R":
+    texture: "actor_size"
+    index: 2
+    x: 178
+    y: 170
+    script:
+      - "sign_R"
       - "dialog 1"
-      - "battle joey"
-      - "disable trigger"
+  "sign_S":
+    texture: "actor_size"
+    index: 3
+    x: 352
+    y: 337
+    script:
+      - "sign_S"
+      - "dialog 1"
+  "sign_L":
+    texture: "actor_size"
+    index: 4
+    x: 354
+    y: 159
+    script:
+      - "sign_L"
+      - "dialog 1"
 wildEncounters:
-  - - speciesId: "snivy"
-      nickname: null
-      level: 12
-      exp: 0
-      moveIds:
-        - "vinewhip"
-        - "leaftornado"
-      uuid: -1
-      battleState: null
-    - speciesId: "pikachu"
-      nickname: null
-      level: 10
-      exp: 0
-      moveIds:
-        - "quickattack"
-        - "thundershock"
-      uuid: -1
-      battleState: null
+- - speciesId: "snivy"
+    nickname: null
+    level: 12
+    exp: 0
+    moveIds:
+    - "vinewhip"
+    - "leaftornado"
+    uuid: -1
+    battleState: null
+  - speciesId: "pikachu"
+    nickname: null
+    level: 10
+    exp: 0
+    moveIds:
+    - "quickattack"
+    - "thundershock"
+    uuid: -1
+    battleState: null

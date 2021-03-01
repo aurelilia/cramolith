@@ -74,12 +74,6 @@ triggers:
   height: 30
   idx: -1
 - type: "Collision"
-  x: 127
-  y: 62
-  width: 49
-  height: 28
-  idx: -1
-- type: "Collision"
   x: 112
   y: 26
   width: 5
@@ -97,10 +91,32 @@ triggers:
   width: 21
   height: 6
   idx: -1
+- type: "Collision"
+  x: 145
+  y: 72
+  width: 29
+  height: 15
+  idx: -1
 teleports:
 - map: 0
   target: 1
 - map: 7
   target: 0
-actors: {}
+actors:
+  "tv":
+    texture: "actor_size"
+    index: 0
+    x: 128
+    y: 72
+    script:
+      - "tv"
+      - "dialog 1"
+  "mum":
+    texture: "actor_size"
+    index: 1
+    x: 158
+    y: 42
+    script:
+      - "mum"
+      - "dialog 3"
 wildEncounters: []

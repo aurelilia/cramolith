@@ -20,12 +20,6 @@ triggers:
   height: 100
   idx: -1
 - type: "Collision"
-  x: 16
-  y: 104
-  width: 16
-  height: 21
-  idx: -1
-- type: "Collision"
   x: 31
   y: 117
   width: 20
@@ -36,12 +30,6 @@ triggers:
   y: 101
   width: 31
   height: 17
-  idx: -1
-- type: "Collision"
-  x: 80
-  y: 104
-  width: 32
-  height: 31
   idx: -1
 - type: "Collision"
   x: 143
@@ -79,8 +67,62 @@ triggers:
   width: 5
   height: 5
   idx: -1
+- type: "Collision"
+  x: 17
+  y: 12
+  width: 14
+  height: 25
+  idx: -1
 teleports:
 - map: 5
   target: 1
-actors: {}
+actors:
+  "books_left":
+    texture: "actor_size"
+    index: 0
+    x: 81
+    y: 111
+    script:
+      - "bookL"
+      - "dialog 1"
+  "books_right":
+    texture: "actor_size"
+    index: 1
+    x: 96
+    y: 111
+    script:
+      - "bookR"
+      - "dialog 1"
+  "pc":
+    texture: "actor_size"
+    index: 2
+    x: 16
+    y: 112
+    script:
+      - "pc"
+      - "dialog 1"
+  "tv":
+    texture: "actor_size"
+    index: 3
+    x: 64
+    y: 54
+    script:
+      - "tv"
+      - "dialog 1"
+  "console":
+    texture: "actor_size"
+    index: 4
+    x: 64
+    y: 39
+    script:
+      - "console"
+      - "dialog 1"
+  "bed":
+    texture: "actor_size"
+    index: 5
+    x: 16
+    y: 21
+    script:
+      - "bedNY"
+      - "dialog 1"
 wildEncounters: []

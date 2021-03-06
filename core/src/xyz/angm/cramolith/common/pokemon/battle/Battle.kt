@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/6/21, 5:45 PM.
+ * This file was last modified at 3/6/21, 6:29 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -25,8 +25,8 @@ class Battle(
     fun advance(turn: ArrayList<TurnEvent>, playerGetter: (Int) -> PlayerComponent) {
         var lhp = left.activePokemon(playerGetter)
         var rhp = right.activePokemon(playerGetter)
-        val lturn = left.calcQueuedAction(playerGetter, this)!!
-        val rturn = right.calcQueuedAction(playerGetter, this)!!
+        val lturn = left.calcQueuedAction(playerGetter, right)!!
+        val rturn = right.calcQueuedAction(playerGetter, left)!!
         left.clearQueuedAction()
         right.clearQueuedAction()
 
@@ -50,7 +50,8 @@ class Battle(
 
                 is QueuedMove -> {
                     val move = Move.of(mon.moveIds[move.moveIdx])
-                    val damage = applyDamage(mon, otherMon, move)
+                    val damage = calcMoveDamage(mon, otherMon, move, withRandom = true)
+                    otherMon.battleState!!.hp -= damage
                     turn.add(Attack(sideE, move.ident, damage))
                 }
             }
@@ -84,10 +85,10 @@ class Battle(
     fun side(side: BattleSide) = if (side == BattleSide.Left) left else right
 }
 
-fun applyDamage(mon: Pokemon, otherMon: Pokemon, move: Move): Int {
+fun calcMoveDamage(mon: Pokemon, otherMon: Pokemon, move: Move, withRandom: Boolean): Int {
     // https://bulbapedia.bulbagarden.net/wiki/Damage
-    val crit = if (MathUtils.random(15) == 0) 2f else 1f
-    val random = MathUtils.random(0.85f, 1f)
+    val crit = if (withRandom && MathUtils.random(15) == 0) 2f else 1f
+    val random = if (withRandom) MathUtils.random(0.85f, 1f) else 1f
     val stab = if (mon.species.type == move.type) 1.5f else 1f
     val type = move.type attacks otherMon.species.type
 
@@ -96,7 +97,6 @@ fun applyDamage(mon: Pokemon, otherMon: Pokemon, move: Move): Int {
     val dividend = level * move.damage * (mon.attack / otherMon.defense)
 
     val damage = ((dividend / 50f) + 2) * modifier
-    otherMon.battleState!!.hp -= damage.toInt()
     return damage.toInt()
 }
 

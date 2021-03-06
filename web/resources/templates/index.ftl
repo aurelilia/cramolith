@@ -9,7 +9,7 @@
 
 <@base.document title="Cramolith - Home" css="index">
     <h2>Welcome to Cramolith</h2>
-    <h4>The game that doesn't really exist yet.</h4>
+    <h4>A Pokemon MMO.</h4>
 <#--noinspection HtmlUnknownTarget-->
     <#if message != ""><p>${message}</p></#if>
 </@base.document>

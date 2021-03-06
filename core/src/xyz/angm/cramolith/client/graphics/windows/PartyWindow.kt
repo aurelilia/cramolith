@@ -1,20 +1,20 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/18/21, 7:01 PM.
+ * This file was last modified at 3/6/21, 7:23 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
 
 package xyz.angm.cramolith.client.graphics.windows
 
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.utils.Scaling
+import com.kotcrab.vis.ui.widget.VisTable
 import ktx.actors.onClick
 import ktx.scene2d.button
 import ktx.scene2d.scene2d
-import ktx.scene2d.scrollPane
 import ktx.scene2d.vis.visImage
 import ktx.scene2d.vis.visLabel
-import ktx.scene2d.vis.visTable
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.client.resources.I18N
 import xyz.angm.cramolith.common.ecs.playerM
@@ -22,21 +22,27 @@ import xyz.angm.cramolith.common.ecs.playerM
 class PartyWindow(private val screen: GameScreen) : Window("party") {
 
     private var sinceLastUpdate = 0f
+    private val table = VisTable()
+    private val pane = ScrollPane(table)
 
     init {
         addCloseButton()
+        add(pane)
         reload()
     }
 
     override fun act(delta: Float) {
         super.act(delta)
         sinceLastUpdate += delta
-        if (sinceLastUpdate > 1f) reload()
+        if (sinceLastUpdate > 1f) {
+            reload()
+            sinceLastUpdate = 0f
+        }
     }
 
     private fun reload() {
-        clearChildren()
-        val table = scene2d.visTable {
+        table.apply {
+            clearChildren()
             for (pokemon in screen.player[playerM].pokemon) {
                 val button = scene2d.button("list") {
                     isDisabled = true
@@ -50,12 +56,11 @@ class PartyWindow(private val screen: GameScreen) : Window("party") {
                     visLabel("${I18N["party.level"]} ${pokemon.level}")
                     pack()
 
-                    onClick { stage.addActor(PokemonSummaryWindow(pokemon)) }
+                    onClick { stage.addActor(PokemonSummaryWindow(screen, pokemon)) }
                 }
                 add(button).expandX().fillX().row()
             }
         }
-        add(scene2d.scrollPane { actor = table })
         pack()
     }
 }

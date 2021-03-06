@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/6/21, 6:46 PM.
+ * This file was last modified at 3/6/21, 7:19 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -22,6 +22,7 @@ import xyz.angm.cramolith.common.ecs.position
 import xyz.angm.cramolith.common.networking.InitPacket
 import xyz.angm.cramolith.common.networking.JoinPacket
 import xyz.angm.cramolith.common.networking.LoginRejectedPacket
+import xyz.angm.cramolith.common.networking.PokemonReleasedPacket
 import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.cramolith.server.Connection
 import xyz.angm.cramolith.server.Server
@@ -125,5 +126,13 @@ internal fun Server.handleDisconnect(connection: Connection) {
             if (mon.uuid == -1) DBPoke.new(writer)
             else writer(DBPoke.find { Pokemons.id eq mon.uuid }.first())
         }
+    }
+}
+
+internal fun Server.handlePokemonRelease(connection: Connection, packet: PokemonReleasedPacket) {
+    val player = players.find { it.value.conn.id == connection.id } ?: return
+    DB.transaction {
+        val mon = DBPoke.findById(packet.pokemonId)
+        if (mon?.owner?.value == player.key) mon.delete()
     }
 }

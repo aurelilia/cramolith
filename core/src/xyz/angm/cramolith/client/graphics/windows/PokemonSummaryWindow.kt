@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/18/21, 7:02 PM.
+ * This file was last modified at 3/6/21, 7:25 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -8,17 +8,20 @@
 package xyz.angm.cramolith.client.graphics.windows
 
 
+import com.kotcrab.vis.ui.util.dialog.Dialogs
+import com.kotcrab.vis.ui.util.dialog.OptionDialogListener
 import com.kotcrab.vis.ui.widget.VisImage
+import ktx.actors.onClick
 import ktx.scene2d.scene2d
-import ktx.scene2d.vis.visLabel
-import ktx.scene2d.vis.visTable
-import ktx.scene2d.vis.visTextTooltip
-import ktx.scene2d.vis.visTooltip
+import ktx.scene2d.vis.*
+import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.client.resources.I18N
+import xyz.angm.cramolith.common.ecs.playerM
+import xyz.angm.cramolith.common.networking.PokemonReleasedPacket
 import xyz.angm.cramolith.common.pokemon.Move
 import xyz.angm.cramolith.common.pokemon.Pokemon
 
-class PokemonSummaryWindow(pokemon: Pokemon) : Window("summary") {
+class PokemonSummaryWindow(screen: GameScreen, pokemon: Pokemon) : Window("summary") {
 
     init {
         addCloseButton()
@@ -57,6 +60,24 @@ class PokemonSummaryWindow(pokemon: Pokemon) : Window("summary") {
                     it.expandX().fillX().row()
                 }
             }
+
+            visTextButton(I18N["pokemon.release"]) {
+                onClick {
+                    Dialogs.showOptionDialog(stage, I18N["pokemon.release-title"], I18N["pokemon.release-confirm"], Dialogs.OptionDialogType.YES_CANCEL,
+                        object : OptionDialogListener {
+                            override fun yes() {
+                                screen.player[playerM].pokemon.remove(pokemon)
+                                this@PokemonSummaryWindow.remove()
+                                screen.client.send(PokemonReleasedPacket(pokemon.uuid))
+                            }
+
+                            override fun no() = throw UnsupportedOperationException()
+                            override fun cancel() {}
+                        }
+                    )
+                }
+            }
+
             pack()
             pad(15f)
         })

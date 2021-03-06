@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/18/21, 3:10 PM.
+ * This file was last modified at 3/6/21, 7:16 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -71,3 +71,6 @@ class BattleUpdatePacket(
     val turn: ArrayList<TurnEvent> = ArrayList(),
     val playerPoke: ArrayList<Pokemon>? = null
 ) : Packet
+
+
+class PokemonReleasedPacket(val pokemonId: Int = 0) : Packet

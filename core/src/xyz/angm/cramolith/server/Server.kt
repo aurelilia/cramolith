@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/13/21, 1:55 AM.
+ * This file was last modified at 3/6/21, 7:16 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -77,6 +77,7 @@ class Server {
             is ChatMessagePacket -> handleChatMessage(packet)
             is PrivateMessageRequest -> handlePMRequest(connection, packet)
             is JoinPacket -> handleJoinPacket(connection, packet)
+            is PokemonReleasedPacket -> handlePokemonRelease(connection, packet)
             is PlayerMapChangedPacket -> sendToAll(packet)
             is Entity -> handleEntity(packet)
         }

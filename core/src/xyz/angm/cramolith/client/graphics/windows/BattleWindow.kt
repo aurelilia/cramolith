@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/25/21, 1:26 AM.
+ * This file was last modified at 3/6/21, 6:16 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -41,6 +41,7 @@ class BattleWindow(private val screen: GameScreen, msg: String, private val onCo
     private val battle get() = screen.player[battleM].battle
     private val isWildEncounter get() = (battle.right as? AiOpponent)?.isWild ?: false
     private val playerSide get() = (if ((battle.left as? PlayerOpponent)?.playerId == player.clientUUID) battle.left else battle.right) as PlayerOpponent
+    private val otherSide get() = (if ((battle.left as? PlayerOpponent)?.playerId == player.clientUUID) battle.right else battle.left)
     private val playerSideE get() = if (playerSide == battle.left) BattleSide.Left else BattleSide.Right
 
     init {
@@ -63,6 +64,20 @@ class BattleWindow(private val screen: GameScreen, msg: String, private val onCo
         battleTable.clearChildren()
         battleTable.add(PokemonDisplay(battle.left.activePokemon(mapper))).pad(20f)
         battleTable.add(PokemonDisplay(battle.right.activePokemon(mapper))).pad(20f)
+    }
+
+    private fun nextTurnMenu() {
+        if (playerSide.activePokemon(mapper).battleState!!.status == StatusEffect.Fainted) {
+            // Player pokemon fainted, force a switch
+            switch(allowBack = false)
+        } else if (otherSide.activePokemon(mapper).battleState!!.status == StatusEffect.Fainted) {
+            // Opponent pokemon fainted, wait for them to switch this turn
+            playerSide.queuedAction = QueuedMove(0)
+            moveQueued()
+        } else {
+            updatePokemon()
+            mainMenu(I18N["battle.what-do"])
+        }
     }
 
     private fun mainMenu(msg: String) {
@@ -91,16 +106,19 @@ class BattleWindow(private val screen: GameScreen, msg: String, private val onCo
         }
     }
 
-    private fun switch() {
+    private fun switch(allowBack: Boolean = true) {
         message(I18N["battle.choose-pokemon"])
         buttonsTable.clearChildren()
-        enableBackButton()
+        if (allowBack) enableBackButton()
         player.pokemon.forEachIndexed { idx, poke ->
             if (idx % 3 == 0) buttonsTable.row()
+            val disabled = poke.battleState!!.status == StatusEffect.Fainted
             msgBtn(poke.displayName) {
-                playerSide.queuedAction = QueuedSwitch(idx)
-                moveQueued()
-            }
+                if (!disabled) {
+                    playerSide.queuedAction = QueuedSwitch(idx)
+                    moveQueued()
+                }
+            }.isDisabled = disabled
         }
     }
 
@@ -127,8 +145,7 @@ class BattleWindow(private val screen: GameScreen, msg: String, private val onCo
         val action = Actions.action(SequenceAction::class.java)
         events.forEach { execEvent(it, action) }
         action += Actions.run {
-            updatePokemon()
-            mainMenu(I18N["battle.what-do"])
+            nextTurnMenu()
         }
         addAction(action)
     }

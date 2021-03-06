@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/18/21, 5:27 PM.
+ * This file was last modified at 3/6/21, 5:45 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -20,6 +20,7 @@ class Battle(
 
     val left get() = leftOp!!
     val right get() = rightOp!!
+    private var lastRoundFaint = false
 
     fun advance(turn: ArrayList<TurnEvent>, playerGetter: (Int) -> PlayerComponent) {
         var lhp = left.activePokemon(playerGetter)
@@ -31,6 +32,8 @@ class Battle(
 
         fun checkFaint(side: Opponent, sideE: BattleSide, mon: Pokemon) = if (mon.battleState!!.hp <= 0) {
             turn.add(Fainted(sideE))
+            mon.battleState!!.status = StatusEffect.Fainted
+            lastRoundFaint = true
             if (!side.hasRemainingPokemon(playerGetter)) turn.add(BattleEnd(sideE.other()))
             true
         } else false
@@ -56,14 +59,18 @@ class Battle(
         fun execLeft() = execMove(lturn, left, BattleSide.Left, lhp, rhp)
         fun execRight() = execMove(rturn, right, BattleSide.Right, rhp, lhp)
 
-        if (movePriority(lturn, lhp) > movePriority(rturn, rhp)) {
+        if (lastRoundFaint) {
+            lastRoundFaint = false
+            if (lhp.battleState!!.status == StatusEffect.Fainted) execLeft()
+            else execRight()
+        } else if (movePriority(lturn, lhp) > movePriority(rturn, rhp)) {
             execLeft()
             if (checkFaint(right, BattleSide.Right, rhp)) return
             execRight()
-            checkFaint(left, BattleSide.Left, rhp)
+            checkFaint(left, BattleSide.Left, lhp)
         } else {
             execRight()
-            if (checkFaint(left, BattleSide.Left, rhp)) return
+            if (checkFaint(left, BattleSide.Left, lhp)) return
             execLeft()
             checkFaint(right, BattleSide.Right, rhp)
         }
@@ -103,5 +110,5 @@ enum class BattleSide : Serializable {
 class PokeBattleState(var hp: Int = 0, var status: StatusEffect? = null) : Serializable
 
 enum class StatusEffect : Serializable {
-    Poisoned, Paralyzed, Asleep
+    Poisoned, Paralyzed, Asleep, Fainted
 }

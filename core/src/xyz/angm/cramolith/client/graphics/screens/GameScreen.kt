@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/25/21, 12:51 AM.
+ * This file was last modified at 3/6/21, 6:11 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -121,8 +121,9 @@ class GameScreen(
         c.battle = Battle(PlayerOpponent(player[playerM].clientUUID), opponent)
         player.add(engine, c)
 
-        val firstMon = player[playerM].pokemon[0]
-        firstMon.battleState = PokeBattleState(firstMon.hp)
+        for (mon in player[playerM].pokemon) {
+            mon.battleState = PokeBattleState(mon.hp)
+        }
 
         battleWindow = BattleWindow(this, message) { won ->
             val text = if (won) I18N["battle.won"] else I18N["battle.lost"]

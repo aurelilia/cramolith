@@ -2,6 +2,11 @@ joey:
   texture: youngster
   pokemon:
     - speciesId: pikachu
+      level: 80
+      moveIds:
+        - quickattack
+        - thundershock
+    - speciesId: pikachu
       level: 10
       moveIds:
         - quickattack

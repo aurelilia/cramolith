@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/6/21, 6:16 PM.
+ * This file was last modified at 3/6/21, 6:37 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -72,7 +72,7 @@ class BattleWindow(private val screen: GameScreen, msg: String, private val onCo
             switch(allowBack = false)
         } else if (otherSide.activePokemon(mapper).battleState!!.status == StatusEffect.Fainted) {
             // Opponent pokemon fainted, wait for them to switch this turn
-            playerSide.queuedAction = QueuedMove(0)
+            playerSide.queuedAction = DoNothing()
             moveQueued()
         } else {
             updatePokemon()
@@ -123,9 +123,13 @@ class BattleWindow(private val screen: GameScreen, msg: String, private val onCo
     }
 
     private fun catch() {
-        screen.player[playerM].pokemon.add(battle.right.activePokemon(mapper))
-        Dialogs.showOKDialog(stage, I18N["battle.caught-title"], I18N.fmt("battle.caught", battle.right.activePokemon(mapper).displayName))
-        endBattle(true)
+        if (player.pokemon.size == 6) {
+            Dialogs.showErrorDialog(stage, I18N["battle.team-full-title"], I18N.fmt("battle.team-full", battle.right.activePokemon(mapper).displayName))
+        } else {
+            player.pokemon.add(battle.right.activePokemon(mapper))
+            Dialogs.showOKDialog(stage, I18N["battle.caught-title"], I18N.fmt("battle.caught", battle.right.activePokemon(mapper).displayName))
+            endBattle(true)
+        }
     }
 
     private fun run() = endBattle(false)

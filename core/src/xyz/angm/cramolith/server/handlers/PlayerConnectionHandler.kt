@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/18/21, 7:04 PM.
+ * This file was last modified at 3/6/21, 6:46 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -104,7 +104,7 @@ internal fun Server.handleDisconnect(connection: Connection) {
         db.posMap = posC.map
         db.triggeredActors = playerC.actorsTriggered
 
-        for (mon in playerC.pokemon) {
+        for (mon in playerC.pokemon.subList(0, 6)) {
             val writer: DBPoke.() -> Unit = {
                 species = mon.species.ident
                 nickname = mon.nickname

@@ -7,7 +7,7 @@
 <#-- @ftlvariable name="user" type="xyz.angm.cramolith.server.database.Player" -->
 <#import "base.ftl" as base>
 
-<@base.document title="Cramolith - Login" css="register">
+<@base.document title="Cramolith - User Settings" css="register">
 <#--noinspection HtmlUnknownTarget-->
     <p>You can change your name or password here.</p>
     <form action="/settings/submit" method="post" class="register-form">

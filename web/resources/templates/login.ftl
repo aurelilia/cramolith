@@ -6,7 +6,7 @@
 <#-- @ftlvariable name="error" type="java.lang.String" -->
 <#import "base.ftl" as base>
 
-<@base.document title="Cramolith - Register" css="login">
+<@base.document title="Cramolith - Login" css="login">
 <#--noinspection HtmlUnknownTarget-->
     <form action="/login/submit" method="post" class="login-form">
         <label for="username"></label>

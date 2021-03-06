@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/6/21, 5:06 PM.
+ * This file was last modified at 3/6/21, 7:40 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -124,7 +124,7 @@ fun Application.module() {
 
             return@post if (error == null) {
                 call.sessions.set(LoginSession(id = player!!.id.value))
-                call.respond(FreeMarkerContent("index.ftl", mapOf("message" to "Successfully logged in. Welcome back, $username!")))
+                call.respond(FreeMarkerContent("settings.ftl", mapOf("user" to player)))
             } else {
                 call.respond(FreeMarkerContent("login.ftl", mapOf("error" to error)))
             }

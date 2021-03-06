@@ -24,7 +24,7 @@
             <#--noinspection HtmlUnknownTarget-->
             <a href="/">Home</a>
             <#--noinspection HtmlUnknownTarget-->
-            <a href="/settings">Settings</a>
+            <a href="/settings">Account</a>
             <#--noinspection HtmlUnknownTarget-->
             <a href="/register">Register</a>
             <#--noinspection HtmlUnknownTarget-->

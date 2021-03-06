@@ -28,7 +28,7 @@
             <#--noinspection HtmlUnknownTarget-->
             <a href="/register">Register</a>
             <#--noinspection HtmlUnknownTarget-->
-            <a href="/changelog">Changelog</a>
+            <a href="/download">Download</a>
             <#--noinspection HtmlUnknownTarget-->
             <a href="/about_us">About us</a>
         </nav>
@@ -37,8 +37,8 @@
         <#nested>
     </main>
     <footer>
-        <p>Impressum</p>
+        <p>Imprint</p>
     </footer>
     </body>
-    </html>
+</html>
 </#macro>

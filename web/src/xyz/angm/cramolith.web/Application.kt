@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 7:18 PM.
+ * This file was last modified at 3/6/21, 5:06 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -61,8 +61,8 @@ fun Application.module() {
         get("/register") {
             call.respond(FreeMarkerContent("register.ftl", mapOf("error" to "")))
         }
-        get("/changelog") {
-            call.respond(FreeMarkerContent("changelog.ftl", mapOf("" to "")))
+        get("/download") {
+            call.respond(FreeMarkerContent("download.ftl", mapOf("" to "")))
         }
         get("/about_us") {
             call.respond(FreeMarkerContent("about_us.ftl", mapOf("" to "")))

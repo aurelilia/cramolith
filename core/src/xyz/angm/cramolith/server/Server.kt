@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/6/21, 7:16 PM.
+ * This file was last modified at 3/10/21, 10:33 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -74,7 +74,9 @@ class Server {
     private fun receivedInternal(connection: Connection, packet: Any) {
         log.trace { "[SERVER] Received object of class ${packet.javaClass.name}" }
         when (packet) {
-            is ChatMessagePacket -> handleChatMessage(packet)
+            is GlobalChatMsg -> handleGlobalChatMsg(connection, packet)
+            is CommentPacket -> handleCommentPacket(packet)
+            is PrivateMessagePacket -> handlePrivateMessage(packet)
             is PrivateMessageRequest -> handlePMRequest(connection, packet)
             is JoinPacket -> handleJoinPacket(connection, packet)
             is PokemonReleasedPacket -> handlePokemonRelease(connection, packet)
@@ -82,6 +84,8 @@ class Server {
             is Entity -> handleEntity(packet)
         }
     }
+
+    internal fun playerByConnection(conn: Connection) = players.find { it.value.conn.id == conn.id }
 
     internal fun onConnected(connection: Connection) {
         log.info { "[SERVER] Player connected. IP: ${connection.ip}." }

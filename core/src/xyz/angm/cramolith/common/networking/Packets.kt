@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/6/21, 7:16 PM.
+ * This file was last modified at 3/10/21, 10:36 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -28,7 +28,7 @@ class JoinPacket(val user: String = "", val password: String = "") : Packet
 class InitPacket(
     val player: Entity? = null, // never actually null, just there to allow empty constructor
     val entities: Array<Entity> = emptyArray(),
-    val globalChatMessages: Array<String> = emptyArray()
+    val globalChatMessages: Array<GlobalChatMsg> = emptyArray()
 ) : Packet
 
 
@@ -38,11 +38,26 @@ class InitPacket(
 class LoginRejectedPacket(val reason: String = "") : Packet
 
 
-/** Contains a chat message. Client sends it to server; server sends it to appropriate clients.
+class GlobalChatMsg(
+    var id: Int = 0,
+    val title: String = "",
+    val text: String = "",
+    val comments: List<CommentPacket> = emptyList()
+) : Packet
+
+
+class CommentPacket(
+    val postId: Int = 0,
+    val userId: Int = 0,
+    val comment: String = ""
+) : Packet
+
+
+/** Contains a private chat message. Client sends it to server; server sends it to appropriate clients.
  * @param message The message to send
  * @param sender The UUID of the sender
- * @param receiver The UUID of the receiver; 0 is a special id for global chat. */
-class ChatMessagePacket(
+ * @param receiver The UUID of the receiver. */
+class PrivateMessagePacket(
     val message: String = "",
     val sender: Int = 0,
     val receiver: Int = 0

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/7/21, 9:32 PM.
+ * This file was last modified at 3/10/21, 10:50 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -15,9 +15,9 @@ import xyz.angm.cramolith.common.ecs.components.specific.PlayerComponent
 import xyz.angm.cramolith.common.ecs.components.specific.WildPokemonComponent
 import xyz.angm.cramolith.common.ecs.ignoreSync
 import xyz.angm.cramolith.common.ecs.renderable
-import xyz.angm.cramolith.common.networking.ChatMessagePacket
 import xyz.angm.cramolith.common.networking.InitPacket
 import xyz.angm.cramolith.common.networking.JoinPacket
+import xyz.angm.cramolith.common.networking.PrivateMessagePacket
 import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.rox.Component
 import xyz.angm.rox.Entity
@@ -31,12 +31,12 @@ val yaml = Yaml()
 /** A FST serializer used for network communication and world storage. */
 val fst = createFST(
     // Packets
-    JoinPacket::class, InitPacket::class, ChatMessagePacket::class,
+    JoinPacket::class, InitPacket::class, PrivateMessagePacket::class,
 
     // Components
     Component::class, VectoredComponent::class,
     PositionComponent::class, VelocityComponent::class, PlayerComponent::class,
-    RemoveFlag::class, NetworkSyncComponent::class,WildPokemonComponent::class,
+    RemoveFlag::class, NetworkSyncComponent::class, WildPokemonComponent::class,
 
     // Various
     Vector2::class, Entity::class, ArrayList::class, Pokemon::class,

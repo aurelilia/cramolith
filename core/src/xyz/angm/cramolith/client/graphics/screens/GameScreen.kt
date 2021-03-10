@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/6/21, 6:11 PM.
+ * This file was last modified at 3/10/21, 10:37 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -36,10 +36,7 @@ import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.ecs.systems.NetworkSystem
 import xyz.angm.cramolith.common.ecs.systems.RemoveSystem
 import xyz.angm.cramolith.common.ecs.systems.VelocitySystem
-import xyz.angm.cramolith.common.networking.BattleUpdatePacket
-import xyz.angm.cramolith.common.networking.ChatMessagePacket
-import xyz.angm.cramolith.common.networking.InitPacket
-import xyz.angm.cramolith.common.networking.PlayerMapChangedPacket
+import xyz.angm.cramolith.common.networking.*
 import xyz.angm.cramolith.common.pokemon.battle.Battle
 import xyz.angm.cramolith.common.pokemon.battle.Opponent
 import xyz.angm.cramolith.common.pokemon.battle.PlayerOpponent
@@ -70,7 +67,7 @@ class GameScreen(
     val client: Client,
     val player: Entity,
     entities: Array<Entity>,
-    messages: Array<String>
+    messages: Array<GlobalChatMsg>
 ) : Screen() {
 
     private val coScope = CoroutineScope(Dispatchers.Default)
@@ -204,14 +201,14 @@ class GameScreen(
     }
 
     // Initialize everything not render-related
-    private fun initState(messages: Array<String>) {
+    private fun initState(messages: Array<GlobalChatMsg>) {
         // Windows
         toggleWindow("menu") { MenuWindow(it) }
         activeWindows["chat"] = ChatWindow(this, messages)
 
         // Network
         client.disconnectListener = { Cramolith.postRunnable { returnToMenu("disconnected-from-server") } }
-        client.send(ChatMessagePacket("[CYAN]${player[playerM].name}[LIGHT_GRAY] ${I18N["joined-game"]}"))
+        client.send(PrivateMessagePacket("[CYAN]${player[playerM].name}[LIGHT_GRAY] ${I18N["joined-game"]}"))
 
         // Input
         val multiplex = InputMultiplexer()

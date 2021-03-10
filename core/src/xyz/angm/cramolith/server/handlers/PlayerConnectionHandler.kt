@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/6/21, 7:19 PM.
+ * This file was last modified at 3/10/21, 10:50 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -19,10 +19,7 @@ import xyz.angm.cramolith.common.ecs.components.specific.PlayerComponent
 import xyz.angm.cramolith.common.ecs.network
 import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.ecs.position
-import xyz.angm.cramolith.common.networking.InitPacket
-import xyz.angm.cramolith.common.networking.JoinPacket
-import xyz.angm.cramolith.common.networking.LoginRejectedPacket
-import xyz.angm.cramolith.common.networking.PokemonReleasedPacket
+import xyz.angm.cramolith.common.networking.*
 import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.cramolith.server.Connection
 import xyz.angm.cramolith.server.Server
@@ -32,13 +29,28 @@ import xyz.angm.rox.Entity
 import xyz.angm.cramolith.server.database.Pokemon as DBPoke
 
 internal fun Server.handleJoinPacket(connection: Connection, packet: JoinPacket) {
-    var globalMessages = emptyArray<String>()
+    var globalMessages = emptyArray<GlobalChatMsg>()
     val dbEntry = DB.transaction {
         val player = Player.find { Players.name eq packet.user }.firstOrNull()
 
         val list = Posts.selectAll().orderBy(Posts.id, SortOrder.DESC).limit(25).toMutableList()
         list.reverse()
-        globalMessages = list.stream().map { it[Posts.text] }.toArray { arrayOfNulls(it) }
+        globalMessages = list.stream().map {
+            val comments = Comment.find { Comments.post eq it[Posts.id] }.map {
+                CommentPacket(
+                    postId = 0,
+                    userId = it.user.value,
+                    comment = it.text
+                )
+            }
+
+            GlobalChatMsg(
+                id = it[Posts.id].value,
+                title = it[Posts.title],
+                text = it[Posts.text],
+                comments
+            )
+        }.toArray { arrayOfNulls(it) }
 
         player
     }
@@ -93,7 +105,7 @@ fun createPlayerEntity(engine: Engine, dbEntry: Player) =
     }
 
 internal fun Server.handleDisconnect(connection: Connection) {
-    val player = players.find { it.value.conn.id == connection.id } ?: return
+    val player = playerByConnection(connection) ?: return
     engine { RemoveFlag.flag(this, player.value.entity) }
 
     val playerC = player.value.entity[playerM]

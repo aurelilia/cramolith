@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/1/21, 1:44 PM.
+ * This file was last modified at 3/10/21, 10:37 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -26,12 +26,13 @@ import ktx.scene2d.vis.visTextField
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.client.resources.I18N
 import xyz.angm.cramolith.common.ecs.playerM
-import xyz.angm.cramolith.common.networking.ChatMessagePacket
+import xyz.angm.cramolith.common.networking.GlobalChatMsg
+import xyz.angm.cramolith.common.networking.PrivateMessagePacket
 import xyz.angm.cramolith.common.networking.PrivateMessageRequest
 import xyz.angm.cramolith.common.networking.PrivateMessageResponse
 
 
-class ChatWindow(private val screen: GameScreen, initMsgs: Array<String>) : Window("chat") {
+class ChatWindow(private val screen: GameScreen, initMsgs: Array<GlobalChatMsg>) : Window("chat") {
 
     private val pane = TabbedPane()
     private val container = VisTable()
@@ -45,7 +46,7 @@ class ChatWindow(private val screen: GameScreen, initMsgs: Array<String>) : Wind
 
         screen.client.addListener { packet ->
             when (packet) {
-                is ChatMessagePacket -> addMessage(packet)
+                is PrivateMessagePacket -> addMessage(packet)
                 is PrivateMessageResponse -> addMessages(packet)
             }
         }
@@ -77,7 +78,7 @@ class ChatWindow(private val screen: GameScreen, initMsgs: Array<String>) : Wind
 
         val global = createTab("Global", 0)
         for (msg in initMsgs) {
-            (global.msgTable.actor as VisTable).add(VisLabel(msg)).left().expandX().row()
+            (global.msgTable.actor as VisTable).add(VisLabel(msg.text)).left().expandX().row()
         }
     }
 
@@ -98,7 +99,7 @@ class ChatWindow(private val screen: GameScreen, initMsgs: Array<String>) : Wind
                     if (it == Input.Keys.ENTER && text.isNotBlank()) {
                         val message = formatMessage(text)
                         screen.client.send(
-                            ChatMessagePacket(
+                            PrivateMessagePacket(
                                 message,
                                 sender = playerId,
                                 receiver = id
@@ -123,7 +124,7 @@ class ChatWindow(private val screen: GameScreen, initMsgs: Array<String>) : Wind
         return chat
     }
 
-    private fun addMessage(msg: ChatMessagePacket) = insertMessage(getChat(msg.sender, msg.receiver), msg.message)
+    private fun addMessage(msg: PrivateMessagePacket) = insertMessage(getChat(msg.sender, msg.receiver), msg.message)
 
     private fun addMessages(packet: PrivateMessageResponse) {
         val chat = getChat(packet.other, -1)
@@ -150,5 +151,5 @@ class ChatWindow(private val screen: GameScreen, initMsgs: Array<String>) : Wind
         override fun getContentTable() = table
     }
 
-    private data class Chat(val tab: ChatTab, val msgTable: ScrollPane, val messages: ArrayList<ChatMessagePacket>, val otherId: Int)
+    private data class Chat(val tab: ChatTab, val msgTable: ScrollPane, val messages: ArrayList<PrivateMessagePacket>, val otherId: Int)
 }

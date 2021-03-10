@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 4:47 PM.
+ * This file was last modified at 3/10/21, 8:36 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -8,6 +8,7 @@
 package xyz.angm.cramolith.server.handlers
 
 import org.jetbrains.exposed.dao.DaoEntityID
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.or
@@ -27,7 +28,7 @@ internal fun Server.handleChatMessage(msg: ChatMessagePacket) {
             Post.new {
                 title = "nothing"
                 text = msg.message
-                user = msg.sender
+                user = EntityID(msg.sender, Players)
             }
         }
     } else {
@@ -54,13 +55,13 @@ internal fun Server.handlePMRequest(conn: Connection, msg: PrivateMessageRequest
     }
 }
 
-private fun getFriends(first: Int, second: Int): Friend {
-    val entry = Friend.find {
-        ((Friends.player1 eq first) and (Friends.player2 eq second)) or
-                ((Friends.player1 eq second) and (Friends.player2 eq first))
+private fun getFriends(first: Int, second: Int): UserRelationship {
+    val entry = UserRelationship.find {
+        ((UserRelationships.player1 eq first) and (UserRelationships.player2 eq second)) or
+                ((UserRelationships.player1 eq second) and (UserRelationships.player2 eq first))
     }.firstOrNull()
 
-    return entry ?: Friend.new {
+    return entry ?: UserRelationship.new {
         player1 = DaoEntityID(first, Players)
         player2 = DaoEntityID(second, Players)
     }

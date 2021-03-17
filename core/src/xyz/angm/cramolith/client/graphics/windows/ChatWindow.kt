@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/10/21, 10:37 PM.
+ * This file was last modified at 3/17/21, 9:37 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -8,8 +8,10 @@
 package xyz.angm.cramolith.client.graphics.windows
 
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.utils.IntMap
 import com.kotcrab.vis.ui.util.dialog.Dialogs
 import com.kotcrab.vis.ui.widget.VisLabel
 import com.kotcrab.vis.ui.widget.VisTable
@@ -18,18 +20,14 @@ import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneAdapter
 import ktx.actors.onClick
 import ktx.actors.onKeyDown
+import ktx.collections.*
 import ktx.scene2d.scene2d
 import ktx.scene2d.scrollPane
-import ktx.scene2d.vis.visTable
-import ktx.scene2d.vis.visTextButton
-import ktx.scene2d.vis.visTextField
+import ktx.scene2d.vis.*
 import xyz.angm.cramolith.client.graphics.screens.GameScreen
 import xyz.angm.cramolith.client.resources.I18N
 import xyz.angm.cramolith.common.ecs.playerM
-import xyz.angm.cramolith.common.networking.GlobalChatMsg
-import xyz.angm.cramolith.common.networking.PrivateMessagePacket
-import xyz.angm.cramolith.common.networking.PrivateMessageRequest
-import xyz.angm.cramolith.common.networking.PrivateMessageResponse
+import xyz.angm.cramolith.common.networking.*
 
 
 class ChatWindow(private val screen: GameScreen, initMsgs: Array<GlobalChatMsg>) : Window("chat") {
@@ -37,17 +35,21 @@ class ChatWindow(private val screen: GameScreen, initMsgs: Array<GlobalChatMsg>)
     private val pane = TabbedPane()
     private val container = VisTable()
     private val chats = HashMap<String, Chat>()
+    private val globalChat = VisTable()
+    private val globalMsgComments = IntMap<VisTable>()
     private val playerId get() = screen.player[playerM].clientUUID
 
     init {
         addCloseButton()
-        setSize(500f, 500f)
+        setSize(600f, 700f)
         isResizable = true
 
         screen.client.addListener { packet ->
             when (packet) {
                 is PrivateMessagePacket -> addMessage(packet)
                 is PrivateMessageResponse -> addMessages(packet)
+                is GlobalChatMsg -> globalMessage(packet)
+                is CommentPacket -> comment(packet)
             }
         }
 
@@ -75,11 +77,85 @@ class ChatWindow(private val screen: GameScreen, initMsgs: Array<GlobalChatMsg>)
         }
         val firstTab = ChatTab(I18N["chat.new"], firstTabTable, false)
         pane.add(firstTab)
+        createTab("Log", 0)
 
-        val global = createTab("Global", 0)
-        for (msg in initMsgs) {
-            (global.msgTable.actor as VisTable).add(VisLabel(msg.text)).left().expandX().row()
+        val globalTable = scene2d.visTable {
+            scrollPane {
+                actor = globalChat
+                for (msg in initMsgs) globalMessage(msg)
+                setScrollbarsVisible(true)
+                it.expand().fill().colspan(2)
+                setScrollingDisabled(true, false)
+            }
+            row()
+
+            val title = visTextField {
+                it.expandX().fillX().colspan(2).padTop(10f).row()
+                messageText = "Title"
+            }
+            val msg = visTextArea {
+                it.expandX().fillX().height(100f).padTop(10f)
+                messageText = "Post"
+            }
+            visTextButton(I18N["chat.send"]) {
+                it.height(100f).padTop(10f)
+                onClick {
+                    if (msg.text.isNotBlank()) {
+                        sendGlobalMsg(title.text, msg.text)
+                        title.text = ""
+                        msg.text = ""
+                    }
+                }
+            }
         }
+        val globalTab = ChatTab("Global", globalTable, false)
+        pane.add(globalTab)
+    }
+
+    private fun sendGlobalMsg(title: String, message: String) = screen.client.send(GlobalChatMsg(userId = playerId, title = title, text = message))
+
+    private fun globalMessage(new: GlobalChatMsg) {
+        globalChat.add(scene2d.visTable {
+            defaults().left().expandX().fillX().pad(4f).padLeft(10f).padRight(10f)
+            background("dark-grey")
+
+            if (!new.title.isBlank()) {
+                visLabel("[CYAN]${new.username}: [ORANGE]${new.title}") { it.row() }
+            } else {
+                visLabel("[CYAN]${new.username}") { it.row() }
+            }
+
+            visLabel(new.text) { it.row() }
+
+            val commentTable = visTable {
+                defaults().left().expandX().fillX().pad(4f).padLeft(10f).padRight(10f)
+                background("black-transparent")
+                for (comment in new.comments) {
+                    visLabel(comment.comment) { it.row() }
+                }
+                visTextField {
+                    it.row()
+                    onKeyDown {
+                        if (it == Input.Keys.ENTER && text.isNotBlank()) {
+                            val message = formatMessage(text)
+                            screen.client.send(CommentPacket(new.id, playerId, message))
+                            text = ""
+                        }
+                    }
+                }
+                it.pad(10f)
+            }
+            globalMsgComments[new.id] = commentTable
+        }).expandX().fillX().pad(5f).row()
+    }
+
+    private fun comment(comment: CommentPacket) {
+        val post = globalMsgComments[comment.postId]
+        val label = VisLabel(comment.comment)
+        val cell = post.cells[post.cells.size - 1]
+        val inputField = cell.actor
+        cell.setActor<Actor>(label)
+        post.add(inputField).row()
     }
 
     private fun createTab(name: String, id: Int): Chat {
@@ -90,7 +166,6 @@ class ChatWindow(private val screen: GameScreen, initMsgs: Array<GlobalChatMsg>)
                 setScrollbarsVisible(true)
                 it.expand().fill()
             }
-
             row()
 
             visTextField {
@@ -140,7 +215,7 @@ class ChatWindow(private val screen: GameScreen, initMsgs: Array<GlobalChatMsg>)
 
     private fun getChat(sender: Int, receiver: Int): Chat {
         val sender = screen.onlinePlayers.find { it[playerM].clientUUID == sender }?.get(playerM)
-        val name = if (receiver == 0 || sender == null) "Global" else sender.name
+        val name = if (receiver == 0 || sender == null) "Log" else sender.name
         return chats[name] ?: createTab(sender!!.name, sender.clientUUID)
     }
 

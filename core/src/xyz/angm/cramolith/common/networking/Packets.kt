@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/10/21, 10:36 PM.
+ * This file was last modified at 3/17/21, 8:54 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -40,6 +40,8 @@ class LoginRejectedPacket(val reason: String = "") : Packet
 
 class GlobalChatMsg(
     var id: Int = 0,
+    var userId: Int = 0,
+    var username: String = "",
     val title: String = "",
     val text: String = "",
     val comments: List<CommentPacket> = emptyList()

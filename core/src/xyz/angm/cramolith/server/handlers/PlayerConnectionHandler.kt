@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/10/21, 10:50 PM.
+ * This file was last modified at 3/17/21, 9:25 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -26,6 +26,7 @@ import xyz.angm.cramolith.server.Server
 import xyz.angm.cramolith.server.database.*
 import xyz.angm.rox.Engine
 import xyz.angm.rox.Entity
+import kotlin.math.min
 import xyz.angm.cramolith.server.database.Pokemon as DBPoke
 
 internal fun Server.handleJoinPacket(connection: Connection, packet: JoinPacket) {
@@ -44,11 +45,14 @@ internal fun Server.handleJoinPacket(connection: Connection, packet: JoinPacket)
                 )
             }
 
+            val userId = it[Posts.user]
+            val user = if (userId.value == 0) "CRAMOLITH" else Player.findById(userId)!!.name
             GlobalChatMsg(
                 id = it[Posts.id].value,
+                username = user,
                 title = it[Posts.title],
                 text = it[Posts.text],
-                comments
+                comments = comments
             )
         }.toArray { arrayOfNulls(it) }
 
@@ -117,7 +121,7 @@ internal fun Server.handleDisconnect(connection: Connection) {
         db.posMap = posC.map
         db.triggeredActors = playerC.actorsTriggered
 
-        for (mon in playerC.pokemon.subList(0, 6)) {
+        for (mon in playerC.pokemon.subList(0, min(playerC.pokemon.size, 6))) {
             val writer: DBPoke.() -> Unit = {
                 species = mon.species.ident
                 nickname = mon.nickname

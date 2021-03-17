@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/10/21, 10:33 PM.
+ * This file was last modified at 3/17/21, 9:27 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -13,6 +13,7 @@ import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.select
+import xyz.angm.cramolith.common.ecs.playerM
 import xyz.angm.cramolith.common.networking.*
 import xyz.angm.cramolith.server.Connection
 import xyz.angm.cramolith.server.Server
@@ -28,6 +29,8 @@ internal fun Server.handleGlobalChatMsg(connection: Connection, msg: GlobalChatM
         }
     }
     msg.id = post.id.value
+    msg.username = player.value.entity[playerM].name
+    msg.userId = player.key
     sendToAll(msg)
 }
 
@@ -46,14 +49,6 @@ internal fun Server.handleCommentPacket(msg: CommentPacket) {
 internal fun Server.handlePrivateMessage(msg: PrivateMessagePacket) {
     if (msg.receiver == 0) {
         sendToAll(msg)
-
-        DB.transaction {
-            Post.new {
-                title = "nothing"
-                text = msg.message
-                user = EntityID(msg.sender, Players)
-            }
-        }
     } else {
         val player = players[msg.receiver] ?: return
         send(player.conn, msg)

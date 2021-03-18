@@ -343,6 +343,12 @@ triggers:
   width: 20
   height: 6
   idx: -1
+- type: "Teleport"
+  x: 1
+  y: 745
+  width: 15
+  height: 149
+  idx: 4
 teleports:
 - map: 3
   target: 0
@@ -351,6 +357,8 @@ teleports:
 - map: 4
   target: 0
 - map: 5
+  target: 0
+- map: 7
   target: 0
 actors:
   "joey":
@@ -374,33 +382,32 @@ actors:
     x: 162
     y: 384
     script:
-      - "sign_P"
-      - "dialog 1"
-
+    - "sign_P"
+    - "dialog 1"
   "sign_R":
     texture: "actor_size"
     index: 2
     x: 178
     y: 170
     script:
-      - "sign_R"
-      - "dialog 1"
+    - "sign_R"
+    - "dialog 1"
   "sign_S":
     texture: "actor_size"
     index: 3
     x: 352
     y: 337
     script:
-      - "sign_S"
-      - "dialog 1"
+    - "sign_S"
+    - "dialog 1"
   "sign_L":
     texture: "actor_size"
     index: 4
     x: 354
     y: 159
     script:
-      - "sign_L"
-      - "dialog 1"
+    - "sign_L"
+    - "dialog 1"
 wildEncounters:
 - - speciesId: "snivy"
     nickname: null

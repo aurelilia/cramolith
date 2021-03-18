@@ -167,54 +167,54 @@ actors:
     x: 85
     y: 121
     script:
-      - "teacher"
-      - "dialog 2"
+    - "teacher"
+    - "dialog 2"
   "kid_TL":
     texture: "actor_size"
     index: 1
     x: 53
     y: 68
     script:
-      - "kid_TL"
-      - "dialog 1"
+    - "kid_TL"
+    - "dialog 1"
   "kid_BL":
     texture: "actor_size"
     index: 2
     x: 53
     y: 38
     script:
-      - "kid_BL"
-      - "dialog 1"
+    - "kid_BL"
+    - "dialog 1"
   "kid_BR":
     texture: "actor_size"
     index: 3
     x: 163
     y: 37
     script:
-      - "kid_BR"
-      - "dialog 1"
+    - "kid_BR"
+    - "dialog 1"
   "twin_left":
     texture: "actor_size"
     index: 4
     x: 131
     y: 69
     script:
-      - "twins"
-      - "dialog 1"
+    - "twins"
+    - "dialog 1"
   "twin_right":
     texture: "actor_size"
     index: 5
     x: 149
     y: 69
     script:
-      - "twins"
-      - "dialog 1"
+    - "twins"
+    - "dialog 1"
   "board":
     texture: "actor_size"
     index: 6
     x: 111
     y: 147
     script:
-      - "board"
-      - "dialog 3"
+    - "board"
+    - "dialog 3"
 wildEncounters: []

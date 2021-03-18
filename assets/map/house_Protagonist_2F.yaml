@@ -77,38 +77,38 @@ actors:
     x: 112
     y: 104
     script:
-      - "tv"
-      - "dialog 1"
+    - "tv"
+    - "dialog 1"
   "gc":
     texture: "actor_size"
     index: 1
     x: 130
     y: 98
     script:
-      - "gc"
-      - "dialog 1"
+    - "gc"
+    - "dialog 1"
   "book":
     texture: "actor_size"
     index: 2
     x: 158
     y: 103
     script:
-      - "book"
-      - "dialog 1"
+    - "book"
+    - "dialog 1"
   "pc":
     texture: "actor_size"
     index: 3
     x: 175
     y: 107
     script:
-      - "pcY"
-      - "dialog 1"
+    - "pcY"
+    - "dialog 1"
   "bed":
     texture: "actor_size"
     index: 4
     x: 160
     y: 61
     script:
-      - "bedY"
-      - "dialog 2"
+    - "bedY"
+    - "dialog 2"
 wildEncounters: []

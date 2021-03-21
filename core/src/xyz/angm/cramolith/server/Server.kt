@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/10/21, 10:33 PM.
+ * This file was last modified at 3/21/21, 9:47 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -12,12 +12,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import xyz.angm.cramolith.common.*
-import xyz.angm.cramolith.common.ecs.components.specific.createWildPokemonEntity
 import xyz.angm.cramolith.common.ecs.network
 import xyz.angm.cramolith.common.ecs.systems.NetworkSystem
 import xyz.angm.cramolith.common.ecs.systems.RemoveSystem
 import xyz.angm.cramolith.common.networking.*
-import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.cramolith.server.ecs.BattleUpdateSystem
 import xyz.angm.cramolith.server.handlers.*
 import xyz.angm.rox.Engine
@@ -43,9 +41,6 @@ class Server {
         engine {
             add(netSystem as EntityListener)
             add(netSystem as EntitySystem)
-            createWildPokemonEntity(this, Pokemon("charizard", null, 10, 0, arrayListOf("Heat Wave", "Fire Fang")))
-            createWildPokemonEntity(this, Pokemon("piplup", null, 10, 0, arrayListOf("Heat Wave", "Fire Fang")))
-            createWildPokemonEntity(this, Pokemon("snivy", null, 10, 0, arrayListOf("Heat Wave", "Fire Fang")))
             add(RemoveSystem())
             add(BattleUpdateSystem(this@Server))
         }

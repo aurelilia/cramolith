@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/21/21, 10:52 PM.
+ * This file was last modified at 3/21/21, 11:02 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -201,6 +201,11 @@ class GameScreen(
                 is Entity -> netSystem.receive(it)
                 is PlayerMapChangedPacket -> world.playerMapChange(netSystem.entityOf(it.entityId) ?: return@addListener)
                 is BattleUpdatePacket -> battleWindow?.battleUpdate(it)
+
+                is Array<*> -> {
+                    it as Array<Entity>
+                    it.forEach { if (it[network].id != player[network].id) netSystem.receive(it) }
+                }
             }
         }
 

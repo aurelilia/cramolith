@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/21/21, 2:02 AM.
+ * This file was last modified at 3/21/21, 11:10 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -31,8 +31,10 @@ class RenderSystem(private val screen: GameScreen) : IteratingSystem(allOf(rende
     /** Set the correct position of the rendering component of the entity. */
     override fun process(entity: Entity, delta: Float) {
         val pos = entity[position]
-        entity[renderable].actor.x = pos.x
-        entity[renderable].actor.y = pos.y
+        val rend = entity[renderable]
+        rend.actor.x = pos.x
+        rend.actor.y = pos.y
+        rend.actor.isVisible = pos.map == screen.world.map.index
     }
 
     /** Add the entities model. */

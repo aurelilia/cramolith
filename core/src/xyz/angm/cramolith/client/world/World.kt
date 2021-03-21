@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/21/21, 8:37 PM.
+ * This file was last modified at 3/21/21, 11:14 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -76,7 +76,7 @@ class World(private val screen: GameScreen) : Group() {
         clearChildren()
         this += VisImage(map.texture)
         for (actor in screen.engine[renderables]) {
-            if (actor[position].map != map.index) continue
+            // if (actor[position].map != map.index) continue
             this += actor[renderable].actor
         }
         for (actor in map.actorsId.values()) {
@@ -91,8 +91,8 @@ class World(private val screen: GameScreen) : Group() {
     /** Called when a player changes map to check if they need to be rendered. */
     fun playerMapChange(player: Entity) {
         if (player == screen.player) return
-        player[renderable].actor.remove()
-        if (player[position].map == map.index) this += player[renderable].actor
+        // player[renderable].actor.remove()
+        // if (player[position].map == map.index) this += player[renderable].actor
     }
 
     fun zoom(amount: Float) {

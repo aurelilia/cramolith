@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 3/21/21, 10:40 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -8,6 +8,7 @@
 package xyz.angm.rox.util
 
 import xyz.angm.rox.Component
+import java.io.Serializable
 import kotlin.math.max
 
 /** A collection of elements very similar to a dynamically growing array.
@@ -18,7 +19,7 @@ import kotlin.math.max
  * @property data Backing array of components
  * @property capacity Current capacity of this bag
  * @property size Size of this bag, or the index of the highest set. */
-class Bag internal constructor(internal var data: Array<Component?>) {
+class Bag internal constructor(internal var data: Array<Component?>) : Serializable {
 
     private val capacity get() = data.size
     var size = data.size

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/21/21, 10:15 PM.
+ * This file was last modified at 3/21/21, 10:38 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -20,7 +20,6 @@ import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.cramolith.common.pokemon.battle.*
 import xyz.angm.rox.Component
 import xyz.angm.rox.Entity
-import xyz.angm.rox.FSTEntitySerializer
 import xyz.angm.rox.util.Bits
 import kotlin.reflect.KClass
 
@@ -54,7 +53,7 @@ private fun createFST(vararg classes: KClass<out Any>): FSTConfiguration {
     val ignore = Bits()
     ignore.set(ignoreSync.index)
     ignore.set(renderable.index)
-    fst.registerSerializer(Entity::class.java, FSTEntitySerializer(ignore), true)
+    // fst.registerSerializer(Entity::class.java, FSTEntitySerializer(ignore), true)
 
     return fst
 }

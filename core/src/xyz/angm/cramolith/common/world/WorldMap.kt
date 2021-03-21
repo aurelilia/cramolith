@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/21/21, 8:25 PM.
+ * This file was last modified at 3/21/21, 8:35 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -67,7 +67,8 @@ class WorldMap(
                 "map/house_Rival_2F.yaml",
                 "map/lab_oak.yaml",
                 "map/overworld.yaml",
-                "map/school.yaml"
+                "map/school.yaml",
+                "map/route1.yaml"
             )
             for (mapFileName in mapFileNames) {
                 val mapFile = file(mapFileName)

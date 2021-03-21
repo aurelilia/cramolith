@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/21/21, 4:41 PM.
+ * This file was last modified at 3/21/21, 8:37 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -83,7 +83,7 @@ class World(private val screen: GameScreen) : Group() {
             val img = VisImage(actor.drawable)
             img.x = actor.x.toFloat()
             img.y = actor.y.toFloat()
-            img.setSize(HUMAN_SIZE, HUMAN_SIZE + 4f)
+            img.setSize(HUMAN_SIZE, HUMAN_SIZE)
             this += img
         }
     }

@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/13/21, 2:21 AM.
+ * This file was last modified at 3/21/21, 8:37 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -17,7 +17,7 @@ package xyz.angm.cramolith.common
 const val TICK_RATE = 10L
 
 /** The size of all human actors (NPCs and players) in pixels */
-const val HUMAN_SIZE = 16f
+const val HUMAN_SIZE = 20f
 
 
 /** Networking constants */

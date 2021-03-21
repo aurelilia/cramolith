@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/10/21, 10:50 PM.
+ * This file was last modified at 3/21/21, 9:51 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -15,10 +15,9 @@ import xyz.angm.cramolith.common.ecs.components.specific.PlayerComponent
 import xyz.angm.cramolith.common.ecs.components.specific.WildPokemonComponent
 import xyz.angm.cramolith.common.ecs.ignoreSync
 import xyz.angm.cramolith.common.ecs.renderable
-import xyz.angm.cramolith.common.networking.InitPacket
-import xyz.angm.cramolith.common.networking.JoinPacket
-import xyz.angm.cramolith.common.networking.PrivateMessagePacket
+import xyz.angm.cramolith.common.networking.*
 import xyz.angm.cramolith.common.pokemon.Pokemon
+import xyz.angm.cramolith.common.pokemon.battle.*
 import xyz.angm.rox.Component
 import xyz.angm.rox.Entity
 import xyz.angm.rox.FSTEntitySerializer
@@ -31,7 +30,10 @@ val yaml = Yaml()
 /** A FST serializer used for network communication and world storage. */
 val fst = createFST(
     // Packets
-    JoinPacket::class, InitPacket::class, PrivateMessagePacket::class,
+    JoinPacket::class, InitPacket::class, LoginRejectedPacket::class,
+    PrivateMessagePacket::class, GlobalChatMsg::class, CommentPacket::class,
+    PrivateMessageRequest::class, PrivateMessageResponse::class, PlayerMapChangedPacket::class,
+    BattleUpdatePacket::class, PokemonReleasedPacket::class, Packet::class,
 
     // Components
     Component::class, VectoredComponent::class,
@@ -39,7 +41,10 @@ val fst = createFST(
     RemoveFlag::class, NetworkSyncComponent::class, WildPokemonComponent::class,
 
     // Various
-    Vector2::class, Entity::class, ArrayList::class, Pokemon::class,
+    Vector2::class, Entity::class, ArrayList::class, Pokemon::class, Battle::class,
+    Opponent::class, AiOpponent::class, PlayerOpponent::class, QueuedAction::class,
+    QueuedMove::class, QueuedSwitch::class, DoNothing::class, BattleSide::class, TurnEvent::class,
+    Attack::class, Switch::class, Fainted::class, BattleEnd::class, Array::class
 )
 
 private fun createFST(vararg classes: KClass<out Any>): FSTConfiguration {

@@ -2,52 +2,52 @@ ident: "house_Protagonist_2F"
 index: 8
 triggers:
 - type: "Collision"
-  x: 42
-  y: 6
-  width: 157
-  height: 3
+  x: 34
+  y: 15
+  width: 182
+  height: 8
   idx: -1
 - type: "Collision"
-  x: 190
-  y: 6
-  width: 4
-  height: 132
-  idx: -1
-- type: "Collision"
-  x: 46
-  y: 7
-  width: 5
-  height: 131
-  idx: -1
-- type: "Collision"
-  x: 83
-  y: 104
+  x: 194
+  y: 19
   width: 29
+  height: 152
+  idx: -1
+- type: "Collision"
+  x: 13
+  y: 160
+  width: 184
+  height: 11
+  idx: -1
+- type: "Collision"
+  x: 15
+  y: 16
+  width: 33
+  height: 148
+  idx: -1
+- type: "Collision"
+  x: 49
+  y: 120
+  width: 9
+  height: 2
+  idx: -1
+- type: "Collision"
+  x: 89
+  y: 120
+  width: 23
   height: 3
   idx: -1
 - type: "Collision"
-  x: 127
-  y: 104
-  width: 34
-  height: 3
-  idx: -1
-- type: "Collision"
-  x: 158
-  y: 46
-  width: 21
-  height: 26
-  idx: -1
-- type: "Collision"
-  x: 188
-  y: 89
-  width: 5
-  height: 13
+  x: 48
+  y: 148
+  width: 148
+  height: 5
   idx: -1
 - type: "Teleport"
-  x: 63
-  y: 105
+  x: 64
+  y: 120
   width: 18
-  height: 18
+  height: 4
   idx: 0
 teleports:
 - map: 2
@@ -56,8 +56,8 @@ actors:
   "tv":
     texture: "actor_size"
     index: 0
-    x: 112
-    y: 104
+    x: 108
+    y: 111
     script:
     - "tv"
     - "dialog 1"
@@ -65,31 +65,31 @@ actors:
     texture: "actor_size"
     index: 1
     x: 130
-    y: 98
+    y: 114
     script:
     - "gc"
     - "dialog 1"
   "book":
     texture: "actor_size"
     index: 2
-    x: 158
-    y: 103
+    x: 156
+    y: 118
     script:
     - "book"
     - "dialog 1"
   "pc":
     texture: "actor_size"
     index: 3
-    x: 175
-    y: 107
+    x: 176
+    y: 122
     script:
     - "pcY"
     - "dialog 1"
   "bed":
     texture: "actor_size"
     index: 4
-    x: 160
-    y: 61
+    x: 157
+    y: 62
     script:
     - "bedY"
     - "dialog 2"

@@ -1,77 +1,83 @@
 ident: "house_Rival_1F"
 index: 5
 triggers:
-- type: "Teleport"
-  x: 95
-  y: 6
-  width: 35
-  height: 9
-  idx: 0
 - type: "Collision"
-  x: 0
-  y: 6
-  width: 96
-  height: 4
-  idx: -1
-- type: "Collision"
-  x: 127
-  y: 7
-  width: 33
-  height: 4
-  idx: -1
-- type: "Collision"
-  x: 81
-  y: 104
-  width: 15
-  height: 15
-  idx: -1
-- type: "Collision"
-  x: 79
-  y: 55
-  width: 33
-  height: 33
-  idx: -1
-- type: "Collision"
-  x: 48
-  y: 72
-  width: 15
-  height: 36
-  idx: -1
-- type: "Collision"
-  x: 0
-  y: 9
-  width: 5
-  height: 105
-  idx: -1
-- type: "Teleport"
-  x: 144
-  y: 121
-  width: 16
-  height: 16
-  idx: 1
-- type: "Collision"
-  x: 158
-  y: 10
+  x: 182
+  y: 143
   width: 2
-  height: 100
+  height: 0
   idx: -1
 - type: "Collision"
-  x: 0
-  y: 111
-  width: 32
+  x: 10
+  y: 31
+  width: 13
+  height: 143
+  idx: -1
+- type: "Collision"
+  x: 9
+  y: 183
+  width: 176
+  height: 5
+  idx: -1
+- type: "Collision"
+  x: 186
+  y: 32
+  width: 12
+  height: 154
+  idx: -1
+- type: "Collision"
+  x: 23
+  y: 31
+  width: 95
   height: 8
   idx: -1
 - type: "Collision"
-  x: 95
-  y: 118
-  width: 40
-  height: 17
+  x: 152
+  y: 29
+  width: 31
+  height: 10
   idx: -1
 - type: "Collision"
-  x: 134
+  x: 24
+  y: 135
+  width: 30
+  height: 15
+  idx: -1
+- type: "Collision"
+  x: 104
   y: 137
-  width: 26
-  height: 7
+  width: 14
+  height: 12
+  idx: -1
+- type: "Collision"
+  x: 104
+  y: 88
+  width: 30
+  height: 29
+  idx: -1
+- type: "Collision"
+  x: 108
+  y: 151
+  width: 56
+  height: 17
+  idx: -1
+- type: "Teleport"
+  x: 168
+  y: 151
+  width: 15
+  height: 5
+  idx: 1
+- type: "Teleport"
+  x: 120
+  y: 49
+  width: 30
+  height: 5
+  idx: 0
+- type: "Collision"
+  x: 112
+  y: 31
+  width: 45
+  height: 6
   idx: -1
 teleports:
 - map: 0
@@ -82,16 +88,16 @@ actors:
   "tv":
     texture: "actor_size"
     index: 0
-    x: 64
-    y: 112
+    x: 86
+    y: 143
     script:
     - "tv"
     - "dialog 1"
   "fridge":
     texture: "actor_size"
     index: 1
-    x: 33
-    y: 109
+    x: 55
+    y: 136
     script:
     - "fridge"
     - "dialog 1"

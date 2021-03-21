@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/18/21, 3:57 PM.
+ * This file was last modified at 3/21/21, 8:28 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -45,14 +45,16 @@ object I18N {
         bundle = bundles[configuration.language]
     }
 
-    operator fun get(name: String) = bundle[name]!!
+    operator fun get(name: String) = tryGet(name) ?: "???"
 
-    fun fmt(name: String, arg: String) = bundle.format(name, arg)!!
-    fun fmt(name: String, arg1: String, arg2: String) = bundle.format(name, arg1, arg2)!!
+    fun fmt(name: String, arg: String) = tryOrErr { bundle.format(name, arg) } ?: "$arg ???"
+    fun fmt(name: String, arg1: String, arg2: String) = tryOrErr { bundle.format(name, arg1, arg2) } ?: "$arg1 ??? $arg2"
 
-    fun tryGet(name: String): String? {
+    fun tryGet(name: String) = tryOrErr { bundle[name] }
+
+    private fun tryOrErr(run: () -> String?): String? {
         return try {
-            this[name]
+            run()
         } catch (e: Exception) {
             null
         }

@@ -140,18 +140,6 @@ triggers:
   height: 51
   idx: -1
 - type: "Collision"
-  x: 165
-  y: 183
-  width: 13
-  height: 5
-  idx: -1
-- type: "Collision"
-  x: 136
-  y: 182
-  width: 9
-  height: 2
-  idx: -1
-- type: "Collision"
   x: 133
   y: 182
   width: 6
@@ -218,22 +206,10 @@ triggers:
   height: 8
   idx: 2
 - type: "Collision"
-  x: 350
-  y: 175
-  width: 25
-  height: 6
-  idx: -1
-- type: "Collision"
   x: 399
   y: 175
   width: 67
   height: 6
-  idx: -1
-- type: "Collision"
-  x: 169
-  y: 182
-  width: 13
-  height: 3
   idx: -1
 - type: "Teleport"
   x: 149
@@ -259,24 +235,6 @@ triggers:
   width: 67
   height: 154
   idx: 0
-- type: "Water"
-  x: 1
-  y: 270
-  width: 33
-  height: 40
-  idx: -1
-- type: "Water"
-  x: 1
-  y: 271
-  width: 17
-  height: 150
-  idx: -1
-- type: "Water"
-  x: 2
-  y: 392
-  width: 31
-  height: 28
-  idx: -1
 - type: "Collision"
   x: 118
   y: 396
@@ -313,24 +271,6 @@ triggers:
   width: 17
   height: 3
   idx: -1
-- type: "Collision"
-  x: 129
-  y: 417
-  width: 26
-  height: 6
-  idx: -1
-- type: "Collision"
-  x: 145
-  y: 203
-  width: 25
-  height: 7
-  idx: -1
-- type: "Collision"
-  x: 377
-  y: 198
-  width: 20
-  height: 6
-  idx: -1
 - type: "Teleport"
   x: 1
   y: 745
@@ -349,6 +289,24 @@ triggers:
   width: 106
   height: 66
   idx: 1
+- type: "Collision"
+  x: 1
+  y: 273
+  width: 15
+  height: 147
+  idx: -1
+- type: "Collision"
+  x: 2
+  y: 273
+  width: 31
+  height: 36
+  idx: -1
+- type: "Collision"
+  x: 1
+  y: 390
+  width: 33
+  height: 30
+  idx: -1
 teleports:
 - map: 3
   target: 0

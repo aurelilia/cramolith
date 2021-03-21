@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 5:14 PM.
+ * This file was last modified at 3/21/21, 9:40 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -21,7 +21,7 @@ class MenuWindow(screen: GameScreen) : Window("menu") {
 
     init {
         fun addButton(name: String, action: String) {
-            val btn = VisTextButton(action.substring(0, 1).toUpperCase())
+            val btn = VisTextButton(I18N["window.$name"])
             btn.onClick { PlayerActions[action]!!.keyDown(screen) }
             btn.visTextTooltip(I18N["window.$name"])
             add(btn).left().pad(5f)

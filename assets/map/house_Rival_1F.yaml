@@ -62,18 +62,6 @@ triggers:
   height: 3
   idx: -1
 - type: "Collision"
-  x: 142
-  y: 139
-  width: 17
-  height: 2
-  idx: -1
-- type: "Collision"
-  x: 138
-  y: 123
-  width: 2
-  height: 17
-  idx: -1
-- type: "Collision"
   x: 0
   y: 111
   width: 32

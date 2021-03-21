@@ -32,28 +32,10 @@ triggers:
   height: 17
   idx: -1
 - type: "Collision"
-  x: 143
-  y: 9
-  width: 1
-  height: 109
-  idx: -1
-- type: "Collision"
   x: 112
   y: 118
   width: 10
   height: 3
-  idx: -1
-- type: "Collision"
-  x: 127
-  y: 136
-  width: 19
-  height: 3
-  idx: -1
-- type: "Collision"
-  x: 145
-  y: 110
-  width: 3
-  height: 31
   idx: -1
 - type: "Collision"
   x: 119
@@ -62,16 +44,16 @@ triggers:
   height: 20
   idx: -1
 - type: "Collision"
-  x: 122
-  y: 135
-  width: 5
-  height: 5
-  idx: -1
-- type: "Collision"
   x: 17
   y: 12
   width: 14
   height: 25
+  idx: -1
+- type: "Collision"
+  x: 144
+  y: 4
+  width: 13
+  height: 116
   idx: -1
 teleports:
 - map: 5

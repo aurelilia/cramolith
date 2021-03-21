@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/6/21, 7:40 PM.
+ * This file was last modified at 3/21/21, 11:27 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -97,9 +97,9 @@ fun Application.module() {
                     Player.new {
                         name = username
                         password = pw
-                        posX = 100
-                        posY = 100
-                        posMap = 0
+                        posX = 85
+                        posY = 64 // player room
+                        posMap = 8
                         triggeredActors = HashMap()
                     }.id
                 }

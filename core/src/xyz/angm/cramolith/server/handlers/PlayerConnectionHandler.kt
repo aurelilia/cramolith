@@ -1,12 +1,13 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/21/21, 9:43 PM.
+ * This file was last modified at 3/21/21, 11:22 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
 
 package xyz.angm.cramolith.server.handlers
 
+import com.badlogic.gdx.math.MathUtils
 import ktx.assets.ignore
 import ktx.collections.*
 import org.jetbrains.exposed.sql.SortOrder
@@ -96,8 +97,11 @@ fun createPlayerEntity(engine: Engine, dbEntry: Player) =
             }
 
             if (pokemon.isEmpty()) {
-                pokemon.add(Pokemon("pikachu", "Test Subject", 20, 64, arrayListOf("thundershock")))
-                pokemon.add(Pokemon("pikachu", "pika!", 10, 30, arrayListOf("quickattack", "thundershock")))
+                when (MathUtils.random()) {
+                    in 0f..0.3f -> pokemon.add(Pokemon("pikachu", null, 10, 64, arrayListOf("quickattack", "thundershock")))
+                    in 0.3f..0.7f -> pokemon.add(Pokemon("snivy", null, 10, 64, arrayListOf("vinewhip", "leaftornado")))
+                    else -> pokemon.add(Pokemon("piplup", null, 10, 64, arrayListOf("bubble", "bubblebeam")))
+                }
             }
         }
         with<PositionComponent> {

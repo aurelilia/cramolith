@@ -9,6 +9,10 @@
 <@base.document title="Cramolith - Download" css="download">
     <ul>
         <li>
+            <span class="date">2021-03-21 - <a href="/static/builds/cramolith-client-20210321.jar">Download</a></span>
+            <p>Cramolith Early Access now available.</p>
+        </li>
+        <li>
             <span class="date">2021-03-06 - <a href="/static/builds/cramolith-client-20210306.jar">Download</a></span>
             <p>Cramolith Beta now available.</p>
         </li>

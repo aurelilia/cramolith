@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/21/21, 10:43 PM.
+ * This file was last modified at 3/21/21, 10:46 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -51,7 +51,7 @@ class NetworkSystem(private val send: (Entity) -> Unit) : EntitySystem(Int.MAX_V
             if (removed) engine.remove(localEntity)
             else {
                 for (i in 0 until netE.components.size) {
-                    if (i != renderable.index && netE.components[i] != null) {
+                    if (i != renderable.index && i != ignoreSync.index && netE.components[i] != null) {
                         localEntity.add(engine, netE.components[i]!!)
                     }
                 }

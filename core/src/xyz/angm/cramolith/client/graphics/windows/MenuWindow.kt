@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/21/21, 9:40 PM.
+ * This file was last modified at 3/21/21, 11:36 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -29,7 +29,6 @@ class MenuWindow(screen: GameScreen) : Window("menu") {
 
         addButton("chat", "chat")
         addButton("players-online", "onlinePlayers")
-        addButton("debug", "debug")
         addButton("party", "party")
 
         val exitBtn = VisTextButton("X")

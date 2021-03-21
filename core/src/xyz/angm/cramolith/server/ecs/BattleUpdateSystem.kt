@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/6/21, 7:09 PM.
+ * This file was last modified at 3/21/21, 11:49 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -26,14 +26,17 @@ class BattleUpdateSystem(private val server: Server) : IteratingSystem(allOf(pla
 
     override fun process(entity: Entity, delta: Float) {
         val battle = entity[battleM].battle
-        val turn1 = battle.left.calcQueuedAction(getter, battle.right)
-        val turn2 = battle.right.calcQueuedAction(getter, battle.left)
-
-        if (turn1 != null && turn2 != null) {
-            turn.clear()
-            battle.advance(turn, getter)
-            sendUpdate(battle, battle.left)
-            sendUpdate(battle, battle.right)
+        try {
+            val turn1 = battle.left.calcQueuedAction(getter, battle.right)
+            val turn2 = battle.right.calcQueuedAction(getter, battle.left)
+            if (turn1 != null && turn2 != null) {
+                turn.clear()
+                battle.advance(turn, getter)
+                sendUpdate(battle, battle.left)
+                sendUpdate(battle, battle.right)
+            }
+        } catch (e: NullPointerException) {
+            engine.remove(entity)
         }
     }
 

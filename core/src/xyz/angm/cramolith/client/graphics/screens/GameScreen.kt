@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/21/21, 9:30 PM.
+ * This file was last modified at 3/21/21, 10:26 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -101,11 +101,18 @@ class GameScreen(
         runLogE("Client", "rendering") { renderInternal(delta) }
     }
 
+    private var tick = 0
+
     private fun renderInternal(delta: Float) {
         client.lock()
         Cramolith.execRunnables()
         engine.update(delta)
         stage.act()
+        tick++
+        if (tick > 20) {
+            player[network].needsSync = true
+            tick = 0
+        }
         client.unlock()
 
         Gdx.gl.glClearColor(0.05f, 0.05f, 0.05f, 1f)

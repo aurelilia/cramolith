@@ -83,46 +83,46 @@ actors:
     x: 81
     y: 111
     script:
-      - "bookL"
-      - "dialog 1"
+    - "bookL"
+    - "dialog 1"
   "books_right":
     texture: "actor_size"
     index: 1
     x: 96
     y: 111
     script:
-      - "bookR"
-      - "dialog 1"
+    - "bookR"
+    - "dialog 1"
   "pc":
     texture: "actor_size"
     index: 2
     x: 16
     y: 112
     script:
-      - "pc"
-      - "dialog 1"
+    - "pc"
+    - "dialog 1"
   "tv":
     texture: "actor_size"
     index: 3
     x: 64
     y: 54
     script:
-      - "tv"
-      - "dialog 1"
+    - "tv"
+    - "dialog 1"
   "console":
     texture: "actor_size"
     index: 4
     x: 64
     y: 39
     script:
-      - "console"
-      - "dialog 1"
+    - "console"
+    - "dialog 1"
   "bed":
     texture: "actor_size"
     index: 5
     x: 16
     y: 21
     script:
-      - "bedNY"
-      - "dialog 1"
+    - "bedNY"
+    - "dialog 1"
 wildEncounters: []

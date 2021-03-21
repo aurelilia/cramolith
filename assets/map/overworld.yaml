@@ -248,12 +248,6 @@ triggers:
   height: 128
   idx: 0
 - type: "WildEncounter"
-  x: 348
-  y: 828
-  width: 103
-  height: 65
-  idx: 0
-- type: "WildEncounter"
   x: 127
   y: 743
   width: 103
@@ -343,6 +337,24 @@ triggers:
   width: 20
   height: 6
   idx: -1
+- type: "Teleport"
+  x: 1
+  y: 745
+  width: 15
+  height: 149
+  idx: 4
+- type: "Actor"
+  x: 95
+  y: 745
+  width: 13
+  height: 131
+  idx: 0
+- type: "WildEncounter"
+  x: 346
+  y: 827
+  width: 106
+  height: 66
+  idx: 1
 teleports:
 - map: 3
   target: 0
@@ -352,12 +364,14 @@ teleports:
   target: 0
 - map: 5
   target: 0
+- map: 7
+  target: 0
 actors:
   "joey":
     texture: "youngster"
     index: 0
-    x: 1
-    y: 395
+    x: 92
+    y: 877
     script:
     - "joey"
     - "title joey"
@@ -374,33 +388,32 @@ actors:
     x: 162
     y: 384
     script:
-      - "sign_P"
-      - "dialog 1"
-
+    - "sign_P"
+    - "dialog 1"
   "sign_R":
     texture: "actor_size"
     index: 2
     x: 178
     y: 170
     script:
-      - "sign_R"
-      - "dialog 1"
+    - "sign_R"
+    - "dialog 1"
   "sign_S":
     texture: "actor_size"
     index: 3
     x: 352
     y: 337
     script:
-      - "sign_S"
-      - "dialog 1"
+    - "sign_S"
+    - "dialog 1"
   "sign_L":
     texture: "actor_size"
     index: 4
     x: 354
     y: 159
     script:
-      - "sign_L"
-      - "dialog 1"
+    - "sign_L"
+    - "dialog 1"
 wildEncounters:
 - - speciesId: "snivy"
     nickname: null
@@ -418,5 +431,32 @@ wildEncounters:
     moveIds:
     - "quickattack"
     - "thundershock"
+    uuid: -1
+    battleState: null
+- - speciesId: "snivy"
+    nickname: null
+    level: 12
+    exp: 0
+    moveIds:
+    - "vinewhip"
+    - "leaftornado"
+    uuid: -1
+    battleState: null
+  - speciesId: "pikachu"
+    nickname: null
+    level: 10
+    exp: 0
+    moveIds:
+    - "quickattack"
+    - "thundershock"
+    uuid: -1
+    battleState: null
+  - speciesId: "charizard"
+    nickname: null
+    level: 40
+    exp: 0
+    moveIds:
+    - "heatwave"
+    - "fire fang"
     uuid: -1
     battleState: null

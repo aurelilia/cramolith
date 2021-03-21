@@ -111,30 +111,30 @@ actors:
     x: 40
     y: 119
     script:
-      - "machine"
-      - "dialog 2"
+    - "machine"
+    - "dialog 2"
   "pc":
     texture: "actor_size"
     index: 1
     x: 48
     y: 184
     script:
-      - "pc"
-      - "dialog 1"
+    - "pc"
+    - "dialog 1"
   "books":
     texture: "actor_size"
     index: 2
     x: 112
     y: 188
     script:
-      - "books"
-      - "dialog 1"
+    - "books"
+    - "dialog 1"
   "books_2":
     texture: "actor_size"
     index: 3
     x: 129
     y: 188
     script:
-      - "books"
-      - "dialog 1"
+    - "books"
+    - "dialog 1"
 wildEncounters: []

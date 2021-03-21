@@ -91,14 +91,14 @@ actors:
     x: 64
     y: 112
     script:
-      - "tv"
-      - "dialog 1"
+    - "tv"
+    - "dialog 1"
   "fridge":
     texture: "actor_size"
     index: 1
     x: 33
     y: 109
     script:
-      - "fridge"
-      - "dialog 1"
+    - "fridge"
+    - "dialog 1"
 wildEncounters: []

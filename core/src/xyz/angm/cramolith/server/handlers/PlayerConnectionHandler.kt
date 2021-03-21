@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/21/21, 9:25 PM.
+ * This file was last modified at 3/21/21, 9:43 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -65,15 +65,8 @@ internal fun Server.handleJoinPacket(connection: Connection, packet: JoinPacket)
         else -> null
     }
     if (error == null) engine {
-        val existing = players[dbEntry!!.id.value]
-        val playerEntity = if (existing != null) {
-            existing.conn.channel.close()
-            existing.entity
-        } else {
-            createPlayerEntity(this, dbEntry)
-        }
-
         val entities = this[networkedFamily].toArray(Entity::class)
+        val playerEntity = createPlayerEntity(this, dbEntry!!)
         players[dbEntry.id.value] = Server.OnlinePlayer(connection, playerEntity)
 
         send(connection, InitPacket(playerEntity, entities, globalMessages))
@@ -118,6 +111,7 @@ fun createPlayerEntity(engine: Engine, dbEntry: Player) =
 internal fun Server.handleDisconnect(connection: Connection) {
     val player = playerByConnection(connection) ?: return
     engine { RemoveFlag.flag(this, player.value.entity) }
+    players.remove(player.key)
 
     val playerC = player.value.entity[playerM]
     val posC = player.value.entity[position]

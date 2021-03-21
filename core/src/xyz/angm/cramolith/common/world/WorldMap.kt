@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/18/21, 5:48 PM.
+ * This file was last modified at 3/21/21, 8:25 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -60,8 +60,18 @@ class WorldMap(
         private val mapsId = IntMap<WorldMap>()
 
         init {
-            for (map in file("map/").list(".yaml")) {
-                val map = yaml.decodeFromString(serializer(), map.readString())
+            val mapFileNames = arrayOf(
+                "map/house_Protagonist_1F.yaml",
+                "map/house_Protagonist_2F.yaml",
+                "map/house_Rival_1F.yaml",
+                "map/house_Rival_2F.yaml",
+                "map/lab_oak.yaml",
+                "map/overworld.yaml",
+                "map/school.yaml"
+            )
+            for (mapFileName in mapFileNames) {
+                val mapFile = file(mapFileName)
+                val map = yaml.decodeFromString(serializer(), mapFile.readString())
                 maps[map.ident] = map
                 mapsId[map.index] = map
             }

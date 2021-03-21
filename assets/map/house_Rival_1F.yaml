@@ -56,16 +56,22 @@ triggers:
   height: 100
   idx: -1
 - type: "Collision"
-  x: 95
-  y: 118
-  width: 44
-  height: 3
-  idx: -1
-- type: "Collision"
   x: 0
   y: 111
   width: 32
   height: 8
+  idx: -1
+- type: "Collision"
+  x: 95
+  y: 118
+  width: 40
+  height: 17
+  idx: -1
+- type: "Collision"
+  x: 134
+  y: 137
+  width: 26
+  height: 7
   idx: -1
 teleports:
 - map: 0

@@ -103,7 +103,9 @@ triggers:
   width: 79
   height: 23
   idx: -1
-teleports: []
+teleports:
+  - map: 0
+    target: 0
 actors:
   "machine":
     texture: "actor_size"

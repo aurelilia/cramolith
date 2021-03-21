@@ -7,12 +7,6 @@ triggers:
   width: 30
   height: 9
   idx: 0
-- type: "Teleport"
-  x: 64
-  y: 111
-  width: 17
-  height: 12
-  idx: 1
 - type: "Collision"
   x: 29
   y: 5
@@ -97,10 +91,16 @@ triggers:
   width: 29
   height: 15
   idx: -1
+- type: "Teleport"
+  x: 62
+  y: 104
+  width: 21
+  height: 20
+  idx: 1
 teleports:
 - map: 0
   target: 1
-- map: 7
+- map: 8
   target: 0
 actors:
   "tv":

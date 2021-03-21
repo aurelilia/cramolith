@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/18/21, 6:17 PM.
+ * This file was last modified at 3/21/21, 9:08 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -36,7 +36,7 @@ import xyz.angm.cramolith.common.world.WorldActor
  *                      Not putting this at the end will cause a script to be executable infinitely often. */
 class Script(private val screen: GameScreen, private val actor: WorldActor, private val completed: () -> Unit) {
 
-    private val id: String = actor.script[0]
+    private val id: String = if (actor.script.isEmpty()) "" else actor.script[0]
     private var title = ""
     private var index = 1
     private var dialogIdx = 0
@@ -46,7 +46,7 @@ class Script(private val screen: GameScreen, private val actor: WorldActor, priv
     }
 
     fun next() {
-        if (actor.script.size == index) {
+        if (actor.script.size <= index) {
             completed()
             return
         }

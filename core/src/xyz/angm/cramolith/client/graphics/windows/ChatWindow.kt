@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/17/21, 9:37 PM.
+ * This file was last modified at 3/21/21, 9:16 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -187,7 +187,7 @@ class ChatWindow(private val screen: GameScreen, initMsgs: Array<GlobalChatMsg>)
             }
         }
 
-        val tab = ChatTab(name, contentTable, id != 0)
+        val tab = ChatTab(name, contentTable, false)
         val chat = Chat(tab, msgTable, ArrayList(), id)
         chats[name] = chat
         pane.add(tab)

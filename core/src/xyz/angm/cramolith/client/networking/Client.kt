@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/4/21, 12:43 PM.
+ * This file was last modified at 3/21/21, 4:39 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -45,7 +45,7 @@ class Client {
         scope.launch { // Processing / worker coroutine
             while (true) processPacket(packetChannel.receive())
         }
-        socket.connect("127.0.0.1") // TODO: replace with actual server ip when moving to prod
+        socket.connect("lgs-cramolith.angm.xyz") // TODO: replace with actual server ip when moving to prod
     }
 
     /** Add a listener for received packets */

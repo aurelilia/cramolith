@@ -16,3 +16,8 @@ A pokemon-like battle MMO.
 
 Follow Kotlin official style guide: https://kotlinlang.org/docs/reference/coding-conventions.html
 Max line length is 150.
+
+### Credit
+
+Sprites in this game were mostly taken from The Spriters Resource. Thanks to the creators:
+- Furs the Fox

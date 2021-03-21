@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/13/21, 2:21 AM.
+ * This file was last modified at 3/21/21, 4:45 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -83,7 +83,7 @@ class Map(private val screen: EditorScreen, map: WorldMap) : VisImage(map.textur
             tmp.set(actor.x.toFloat(), actor.y.toFloat())
             localToScreenCoordinates(tmp)
             tmp.y = stage.height - tmp.y
-            batch.draw(actor.drawable, tmp.x, tmp.y, scaleX * HUMAN_SIZE, scaleY * HUMAN_SIZE)
+            batch.draw(actor.drawable, tmp.x, tmp.y, scaleX * HUMAN_SIZE, scaleY * (HUMAN_SIZE + 4))
         }
 
         mode?.drawBatch(batch, this)

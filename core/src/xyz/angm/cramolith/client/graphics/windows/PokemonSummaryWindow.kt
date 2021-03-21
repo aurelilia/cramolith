@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/6/21, 7:25 PM.
+ * This file was last modified at 3/21/21, 11:31 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -62,7 +62,9 @@ class PokemonSummaryWindow(screen: GameScreen, pokemon: Pokemon) : Window("summa
             }
 
             visTextButton(I18N["pokemon.release"]) {
+                isDisabled = screen.player[playerM].pokemon.size < 2
                 onClick {
+                    if (isDisabled) return@onClick
                     Dialogs.showOptionDialog(stage, I18N["pokemon.release-title"], I18N["pokemon.release-confirm"], Dialogs.OptionDialogType.YES_CANCEL,
                         object : OptionDialogListener {
                             override fun yes() {

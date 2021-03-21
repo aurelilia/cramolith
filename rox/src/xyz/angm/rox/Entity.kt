@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/11/21, 6:30 PM.
+ * This file was last modified at 3/21/21, 10:14 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -136,8 +136,8 @@ class FSTEntitySerializer(private val ignore: Bits) : FSTBasicObjectSerializer()
         val components = entity.components
         var lastI = input.readInt()
         while (lastI != -2342) {
-            val component = input.readObject() as Component
-            components[lastI] = component
+            val component = input.readObject() as? Component
+            components[lastI] = component ?: continue
             entity.componentBits.set(lastI)
             lastI = input.readInt()
         }

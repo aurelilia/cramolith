@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/21/21, 10:52 PM.
+ * This file was last modified at 5/6/21, 7:18 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -8,7 +8,6 @@
 package xyz.angm.cramolith.common.ecs.systems
 
 import com.badlogic.gdx.utils.IntMap
-import xyz.angm.cramolith.client.graphics.screens.pid
 import xyz.angm.cramolith.common.ecs.*
 import xyz.angm.rox.Entity
 import xyz.angm.rox.EntityListener
@@ -21,7 +20,7 @@ import xyz.angm.rox.systems.EntitySystem
  * entities that request network update are sent automatically as well.
  *
  * REGISTER AS SECOND LAST!. */
-class NetworkSystem(private val send: (Entity) -> Unit) : EntitySystem(Int.MAX_VALUE - 1), EntityListener {
+class NetworkSystem(private val send: (Entity) -> Unit, private val ignoredPlayerId: Int = -1) : EntitySystem(Int.MAX_VALUE - 1), EntityListener {
 
     override val family = Family.allOf(network)
     private val entities = IntMap<Entity>()
@@ -45,7 +44,7 @@ class NetworkSystem(private val send: (Entity) -> Unit) : EntitySystem(Int.MAX_V
             engine.add(netE)
         } else {
             val localEntity = entities[network.id]
-            if (pid == localEntity[playerM].clientUUID) return
+            if (ignoredPlayerId == localEntity[playerM].clientUUID) return
             if (removed) engine.remove(localEntity)
             else {
                 for (i in 0 until netE.components.size) {

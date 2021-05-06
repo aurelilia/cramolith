@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/21/21, 10:38 PM.
+ * This file was last modified at 5/6/21, 7:14 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -31,7 +31,7 @@ val fst = createFST(
     // Packets
     JoinPacket::class, InitPacket::class, LoginRejectedPacket::class,
     PrivateMessagePacket::class, GlobalChatMsg::class, CommentPacket::class,
-    PrivateMessageRequest::class, PrivateMessageResponse::class, PlayerMapChangedPacket::class,
+    PrivateMessageRequest::class, PrivateMessageResponse::class,
     BattleUpdatePacket::class, PokemonReleasedPacket::class, Packet::class,
 
     // Components

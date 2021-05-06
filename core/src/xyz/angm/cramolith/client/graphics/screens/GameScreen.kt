@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 3/21/21, 11:11 PM.
+ * This file was last modified at 5/6/21, 7:16 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -48,8 +48,6 @@ import xyz.angm.rox.EntityListener
 import xyz.angm.rox.Family.Companion.allOf
 import xyz.angm.rox.systems.EntitySystem
 
-var pid = -1
-
 /** The game screen. Active during gameplay.
  *
  * This screen is mainly a bag of other objects that make up game state;
@@ -76,7 +74,7 @@ class GameScreen(
 
     // Entities
     val engine = Engine()
-    private val netSystem = NetworkSystem(client::send)
+    private val netSystem = NetworkSystem(client::send, player[playerM].clientUUID)
     private val inputHandler = PlayerInputHandler(this)
     val players = PlayerMapper()
     private val playersFamily = allOf(playerM)
@@ -92,7 +90,6 @@ class GameScreen(
 
     init {
         initSystems()
-        pid = player[playerM].clientUUID
         engine.add(player)
         entities.forEach { if (it[network].id != player[network].id) engine.add(it) }
 
@@ -195,12 +192,13 @@ class GameScreen(
         client.addListener {
             when (it) {
                 is Entity -> netSystem.receive(it)
-                is PlayerMapChangedPacket -> world.playerMapChange(netSystem.entityOf(it.entityId) ?: return@addListener)
                 is BattleUpdatePacket -> battleWindow?.battleUpdate(it)
 
                 is Array<*> -> {
-                    it as Array<Entity>
-                    it.forEach { if (it[network].id != player[network].id) netSystem.receive(it) }
+                    it.forEach {
+                        if (it !is Entity) return@forEach
+                        if (it[network].id != player[network].id) netSystem.receive(it)
+                    }
                 }
             }
         }

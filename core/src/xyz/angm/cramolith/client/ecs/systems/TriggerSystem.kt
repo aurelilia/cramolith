@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/25/21, 12:49 AM.
+ * This file was last modified at 5/6/21, 7:36 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -16,10 +16,8 @@ import xyz.angm.cramolith.client.resources.I18N
 import xyz.angm.cramolith.common.HUMAN_SIZE
 import xyz.angm.cramolith.common.ecs.battleM
 import xyz.angm.cramolith.common.ecs.components.PositionComponent
-import xyz.angm.cramolith.common.ecs.network
 import xyz.angm.cramolith.common.ecs.position
 import xyz.angm.cramolith.common.fst
-import xyz.angm.cramolith.common.networking.PlayerMapChangedPacket
 import xyz.angm.cramolith.common.pokemon.Pokemon
 import xyz.angm.cramolith.common.pokemon.battle.AiOpponent
 import xyz.angm.cramolith.common.pokemon.battle.PokeBattleState
@@ -89,7 +87,6 @@ class TriggerSystem(private val screen: GameScreen) : EntitySystem() {
                 pos.map = newMap.index
                 screen.world.map = newMap
                 updateTriggers()
-                screen.client.send(PlayerMapChangedPacket(screen.player[network].id))
             }
 
             Actor -> screen.loadScriptCutscene(trigger.idx)

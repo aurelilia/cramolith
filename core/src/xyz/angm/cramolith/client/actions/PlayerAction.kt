@@ -1,6 +1,6 @@
 /*
  * Developed as part of the Cramolith project.
- * This file was last modified at 2/25/21, 12:58 AM.
+ * This file was last modified at 5/6/21, 7:13 PM.
  * Copyright 2021, see git repository at git.angm.xyz for authors and other info.
  * This file is under the GPL3 license. See LICENSE in the root directory of this repository for details.
  */
@@ -50,7 +50,7 @@ object PlayerActions {
         fun window(ident: String, init: (GameScreen) -> Window) = add(ident) { it.toggleWindow(ident, init) }
 
         fun walk(dir: String, sprite: Int, down: (GameScreen) -> Unit, up: (GameScreen) -> Unit) {
-            val name = "walk${dir.capitalize()}"
+            val name = "walk${dir}"
             add(name, {
                 deactivatedWalk = null
                 if (triggeredWalk != null) {
@@ -78,10 +78,10 @@ object PlayerActions {
             })
         }
 
-        walk("forward", 0, { it.player[velocity].y++ }, { it.player[velocity].y-- })
-        walk("backward", 2, { it.player[velocity].y-- }, { it.player[velocity].y++ })
-        walk("left", 4, { it.player[velocity].x-- }, { it.player[velocity].x++ })
-        walk("right", 6, { it.player[velocity].x++ }, { it.player[velocity].x-- })
+        walk("Forward", 0, { it.player[velocity].y++ }, { it.player[velocity].y-- })
+        walk("Backward", 2, { it.player[velocity].y-- }, { it.player[velocity].y++ })
+        walk("Left", 4, { it.player[velocity].x-- }, { it.player[velocity].x++ })
+        walk("Right", 6, { it.player[velocity].x++ }, { it.player[velocity].x-- })
 
         window("onlinePlayers") { OnlinePlayersWindow(it) }
         window("chat") { throw UnsupportedOperationException() }
